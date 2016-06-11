@@ -29,20 +29,19 @@ FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE
 FARC_meta <- select(FARC, date)
 FARC_dates <- as.Date(FARC_meta[[1]], "%Y-%m-%d")
 
-# create corpus
-FARC_corp <- corpus(FARC$text, docvars = FARC_meta)
-
-FARC_dfm <- dfm(FARC_corp, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
-
 # run LIWC
 liwc_FARC <- liwcalike(FARC$text, spanish_dict)
 
 # neg and pos emotion
 FARC_neg <- data.frame(cbind(FARC_dates, as.numeric(liwc_FARC$EmoNeg)))
 FARC_neg$FARC_dates <- as.Date(FARC_dates, origin = "1970-01-01")
+
 FARC_pos <- data.frame(cbind(FARC_dates, as.numeric(liwc_FARC$EmoNeg)))
 FARC_pos$FARC_dates <- as.Date(FARC_dates, origin = "1970-01-01")
 
+# use lowess
+lowess_F_neg <- lowess(FARC_dates, y = FARC_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
+FARC_neg$V2 <- lowess_F_neg$y
 
 ####################################################################################
 # do the same for joint communiques
@@ -184,6 +183,12 @@ ellos_major
 
 ###############################################
 # topic model
+
+# create corpus
+FARC_corp <- corpus(FARC$text, docvars = FARC_meta)
+
+FARC_dfm <- dfm(FARC_corp, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
+
 trim_FARC <- quanteda::trim(FARC_dfm, minCount = 30, minDoc = 10)
 TM <- LDA(trim_FARC, 30, method = "Gibbs", control = list(burnin = 3, thin = 30, iter = 30, seed = 1234))
 top10words <- get_terms(TM, k = 10)
