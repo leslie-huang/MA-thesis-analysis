@@ -13,16 +13,15 @@ spanish_dict <- dictionary(file = "../LIWC/Spanish_LIWC2007_Dictionary.dic", for
 # some major dates for plotting
 major_violence <- as.Date(c("7/20/13", "1/16/13", "7/29/14", "11/16/14", "4/15/15", "5/31/15", "6/15/15", "6/22/15"), "%m/%d/%y")
 major_agree <- as.Date(c("8/26/12", "5/26/13", "11/6/13", "5/16/14", "3/7/15", "6/2/15", "9/23/15"), "%m/%d/%y")
-# cf_start <- as.Date(c("11/20/12", "12/15/13", "5/16/14", "12/20/14", "7/20/15"), "%m/%d/%y")
-# cf_end <- as.Date(c("1/20/13", "1/15/14", "5/28/14", "5/22/15", "1/1/16"), "%m/%d/%y")
+cf_start <- as.Date(c("11/20/12", "12/15/13", "5/16/14", "12/20/14", "7/20/15"), "%m/%d/%y")
+cf_end <- as.Date(c("1/20/13", "1/15/14", "5/28/14", "5/22/15", "1/1/16"), "%m/%d/%y")
 
 ceasefires <- data.frame(start = as.Date(c("11/20/12", "12/15/13", "5/16/14", "12/20/14", "7/20/15"), "%m/%d/%y"), end = as.Date(c("1/20/13", "1/15/14", "5/28/14", "5/22/15", "1/1/16"), "%m/%d/%y"))
 
 # dataframe of all dates
 dates <- rbind(data.frame(date = major_violence, group = "major_viol"), data.frame(date = major_agree, group = "major_agree"))
 
-####################################################################################
-# import FARC communiques
+################################################################################## import FARC communiques
 FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE)
 
 # metadata: get date
@@ -43,7 +42,10 @@ FARC_pos$FARC_dates <- as.Date(FARC_dates, origin = "1970-01-01")
 lowess_F_neg <- lowess(FARC_dates, y = FARC_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
 FARC_neg$V2 <- lowess_F_neg$y
 
-####################################################################################
+lowess_F_pos <- lowess(FARC_dates, y = FARC_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
+FARC_pos$V2 <- lowess_F_pos$y
+
+#################################################################################
 # do the same for joint communiques
 joint <- read.csv("../MA-datasets/jointstatements.csv", stringsAsFactors = FALSE)
 # delete some empty documents
@@ -63,7 +65,13 @@ joint_neg$joint_dates <- as.Date(joint_neg$joint_dates, origin = "1970-01-01")
 joint_pos <- as.data.frame(cbind(joint_dates, as.numeric(liwc_joint$EmoPos)))
 joint_pos$joint_dates <- as.Date(joint_neg$joint_dates, origin = "1970-01-01")
 
-####################################################################################
+# use lowess
+lowess_joint_neg <- lowess(joint_dates, y = joint_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
+joint_neg$V2 <- lowess_joint_neg$y
+lowess_joint_pos <- lowess(joint_dates, y = joint_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
+joint_pos$V2 <- lowess_joint_pos$y
+
+#################################################################################
 # get govt statements
 
 govt <- read.csv("govtstatements.csv", stringsAsFactors = FALSE)
@@ -79,7 +87,14 @@ govt_neg$govt_dates <- as.Date(govt_neg$govt_dates, origin = "1970-01-01")
 govt_pos <- as.data.frame(cbind(govt_dates, as.numeric(liwc_govt$EmoPos)))
 govt_pos$govt_dates <- as.Date(govt_pos$govt_dates, origin = "1970-01-01")
 
-####################################################################################
+# use lowess
+lowess_govt_neg <- lowess(govt_dates, y = govt_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(govt_dates)))
+govt_neg$V2 <- lowess_govt_neg$y
+
+lowess_govt_pos <- lowess(govt_dates, y = govt_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(govt_dates)))
+govt_pos$V2 <- lowess_govt_pos$y
+
+#################################################################################
 # let's graph negative emotion
 
 # plot(FARC_dates, FARC_neg$V2, xlim = c(as.Date("2011-01-01", "%Y-%m-%d"), as.Date("2016-06-01", "%Y-%m-%d")))
@@ -114,7 +129,7 @@ neg_cf <- base_neg +
   geom_rect(aes(xmin=cf_start[4], xmax=cf_end[4], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.3) + 
   geom_rect(aes(xmin=cf_start[5], xmax=cf_end[5], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.3)
 
-####################################################################################
+#################################################################################
 # Pos emotion: base graph
 base_pos = ggplot() +
   geom_line(data = FARC_pos, aes(x = FARC_dates, y = V2, color = "FARC statement")) +
@@ -145,7 +160,7 @@ pos_cf <- base_pos +
   geom_rect(aes(xmin=cf_start[4], xmax=cf_end[4], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.3) + 
   geom_rect(aes(xmin=cf_start[5], xmax=cf_end[5], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.3)
 
-####################################################################################
+#################################################################################
 # let's graph 3rd person plural pronouns from FARC -- indicator of extremism
 FARC_ellos <- data.frame(ell = as.numeric(liwc_FARC$Ellos), date = FARC_dates)
 joint_ellos <- data.frame(ell = as.numeric(liwc_joint$Ellos), date = joint_dates)
