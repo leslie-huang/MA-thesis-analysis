@@ -4,7 +4,7 @@
 rm(list=ls())
 setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "quantedaData", "ggplot2", "stringr", "LIWCalike", "topicmodels", "lda", "stm", "LDAvis", "austin")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "quantedaData", "ggplot2", "stringr", "LIWCalike", "topicmodels", "lda", "stm", "LDAvis", "austin", "forecast", "lmtest", "strucchange" "vars", "tseries", "urca")
 lapply(libraries, require, character.only=TRUE)
 
 # get LIWC dict
@@ -39,11 +39,15 @@ FARC_pos <- data.frame(cbind(FARC_dates, as.numeric(liwc_FARC$EmoNeg)))
 FARC_pos$FARC_dates <- as.Date(FARC_dates, origin = "1970-01-01")
 
 # use lowess
-lowess_F_neg <- lowess(FARC_dates, y = FARC_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
-FARC_neg$V2 <- lowess_F_neg$y
+# lowess_F_neg <- lowess(FARC_dates, y = FARC_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
+# 
+# lowess_F_pos <- lowess(FARC_dates, y = FARC_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
 
-lowess_F_pos <- lowess(FARC_dates, y = FARC_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
-FARC_pos$V2 <- lowess_F_pos$y
+FARC_neg$V2 <- loess_F_neg$y
+FARC_pos$V2 <- loess_F_pos$y
+
+loess_F_neg <- loess(FARC_neg$V2 ~ as.numeric(FARC_dates), control=loess.control(surface="direct"))
+loess_F_pos <- loess(FARC_pos$V2 ~ as.numeric(FARC_dates), control=loess.control(surface="direct"))
 
 #################################################################################
 # do the same for joint communiques
@@ -66,10 +70,14 @@ joint_pos <- as.data.frame(cbind(joint_dates, as.numeric(liwc_joint$EmoPos)))
 joint_pos$joint_dates <- as.Date(joint_neg$joint_dates, origin = "1970-01-01")
 
 # use lowess
-lowess_joint_neg <- lowess(joint_dates, y = joint_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
-joint_neg$V2 <- lowess_joint_neg$y
-lowess_joint_pos <- lowess(joint_dates, y = joint_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
-joint_pos$V2 <- lowess_joint_pos$y
+# lowess_joint_neg <- lowess(joint_dates, y = joint_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
+# lowess_joint_pos <- lowess(joint_dates, y = joint_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
+
+joint_neg$V2 <- loess_joint_neg$y
+joint_pos$V2 <- loess_joint_pos$y
+
+loess_joint_neg <- loess(joint_neg$V2 ~ as.numeric(joint_dates), control=loess.control(surface="direct"))
+loess_joint_pos <- loess(joint_pos$V2 ~ as.numeric(joint_dates), control=loess.control(surface="direct"))
 
 #################################################################################
 # get govt statements
@@ -88,11 +96,15 @@ govt_pos <- as.data.frame(cbind(govt_dates, as.numeric(liwc_govt$EmoPos)))
 govt_pos$govt_dates <- as.Date(govt_pos$govt_dates, origin = "1970-01-01")
 
 # use lowess
-lowess_govt_neg <- lowess(govt_dates, y = govt_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(govt_dates)))
-govt_neg$V2 <- lowess_govt_neg$y
+# lowess_govt_neg <- lowess(govt_dates, y = govt_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(govt_dates)))
+# 
+# lowess_govt_pos <- lowess(govt_dates, y = govt_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(govt_dates)))
 
-lowess_govt_pos <- lowess(govt_dates, y = govt_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(govt_dates)))
-govt_pos$V2 <- lowess_govt_pos$y
+govt_neg$V2 <- loess_govt_neg$y
+govt_pos$V2 <- loess_govt_pos$y
+
+loess_govt_neg <- loess(govt_neg$V2 ~ as.numeric(govt_dates), control=loess.control(surface="direct"))
+loess_govt_pos <- loess(govt_pos$V2 ~ as.numeric(govt_dates), control=loess.control(surface="direct"))
 
 #################################################################################
 # let's graph negative emotion
@@ -196,7 +208,51 @@ pos_cf
 pos_major
 ellos_major
 
-###############################################
+#################################################################################
+#################################################################################
+# Time Series Analysis: Negative Emotion
+
+# looking at the base_neg graph, all 3 sets of data (F, G, and J) appear non-stationary
+
+# let's impute some values using loess
+# first, gather all the dates we need
+all_dates <- as.numeric(c(joint_dates, FARC_dates, govt_dates))
+
+# predict data using loess
+pred_F_neg <- predict(loess_F_neg, newdata = all_dates)
+pred_govt_neg <- predict(loess_govt_neg, newdata = all_dates)
+pred_joint_neg <- predict(loess_joint_neg, newdata = all_dates)
+
+# linear model now
+neg_lm <- lm(pred_joint_neg ~ pred_F_neg + pred_govt_neg)
+
+# let's run the augmented Dickey-Fuller test anyway, to confirm non-stationarity
+
+adf.test(pred_F_neg)
+adf.test(pred_govt_neg)
+adf.test(pred_joint_neg)
+
+# joint and govt have p-vals < 0.01. This suggests unit root stationarity. But from the base_neg graph, the data is obviously not stationary
+
+# so let's try ADF with trends and drift
+
+# we already know FARC is non stationary
+summary(ur.df(y = pred_F_neg, type = "drift", lags = 1))
+summary(ur.df(y = pred_F_neg, type = "trend", lags = 1))
+summary(ur.df(y = pred_F_neg, type = "none", lags = 1))
+
+summary(ur.df(y = pred_govt_neg, type = "drift", lags = 1))
+summary(ur.df(y = pred_govt_neg, type = "trend", lags = 1))
+summary(ur.df(y = pred_govt_neg, type = "none", lags = 1))
+
+summary(ur.df(y = pred_joint_neg, type = "drift", lags = 1))
+summary(ur.df(y = pred_joint_neg, type = "trend", lags = 1))
+summary(ur.df(y = pred_joint_neg, type = "none", lags = 1))
+
+# also, let's run the KPSS test
+
+#################################################################################
+#################################################################################
 # topic model
 
 # create corpus
