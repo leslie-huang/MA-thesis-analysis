@@ -4,7 +4,9 @@
 rm(list=ls())
 setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "quantedaData", "ggplot2", "stringr", "LIWCalike", "topicmodels", "lda", "stm", "LDAvis", "austin", "forecast", "lmtest", "strucchange" "vars", "tseries", "urca")
+set.seed(1234)
+
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "quantedaData", "ggplot2", "stringr", "LIWCalike", "topicmodels", "lda", "stm", "LDAvis", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca")
 lapply(libraries, require, character.only=TRUE)
 
 # get LIWC dict
@@ -25,7 +27,7 @@ dates <- rbind(data.frame(date = major_violence, group = "major_viol"), data.fra
 FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE)
 
 # metadata: get date
-FARC_meta <- select(FARC, date)
+FARC_meta <- dplyr::select(FARC, date)
 FARC_dates <- as.Date(FARC_meta[[1]], "%Y-%m-%d")
 
 # run LIWC
@@ -43,12 +45,11 @@ FARC_pos$FARC_dates <- as.Date(FARC_dates, origin = "1970-01-01")
 # 
 # lowess_F_pos <- lowess(FARC_dates, y = FARC_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
 
-FARC_neg$V2 <- loess_F_neg$y
-FARC_pos$V2 <- loess_F_pos$y
-
 loess_F_neg <- loess(FARC_neg$V2 ~ as.numeric(FARC_dates), control=loess.control(surface="direct"))
 loess_F_pos <- loess(FARC_pos$V2 ~ as.numeric(FARC_dates), control=loess.control(surface="direct"))
 
+FARC_neg$V2 <- loess_F_neg$y
+FARC_pos$V2 <- loess_F_pos$y
 #################################################################################
 # do the same for joint communiques
 joint <- read.csv("../MA-datasets/jointstatements.csv", stringsAsFactors = FALSE)
@@ -57,7 +58,7 @@ joint <- filter(joint, text != "")
 joint <- slice(joint, -19)
 
 # get metadata: dates
-joint_meta <- select(joint, date)
+joint_meta <- dplyr::select(joint, date)
 joint_dates <- as.Date(joint_meta[[1]], "%Y-%m-%d")
 
 # run LIWC
@@ -73,18 +74,18 @@ joint_pos$joint_dates <- as.Date(joint_neg$joint_dates, origin = "1970-01-01")
 # lowess_joint_neg <- lowess(joint_dates, y = joint_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
 # lowess_joint_pos <- lowess(joint_dates, y = joint_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
 
-joint_neg$V2 <- loess_joint_neg$y
-joint_pos$V2 <- loess_joint_pos$y
-
 loess_joint_neg <- loess(joint_neg$V2 ~ as.numeric(joint_dates), control=loess.control(surface="direct"))
 loess_joint_pos <- loess(joint_pos$V2 ~ as.numeric(joint_dates), control=loess.control(surface="direct"))
+
+joint_neg$V2 <- loess_joint_neg$y
+joint_pos$V2 <- loess_joint_pos$y
 
 #################################################################################
 # get govt statements
 
 govt <- read.csv("govtstatements.csv", stringsAsFactors = FALSE)
 
-govt_meta <- select(govt, date)
+govt_meta <- dplyr::select(govt, date)
 govt_dates <- as.Date(govt_meta[[1]], "%Y-%m-%d")
 
 # run LIWC
@@ -100,11 +101,11 @@ govt_pos$govt_dates <- as.Date(govt_pos$govt_dates, origin = "1970-01-01")
 # 
 # lowess_govt_pos <- lowess(govt_dates, y = govt_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(govt_dates)))
 
-govt_neg$V2 <- loess_govt_neg$y
-govt_pos$V2 <- loess_govt_pos$y
-
 loess_govt_neg <- loess(govt_neg$V2 ~ as.numeric(govt_dates), control=loess.control(surface="direct"))
 loess_govt_pos <- loess(govt_pos$V2 ~ as.numeric(govt_dates), control=loess.control(surface="direct"))
+
+govt_neg$V2 <- loess_govt_neg$y
+govt_pos$V2 <- loess_govt_pos$y
 
 #################################################################################
 # let's graph negative emotion
@@ -216,7 +217,7 @@ ellos_major
 
 # let's impute some values using loess
 # first, gather all the dates we need
-all_dates <- as.numeric(c(joint_dates, FARC_dates, govt_dates))
+all_dates <- unique(sort(as.numeric(c(joint_dates, FARC_dates, govt_dates))))
 
 # predict data using loess
 pred_F_neg <- predict(loess_F_neg, newdata = all_dates)
@@ -226,30 +227,41 @@ pred_joint_neg <- predict(loess_joint_neg, newdata = all_dates)
 # linear model now
 neg_lm <- lm(pred_joint_neg ~ pred_F_neg + pred_govt_neg)
 
-# let's run the augmented Dickey-Fuller test anyway, to confirm non-stationarity
+# let's run the augmented Dickey-Fuller test
 
-adf.test(pred_F_neg)
-adf.test(pred_govt_neg)
-adf.test(pred_joint_neg)
+adf.test(pred_F_neg) # DF = -1.47, p = 0.8
+adf.test(pred_govt_neg) # DF = -4.66,  p < 0.01
+adf.test(pred_joint_neg) # DF = 0.73, p > 0.99
 
-# joint and govt have p-vals < 0.01. This suggests unit root stationarity. But from the base_neg graph, the data is obviously not stationary
+# p-vals don't look great, but no unit roots 
 
-# so let's try ADF with trends and drift
+# now let's try ADF with trends and drift
 
-# we already know FARC is non stationary
-summary(ur.df(y = pred_F_neg, type = "drift", lags = 1))
-summary(ur.df(y = pred_F_neg, type = "trend", lags = 1))
-summary(ur.df(y = pred_F_neg, type = "none", lags = 1))
+summary(ur.df(y = pred_F_neg, type = "trend", lags = 1)) # can't reject null
+summary(ur.df(y = pred_F_neg, type = "drift", lags = 1)) # can't reject null
+summary(ur.df(y = pred_F_neg, type = "none", lags = 1)) # there is a unit root
 
+summary(ur.df(y = pred_govt_neg, type = "trend", lags = 1)) # there is trend and drift
 summary(ur.df(y = pred_govt_neg, type = "drift", lags = 1))
-summary(ur.df(y = pred_govt_neg, type = "trend", lags = 1))
 summary(ur.df(y = pred_govt_neg, type = "none", lags = 1))
 
-summary(ur.df(y = pred_joint_neg, type = "drift", lags = 1))
-summary(ur.df(y = pred_joint_neg, type = "trend", lags = 1))
-summary(ur.df(y = pred_joint_neg, type = "none", lags = 1))
+summary(ur.df(y = pred_joint_neg, type = "trend", lags = 1)) # there is time trend
+summary(ur.df(y = pred_joint_neg, type = "drift", lags = 1)) # there is drift
+summary(ur.df(y = pred_joint_neg, type = "none", lags = 1)) # no unit root
 
 # also, let's run the KPSS test
+ur.kpss(pred_F_neg)
+
+kpss.test(pred_F_neg, null = "T") # not trend stationary, p < 0.01
+kpss.test(pred_govt_neg, null = "T") # trend stationary, p = 0.05
+kpss.test(pred_joint_neg, null = "T") # trend stationary, p = 0.018
+
+# so we have non stationary time series (probably). Let's take the first differences
+d_F_neg <- diff(pred_F_neg)
+d_govt_neg <- diff(pred_govt_neg)
+d_joint_neg <- diff(pred_joint_neg)
+
+# look for structural breaks
 
 #################################################################################
 #################################################################################
