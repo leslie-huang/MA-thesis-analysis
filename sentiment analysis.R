@@ -107,6 +107,31 @@ loess_govt_pos <- loess(govt_pos$V2 ~ as.numeric(govt_dates), control=loess.cont
 govt_neg$V2 <- loess_govt_neg$y
 govt_pos$V2 <- loess_govt_pos$y
 
+
+#################################################################################
+#################################################################################
+# topic model
+
+# create corpus
+FARC_corp <- corpus(FARC$text, docvars = FARC_meta)
+
+FARC_dfm <- dfm(FARC_corp, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
+
+trim_FARC <- quanteda::trim(FARC_dfm, minCount = 30, minDoc = 10)
+TM <- LDA(trim_FARC, 30, method = "Gibbs", control = list(burnin = 3, thin = 30, iter = 30, seed = 1234))
+top10words <- get_terms(TM, k = 10)
+doc_topics <- TM@gamma
+
+LDApost <- posterior(TM)
+
+jsonLDA <- createJSON(phi = LDApost$terms, 
+                      theta = LDApost$topics, 
+                      doc.length = ntoken(trim_FARC), 
+                      vocab = features(trim_FARC), 
+                      term.frequency = colSums(trim_FARC))
+serVis(jsonLDA, out.dir = "visCollLDA", open.browser = TRUE)
+
+#################################################################################
 #################################################################################
 # let's graph negative emotion
 
@@ -236,6 +261,7 @@ adf.test(pred_joint_neg) # DF = 0.73, p > 0.99
 # p-vals don't look great, but no unit roots 
 
 # now let's try ADF with trends and drift
+# Trend: tau: gamma=1 phi3: gamma = a2 = 0 phi2: a0 = gamma = a2 = 0
 
 summary(ur.df(y = pred_F_neg, type = "trend", lags = 1)) # can't reject null
 summary(ur.df(y = pred_F_neg, type = "drift", lags = 1)) # can't reject null
@@ -256,32 +282,48 @@ kpss.test(pred_F_neg, null = "T") # not trend stationary, p < 0.01
 kpss.test(pred_govt_neg, null = "T") # trend stationary, p = 0.05
 kpss.test(pred_joint_neg, null = "T") # trend stationary, p = 0.018
 
-# so we have non stationary time series (probably). Let's take the first differences
-d_F_neg <- diff(pred_F_neg)
-d_govt_neg <- diff(pred_govt_neg)
-d_joint_neg <- diff(pred_joint_neg)
+# so we have non stationary time series (probably). how many times do we have to difference to get stationarity?
+ndiffs(pred_F_neg) # 1
+ndiffs(pred_govt_neg) # 0!
+ndiffs(pred_joint_neg) # 0!
 
+# hmmm. This suggests govt and joint data are already stationary
+
+# Let's take the first differences to find out the max order of integration
+d_F_neg <- diff(pred_F_neg, 1)
+d_govt_neg <- diff(pred_govt_neg, 1)
+d_joint_neg <- diff(pred_joint_neg, 1)
+
+kpss.test(d_F_neg, null = "L") 
+kpss.test(d_govt_neg, null = "L")
+kpss.test(d_joint_neg, null = "L")
+# all results are p > 0.1: can't reject null hypothesis of level stationarity
+# so the maximum order of integration is likely I(1) for FARC
+
+#################################################################################
 # look for structural breaks
+bpts <- breakpoints(pred_F_neg ~ 1)
+breakpoints(pred_govt_neg ~ 1) # none found
+breakpoints(pred_joint_neg ~ 1) # none found
+
+break_dates <- vector(mode = "numeric", length = length(bpts$breakpoints))
+
+for (i in 1:length(bpts$breakpoints)) {
+  break_dates[i] <- all_dates[bpts$breakpoints[i]]
+}
+
+as.Date(break_dates)
+# all dates occur soon after major violence or agreement or ceasefire
 
 #################################################################################
+# Granger causality
+
 #################################################################################
-# topic model
+# VAR
 
-# create corpus
-FARC_corp <- corpus(FARC$text, docvars = FARC_meta)
+# let's get our data into a frame
+pred_negs <- data.frame(pred_joint_neg, pred_F_neg)
 
-FARC_dfm <- dfm(FARC_corp, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
+VAR(pred_negs)
 
-trim_FARC <- quanteda::trim(FARC_dfm, minCount = 30, minDoc = 10)
-TM <- LDA(trim_FARC, 30, method = "Gibbs", control = list(burnin = 3, thin = 30, iter = 30, seed = 1234))
-top10words <- get_terms(TM, k = 10)
-doc_topics <- TM@gamma
 
-LDApost <- posterior(TM)
-
-jsonLDA <- createJSON(phi = LDApost$terms, 
-                      theta = LDApost$topics, 
-                      doc.length = ntoken(trim_FARC), 
-                      vocab = features(trim_FARC), 
-                      term.frequency = colSums(trim_FARC))
-serVis(jsonLDA, out.dir = "visCollLDA", open.browser = TRUE)
