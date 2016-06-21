@@ -20,36 +20,44 @@ cf_end <- as.Date(c("1/20/13", "1/15/14", "5/28/14", "5/22/15", "1/1/16"), "%m/%
 
 ceasefires <- data.frame(start = as.Date(c("11/20/12", "12/15/13", "5/16/14", "12/20/14", "7/20/15"), "%m/%d/%y"), end = as.Date(c("1/20/13", "1/15/14", "5/28/14", "5/22/15", "1/1/16"), "%m/%d/%y"))
 
-# dataframe of all dates
+# df of all dates
 dates <- rbind(data.frame(date = major_violence, group = "major_viol"), data.frame(date = major_agree, group = "major_agree"))
 
 ################################################################################## import FARC communiques
 FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE)
 
-# metadata: get date
-FARC_meta <- dplyr::select(FARC, date)
-FARC_dates <- as.Date(FARC_meta[[1]], "%Y-%m-%d")
+# Function to process a CSV file with LIWC and extract measures of sentiment of interest. Takes two parameter: a dataframe of text
+liwc_extractor <- function(df) {
+  # run liwc
+  liwc_results <- liwcalike(df$text, spanish_dict)
+  
+  # get date metadata
+  df_dates <- dplyr::select(df, date)
+  date <- as.Date(df_dates[[1]], "%Y-%m-%d")
 
-# run LIWC
-liwc_FARC <- liwcalike(FARC$text, spanish_dict)
+  # extract the measures we want, and lowess them
+  neg <- as.numeric(liwc_results$EmoNeg)
+  pos <- as.numeric(liwc_results$EmoPos)
+  pp3 <- as.numeric(liwc_results$Ellos)
+  death <- as.numeric(liwc_results$Muerte)
+  
+  # loess them
+  neg <- loess(neg ~ as.numeric(date), control=loess.control(surface="direct"))$y
+  pos <- loess(pos ~ as.numeric(date), control=loess.control(surface="direct"))$y
+  pp3 <- loess(pp3 ~ as.numeric(date), control=loess.control(surface="direct"))$y
+  death <- loess(death ~ as.numeric(date), control=loess.control(surface="direct"))$y
+  
+  # or lowess
+  # # neg <- lowess(dates, y = neg, f = 2/3, iter = 3, delta = 0.01 * diff(range(dates)))
+  
+  # make the dataframe
+  results_df <- data.frame(cbind(date, neg, pos, pp3, death))
+  results_df$date <- as.Date(date, "%Y-%m-%d")
+  return(results_df)
+}
 
-# neg and pos emotion
-FARC_neg <- data.frame(cbind(FARC_dates, as.numeric(liwc_FARC$EmoNeg)))
-FARC_neg$FARC_dates <- as.Date(FARC_dates, origin = "1970-01-01")
+FARC_results <- liwc_extractor(FARC)
 
-FARC_pos <- data.frame(cbind(FARC_dates, as.numeric(liwc_FARC$EmoNeg)))
-FARC_pos$FARC_dates <- as.Date(FARC_dates, origin = "1970-01-01")
-
-# use lowess
-# lowess_F_neg <- lowess(FARC_dates, y = FARC_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
-# 
-# lowess_F_pos <- lowess(FARC_dates, y = FARC_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(FARC_dates)))
-
-loess_F_neg <- loess(FARC_neg$V2 ~ as.numeric(FARC_dates), control=loess.control(surface="direct"))
-loess_F_pos <- loess(FARC_pos$V2 ~ as.numeric(FARC_dates), control=loess.control(surface="direct"))
-
-FARC_neg$V2 <- loess_F_neg$y
-FARC_pos$V2 <- loess_F_pos$y
 #################################################################################
 # do the same for joint communiques
 joint <- read.csv("../MA-datasets/jointstatements.csv", stringsAsFactors = FALSE)
@@ -57,63 +65,21 @@ joint <- read.csv("../MA-datasets/jointstatements.csv", stringsAsFactors = FALSE
 joint <- filter(joint, text != "")
 joint <- slice(joint, -19)
 
-# get metadata: dates
-joint_meta <- dplyr::select(joint, date)
-joint_dates <- as.Date(joint_meta[[1]], "%Y-%m-%d")
-
-# run LIWC
-liwc_joint <- liwcalike(joint$text, spanish_dict)
-
-# get neg and pos emotion
-joint_neg <- as.data.frame(cbind(joint_dates, as.numeric(liwc_joint$EmoNeg)))
-joint_neg$joint_dates <- as.Date(joint_neg$joint_dates, origin = "1970-01-01")
-joint_pos <- as.data.frame(cbind(joint_dates, as.numeric(liwc_joint$EmoPos)))
-joint_pos$joint_dates <- as.Date(joint_neg$joint_dates, origin = "1970-01-01")
-
-# use lowess
-# lowess_joint_neg <- lowess(joint_dates, y = joint_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
-# lowess_joint_pos <- lowess(joint_dates, y = joint_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(joint_dates)))
-
-loess_joint_neg <- loess(joint_neg$V2 ~ as.numeric(joint_dates), control=loess.control(surface="direct"))
-loess_joint_pos <- loess(joint_pos$V2 ~ as.numeric(joint_dates), control=loess.control(surface="direct"))
-
-joint_neg$V2 <- loess_joint_neg$y
-joint_pos$V2 <- loess_joint_pos$y
+joint_results <- liwc_extractor(joint)
 
 #################################################################################
-# get govt statements
+# and the same for govt statements
 
 govt <- read.csv("govtstatements.csv", stringsAsFactors = FALSE)
 
-govt_meta <- dplyr::select(govt, date)
-govt_dates <- as.Date(govt_meta[[1]], "%Y-%m-%d")
-
-# run LIWC
-liwc_govt <- liwcalike(govt$text, spanish_dict)
-
-govt_neg <- as.data.frame(cbind(govt_dates, as.numeric(liwc_govt$EmoNeg)))
-govt_neg$govt_dates <- as.Date(govt_neg$govt_dates, origin = "1970-01-01")
-govt_pos <- as.data.frame(cbind(govt_dates, as.numeric(liwc_govt$EmoPos)))
-govt_pos$govt_dates <- as.Date(govt_pos$govt_dates, origin = "1970-01-01")
-
-# use lowess
-# lowess_govt_neg <- lowess(govt_dates, y = govt_neg$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(govt_dates)))
-# 
-# lowess_govt_pos <- lowess(govt_dates, y = govt_pos$V2, f = 2/3, iter = 3, delta = 0.01 * diff(range(govt_dates)))
-
-loess_govt_neg <- loess(govt_neg$V2 ~ as.numeric(govt_dates), control=loess.control(surface="direct"))
-loess_govt_pos <- loess(govt_pos$V2 ~ as.numeric(govt_dates), control=loess.control(surface="direct"))
-
-govt_neg$V2 <- loess_govt_neg$y
-govt_pos$V2 <- loess_govt_pos$y
-
+govt_results <- liwc_extractor(govt)
 
 #################################################################################
 #################################################################################
 # topic model
 
 # create corpus
-FARC_corp <- corpus(FARC$text, docvars = FARC_meta)
+FARC_corp <- corpus(FARC$text, docvars = FARC_results$dates)
 
 FARC_dfm <- dfm(FARC_corp, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
 
@@ -135,15 +101,13 @@ serVis(jsonLDA, out.dir = "visCollLDA", open.browser = TRUE)
 #################################################################################
 # let's graph negative emotion
 
-# plot(FARC_dates, FARC_neg$V2, xlim = c(as.Date("2011-01-01", "%Y-%m-%d"), as.Date("2016-06-01", "%Y-%m-%d")))
-
 # Neg emotion: base graph
 base_neg = ggplot() +
-  geom_line(data = FARC_neg, aes(x = FARC_dates, y = V2, color = "FARC statement")) +
+  geom_line(data = FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "FARC statement")) +
   geom_jitter() +
 #  geom_point(data = joint_neg, aes(x = joint_dates, y = V2, color = "Joint statement")) +
-  geom_line(data = joint_neg, aes(x = joint_dates, y = V2, color = "Joint statement")) +
-  geom_line(data = govt_neg, aes(x = govt_dates, y = V2, color = "Govt statement")) +
+  geom_line(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Joint statement")) +
+  geom_line(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Govt statement")) +
   labs(
     x = "Date",
     y = "Percent Neg Emotion",
@@ -170,11 +134,10 @@ neg_cf <- base_neg +
 #################################################################################
 # Pos emotion: base graph
 base_pos = ggplot() +
-  geom_line(data = FARC_pos, aes(x = FARC_dates, y = V2, color = "FARC statement")) +
+  geom_line(data = FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "FARC statement")) +
   geom_jitter() +
-#  geom_point(data = joint_pos, aes(x = joint_dates, y = V2, color = "Joint statement")) +
-  geom_line(data = joint_pos, aes(x = joint_dates, y = V2, color = "Joint statement")) +
-  geom_line(data = govt_pos, aes(x = govt_dates, y = V2, color = "Govt statement")) +
+  geom_line(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Joint statement")) +
+  geom_line(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Govt statement")) +
   labs(
     x = "Date",
     y = "Percent Positive Emotion",
@@ -200,15 +163,11 @@ pos_cf <- base_pos +
 
 #################################################################################
 # let's graph 3rd person plural pronouns from FARC -- indicator of extremism
-FARC_ellos <- data.frame(ell = as.numeric(liwc_FARC$Ellos), date = FARC_dates)
-joint_ellos <- data.frame(ell = as.numeric(liwc_joint$Ellos), date = joint_dates)
-
 base_ellos = ggplot() +
-  geom_line(data = FARC_ellos, aes(x = date, y = ell, color = "FARC statement")) +
+  geom_line(data = FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "FARC statement")) +
   geom_jitter() +
-  # geom_point(data = joint_neg, aes(x = joint_dates, y = V2, color = "Joint statement")) +
-  geom_line(data = joint_ellos, aes(x = date, y = ell, color = "Joint statement")) +
-  # geom_line(data = govt_neg, aes(x = govt_dates, y = V2, color = "Govt statement")) +
+  geom_line(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Joint statement")) +
+  geom_line(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Govt statement")) +
   labs(
     x = "Date",
     y = "Percent 3rd Person Pl Pronoun",
@@ -236,20 +195,68 @@ ellos_major
 
 #################################################################################
 #################################################################################
+# Find breakpoints
+
+# Function to find breakpoints for each column of a dataframe. Takes one argument: a dataframe whose first column is the date
+break_finder <- function(df) {
+  # make a list to contain the dates
+  break_obs <- vector("list", length(df) - 1)
+  
+  # get breakpoints
+  for (i in 2:length(df)) {
+   break_obs[i - 1] <- (list(breakpoints(df[[i]] ~ 1)$breakpoints))
+  }
+  return(break_obs)
+}
+
+# Function to convert break obs to dates. Takes two arguments: a list of lists (shudder), and an original df
+get_breakdate <- function(listoflists, df) {
+  
+  # for each list of break obs
+  for (i in 1:length(listoflists)) {
+    # if it's not empty
+    if (!is.na(listoflists[i])) {
+      
+      # get the observations
+      unlisted_obs <- unlist(listoflists[i])
+      dates_list <- vector("list", 0)
+      
+      # and then for each of the observations
+      for (j in 1:length(unlisted_obs)) {
+        # get the date from the dataframe and add it to the list
+        current_date <- df$date[unlisted_obs[j]]
+        dates_list <- append(dates_list, current_date)
+      }
+      listoflists[i] <- list(dates_list)
+    }
+  }
+  
+  return(listoflists)
+}
+
+FARC_breaks <- get_breakdate(break_finder(FARC_results), FARC_results)
+govt_breaks <- get_breakdate(break_finder(govt_results), govt_results)
+joint_breaks <- get_breakdate(break_finder(joint_results), joint_results)
+
+#################################################################################
+#################################################################################
+
+#################################################################################
+#################################################################################
 # Time Series Analysis: Negative Emotion
 
 # looking at the base_neg graph, all 3 sets of data (F, G, and J) appear non-stationary
 
 # let's impute some values using loess
 # first, gather all the dates we need
-all_dates <- unique(sort(as.numeric(c(joint_dates, FARC_dates, govt_dates))))
+all_dates <- unique(sort(as.numeric(c(FARC_results$date, joint_results$date, govt_results$date))))
 
 # predict data using loess
 pred_F_neg <- predict(loess_F_neg, newdata = all_dates)
 pred_govt_neg <- predict(loess_govt_neg, newdata = all_dates)
 pred_joint_neg <- predict(loess_joint_neg, newdata = all_dates)
 
-# linear model now
+# linear model
 neg_lm <- lm(pred_joint_neg ~ pred_F_neg + pred_govt_neg)
 
 # let's run the augmented Dickey-Fuller test
@@ -301,29 +308,20 @@ kpss.test(d_joint_neg, null = "L")
 # so the maximum order of integration is likely I(1) for FARC
 
 #################################################################################
-# look for structural breaks
-bpts <- breakpoints(pred_F_neg ~ 1)
-breakpoints(pred_govt_neg ~ 1) # none found
-breakpoints(pred_joint_neg ~ 1) # none found
-
-break_dates <- vector(mode = "numeric", length = length(bpts$breakpoints))
-
-for (i in 1:length(bpts$breakpoints)) {
-  break_dates[i] <- all_dates[bpts$breakpoints[i]]
-}
-
-as.Date(break_dates)
-# all dates occur soon after major violence or agreement or ceasefire
-
-#################################################################################
 # Granger causality
 
+grangertest(pred_joint_neg ~ pred_F_neg, order = 2)
+grangertest(pred_F_neg ~ pred_joint_neg, order = 2)
+
+
+grangertest(d_F_neg ~ d_joint_neg, order = 2)
+
 #################################################################################
-# VAR
+# Fitting a VAR model
 
 # let's get our data into a frame
-pred_negs <- data.frame(pred_joint_neg, pred_F_neg)
+predicted_negs <- data.frame(all_dates, pred_joint_neg, pred_F_neg, pred_govt_neg)
 
-VAR(pred_negs)
-
+jf_VAR <- VAR(predicted_negs[,2:3], p = 1, type = "both")
+serial.test(jf_VAR, lags.pt = 5) # looks like this model is plagued by serial correlation
 
