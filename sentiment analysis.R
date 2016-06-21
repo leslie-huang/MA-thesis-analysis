@@ -26,7 +26,7 @@ dates <- rbind(data.frame(date = major_violence, group = "major_viol"), data.fra
 ################################################################################## import FARC communiques
 FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE)
 
-# Function to process a CSV file with LIWC and extract measures of sentiment of interest. Takes two parameter: a dataframe of text
+# Function to get raw LIWC measures
 liwc_extractor <- function(df) {
   # run liwc
   liwc_results <- liwcalike(df$text, spanish_dict)
@@ -34,29 +34,42 @@ liwc_extractor <- function(df) {
   # get date metadata
   df_dates <- dplyr::select(df, date)
   date <- as.Date(df_dates[[1]], "%Y-%m-%d")
-
+  
   # extract the measures we want, and lowess them
   neg <- as.numeric(liwc_results$EmoNeg)
   pos <- as.numeric(liwc_results$EmoPos)
   pp3 <- as.numeric(liwc_results$Ellos)
   death <- as.numeric(liwc_results$Muerte)
-  
-  # loess them
-  neg <- loess(neg ~ as.numeric(date), control=loess.control(surface="direct"))$y
-  pos <- loess(pos ~ as.numeric(date), control=loess.control(surface="direct"))$y
-  pp3 <- loess(pp3 ~ as.numeric(date), control=loess.control(surface="direct"))$y
-  death <- loess(death ~ as.numeric(date), control=loess.control(surface="direct"))$y
-  
-  # or lowess
-  # # neg <- lowess(dates, y = neg, f = 2/3, iter = 3, delta = 0.01 * diff(range(dates)))
-  
+
   # make the dataframe
   results_df <- data.frame(cbind(date, neg, pos, pp3, death))
   results_df$date <- as.Date(date, "%Y-%m-%d")
   return(results_df)
 }
 
-FARC_results <- liwc_extractor(FARC)
+# Function to take a df of raw LIWC values and return loessed values
+liwc_loess <- function(liwc_results) {
+
+  neg <- loess(liwc_results$neg ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
+  pos <- loess(liwc_results$pos ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
+  pp3 <- loess(liwc_results$pp3 ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
+  death <- loess(liwc_results$death ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
+  
+  # or lowess
+  # # neg <- lowess(dates, y = neg, f = 2/3, iter = 3, delta = 0.01 * diff(range(dates)))
+  
+  # make the dataframe
+  date <- as.Date(liwc_results$date, origin = "1970-01-01")
+  results_df <- data.frame(cbind(date, neg, pos, pp3, death))
+  results_df$date <- date
+  return(results_df)
+}
+
+# raw LIWC measures
+FARC_raw <- liwc_extractor(FARC)
+
+# loess it
+FARC_results <- liwc_loess(FARC_raw)
 
 #################################################################################
 # do the same for joint communiques
@@ -65,14 +78,16 @@ joint <- read.csv("../MA-datasets/jointstatements.csv", stringsAsFactors = FALSE
 joint <- filter(joint, text != "")
 joint <- slice(joint, -19)
 
-joint_results <- liwc_extractor(joint)
+joint_raw <- liwc_extractor(joint)
+joint_results <- liwc_loess(joint_raw)
 
 #################################################################################
 # and the same for govt statements
 
 govt <- read.csv("govtstatements.csv", stringsAsFactors = FALSE)
 
-govt_results <- liwc_extractor(govt)
+govt_raw <- liwc_extractor(govt)
+govt_results <- liwc_loess(govt_raw)
 
 #################################################################################
 #################################################################################
@@ -240,6 +255,43 @@ joint_breaks <- get_breakdate(break_finder(joint_results), joint_results)
 
 #################################################################################
 #################################################################################
+# Loess out some new data
+
+all_dates <- unique(sort(as.numeric(c(FARC_results$date, joint_results$date, govt_results$date))))
+
+# function that takes a df of raw points, estimates loess, and fills out new data with it
+loess_filler <- function(liwc_results) {
+  date <- all_dates
+  neg <- loess(liwc_results$neg ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
+  pos <- loess(liwc_results$pos ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
+  pp3 <- loess(liwc_results$pp3 ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
+  death <- loess(liwc_results$death ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
+  
+  pred_neg <- predict(neg, newdata = date)
+  pred_pos <- predict(pos, newdata = date)
+  pred_pp3 <- predict(pp3, newdata = date)
+  pred_death <- predict(death, newdata = date)
+  
+  # make the dataframe
+  results_df <- data.frame(cbind(date, pred_neg, pred_pos, pred_pp3, pred_death))
+  results_df$date <- as.Date(date, origin = "1970-01-01")
+  return(results_df)
+}
+
+# predict missing values for our data
+FARC_predicted <- loess_filler(FARC_raw)
+govt_predicted <- loess_filler(govt_raw)
+joint_predicted <- loess_filler(joint_raw)
+
+# where are the structural changes in these data?
+pred_FARC_breaks <- get_breakdate(break_finder(FARC_predicted), FARC_predicted)
+pred_govt_breaks <- get_breakdate(break_finder(govt_predicted), govt_predicted)
+pred_joint_breaks <- get_breakdate(break_finder(joint_predicted), joint_predicted)
+
+
+
+
+
 
 #################################################################################
 #################################################################################
@@ -247,17 +299,8 @@ joint_breaks <- get_breakdate(break_finder(joint_results), joint_results)
 
 # looking at the base_neg graph, all 3 sets of data (F, G, and J) appear non-stationary
 
-# let's impute some values using loess
-# first, gather all the dates we need
-all_dates <- unique(sort(as.numeric(c(FARC_results$date, joint_results$date, govt_results$date))))
-
-# predict data using loess
-pred_F_neg <- predict(loess_F_neg, newdata = all_dates)
-pred_govt_neg <- predict(loess_govt_neg, newdata = all_dates)
-pred_joint_neg <- predict(loess_joint_neg, newdata = all_dates)
-
 # linear model
-neg_lm <- lm(pred_joint_neg ~ pred_F_neg + pred_govt_neg)
+neg_lm <- lm(joint_predicted$pred_neg ~ FARC_predicted$pred_neg + govt_predicted$pred_neg)
 
 # let's run the augmented Dickey-Fuller test
 
