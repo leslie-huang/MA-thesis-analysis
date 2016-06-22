@@ -21,7 +21,8 @@ cf_end <- as.Date(c("1/20/13", "1/15/14", "5/28/14", "5/22/15", "1/1/16"), "%m/%
 ceasefires <- data.frame(start = as.Date(c("11/20/12", "12/15/13", "5/16/14", "12/20/14", "7/20/15"), "%m/%d/%y"), end = as.Date(c("1/20/13", "1/15/14", "5/28/14", "5/22/15", "1/1/16"), "%m/%d/%y"))
 
 # df of all dates
-dates <- rbind(data.frame(date = major_violence, group = "major_viol"), data.frame(date = major_agree, group = "major_agree"))
+dates <- rbind(data.frame(date = major_violence, group = "major_viol"), data.frame(date = major_agree, group = "major_agree"), data.frame(date = cf_start, group = "ceasefire_start"), data.frame(date = cf_end, group = "ceasefire_end"))
+dates <- arrange(dates, date)
 
 ################################################################################## import FARC communiques
 FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE)
@@ -88,29 +89,6 @@ govt <- read.csv("govtstatements.csv", stringsAsFactors = FALSE)
 
 govt_raw <- liwc_extractor(govt)
 govt_results <- liwc_loess(govt_raw)
-
-#################################################################################
-#################################################################################
-# topic model
-
-# create corpus
-FARC_corp <- corpus(FARC$text, docvars = FARC_results$dates)
-
-FARC_dfm <- dfm(FARC_corp, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
-
-trim_FARC <- quanteda::trim(FARC_dfm, minCount = 30, minDoc = 10)
-TM <- LDA(trim_FARC, 30, method = "Gibbs", control = list(burnin = 3, thin = 30, iter = 30, seed = 1234))
-top10words <- get_terms(TM, k = 10)
-doc_topics <- TM@gamma
-
-LDApost <- posterior(TM)
-
-jsonLDA <- createJSON(phi = LDApost$terms, 
-                      theta = LDApost$topics, 
-                      doc.length = ntoken(trim_FARC), 
-                      vocab = features(trim_FARC), 
-                      term.frequency = colSums(trim_FARC))
-serVis(jsonLDA, out.dir = "visCollLDA", open.browser = TRUE)
 
 #################################################################################
 #################################################################################
@@ -253,6 +231,70 @@ FARC_breaks <- get_breakdate(break_finder(FARC_results), FARC_results)
 govt_breaks <- get_breakdate(break_finder(govt_results), govt_results)
 joint_breaks <- get_breakdate(break_finder(joint_results), joint_results)
 
+# Now get the breakpoints into a list we can graph
+# convert breaks to a df
+convert_breaks <- function(listoflists) {
+  df <- as.data.frame(unlist(listoflists))
+  df$group <- NA
+  # now fill in by type
+  negs <- rep("neg_break", length(listoflists[[1]]))
+  poss <- rep("pos_break", length(listoflists[[2]]))
+  pp3 <- rep("pp3_break", length(listoflists[[3]]))
+  death <- rep("death_break", length(listoflists[[4]]))
+  groups <- c(negs, poss, pp3, death)
+  df$group <- groups
+  df <- na.omit(df)
+  colnames(df)[1] <- "date" 
+  df$date <- as.Date(df$date, origin = "1970-01-01")
+  return(df)
+}
+
+# get the dataframes
+FARC_breaks_df <- convert_breaks(FARC_breaks)
+govt_breaks_df <- convert_breaks(govt_breaks)
+joint_breaks_df <- convert_breaks(joint_breaks)
+
+# now sort by type instead of author
+break_sorter <- function(a,b,c,d) {
+  df1 <- filter(a, group == d)
+  if (nrow(df1) != 0) {
+    df1$group <- "FARC"
+  }
+  df2 <- filter(b, group == d)
+  if (nrow(df2) != 0) {
+    df2$group <- "govt"
+  }  
+  df3 <- filter(c, group == d)
+  if (nrow(df3) != 0) {
+    df3$group <- "joint"
+  }  
+  df <- rbind(df1, df2, df3)
+  if (nrow(df) > 0) {
+    return(df)
+  }
+}
+
+neg_breaks <- break_sorter(FARC_breaks_df, govt_breaks_df, joint_breaks_df, "neg_break")
+pos_breaks <- break_sorter(FARC_breaks_df, govt_breaks_df, joint_breaks_df, "pos_break")
+pp3_breaks <- break_sorter(FARC_breaks_df, govt_breaks_df, joint_breaks_df, "pp3_break")
+death_breaks <- break_sorter(FARC_breaks_df, govt_breaks_df, joint_breaks_df, "death_break")
+
+# let's look at them on the graph
+neg_breaks_gg <- base_neg +
+  ggtitle("Breakpoints in Negative Emotion") +
+  geom_vline(data = filter(neg_breaks, group == "FARC"), mapping = aes(xintercept = as.numeric(date), color = "FARC break"), linetype = 2) +
+  geom_vline(data = filter(neg_breaks, group == "govt"), mapping = aes(xintercept = as.numeric(date), color = "Govt break"), linetype = 1) +
+  geom_vline(data = filter(neg_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date), color = "Joint break"), linetype = 3)
+
+pos_breaks_gg <- base_pos +
+  ggtitle("Breakpoints in Positive Emotion") +
+  geom_vline(data = filter(pos_breaks, group == "FARC"), mapping = aes(xintercept = as.numeric(date), color = "FARC break"), linetype = 2) +
+  geom_vline(data = filter(pos_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date), color = "Joint break"), linetype = 3)
+
+
+neg_breaks_gg
+pos_breaks_gg
+
 #################################################################################
 #################################################################################
 # Loess out some new data
@@ -367,4 +409,28 @@ predicted_negs <- data.frame(all_dates, pred_joint_neg, pred_F_neg, pred_govt_ne
 
 jf_VAR <- VAR(predicted_negs[,2:3], p = 1, type = "both")
 serial.test(jf_VAR, lags.pt = 5) # looks like this model is plagued by serial correlation
+
+
+#################################################################################
+#################################################################################
+# topic model
+
+# create corpus
+FARC_corp <- corpus(FARC$text, docvars = FARC_results$dates)
+
+FARC_dfm <- dfm(FARC_corp, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
+
+trim_FARC <- quanteda::trim(FARC_dfm, minCount = 30, minDoc = 10)
+TM <- LDA(trim_FARC, 30, method = "Gibbs", control = list(burnin = 3, thin = 30, iter = 30, seed = 1234))
+top10words <- get_terms(TM, k = 10)
+doc_topics <- TM@gamma
+
+LDApost <- posterior(TM)
+
+jsonLDA <- createJSON(phi = LDApost$terms, 
+                      theta = LDApost$topics, 
+                      doc.length = ntoken(trim_FARC), 
+                      vocab = features(trim_FARC), 
+                      term.frequency = colSums(trim_FARC))
+serVis(jsonLDA, out.dir = "visCollLDA", open.browser = TRUE)
 
