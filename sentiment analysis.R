@@ -12,6 +12,12 @@ lapply(libraries, require, character.only=TRUE)
 # get LIWC dict
 spanish_dict <- dictionary(file = "../LIWC/Spanish_LIWC2007_Dictionary.dic", format = "LIWC")
 
+################################################################################## 
+################################################################################## 
+# get monthly levels of violence
+monthly_viol <- read.csv("../MA-datasets/violence_stats.csv", stringsAsFactors = FALSE)
+
+
 # some major dates for plotting
 major_violence <- as.Date(c("7/20/13", "1/16/13", "7/29/14", "11/16/14", "4/15/15", "5/31/15", "6/15/15", "6/22/15"), "%m/%d/%y")
 major_agree <- as.Date(c("8/26/12", "5/26/13", "11/6/13", "5/16/14", "3/7/15", "6/2/15", "9/23/15"), "%m/%d/%y")
@@ -24,7 +30,8 @@ ceasefires <- data.frame(start = as.Date(c("11/20/12", "12/15/13", "5/16/14", "1
 dates <- rbind(data.frame(date = major_violence, group = "major_viol"), data.frame(date = major_agree, group = "major_agree"), data.frame(date = cf_start, group = "ceasefire_start"), data.frame(date = cf_end, group = "ceasefire_end"))
 dates <- arrange(dates, date)
 
-################################################################################## import FARC communiques
+################################################################################## 
+import FARC communiques
 FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE)
 
 # Function to get raw LIWC measures
