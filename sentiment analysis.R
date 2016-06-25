@@ -63,14 +63,24 @@ liwc_loess <- function(liwc_results) {
   pp3 <- loess(liwc_results$pp3 ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
   death <- loess(liwc_results$death ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
   
-  # or lowess
-  # # neg <- lowess(dates, y = neg, f = 2/3, iter = 3, delta = 0.01 * diff(range(dates)))
-  
   # make the dataframe
   date <- as.Date(liwc_results$date, origin = "1970-01-01")
   results_df <- data.frame(cbind(date, neg, pos, pp3, death))
   results_df$date <- date
   return(results_df)
+}
+
+# Function to return loess predictions as a list
+loess_lines <- function(liwc_results) {
+  
+  neg <- loess(liwc_results$neg ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
+  pos <- loess(liwc_results$pos ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
+  pp3 <- loess(liwc_results$pp3 ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
+  death <- loess(liwc_results$death ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
+  
+  # make the list
+  list_models <- list(neg, pos, pp3, death)
+  return(list_models)
 }
 
 # raw LIWC measures
@@ -79,6 +89,9 @@ FARC_raw <- liwc_extractor(FARC)
 # loess it
 FARC_results <- liwc_loess(FARC_raw)
 
+# get the lines for plotting
+FARC_lines <- loess_lines(FARC_raw)
+
 #################################################################################
 # do the same for joint communiques
 joint <- read.csv("../MA-datasets/jointstatements.csv", stringsAsFactors = FALSE)
@@ -86,28 +99,41 @@ joint <- read.csv("../MA-datasets/jointstatements.csv", stringsAsFactors = FALSE
 joint <- filter(joint, text != "")
 joint <- slice(joint, -19)
 
+# LIWC estimates
 joint_raw <- liwc_extractor(joint)
+
+# loessed point estimates
 joint_results <- liwc_loess(joint_raw)
+
+# get the lines for plotting
+joint_lines <- loess_lines(joint_raw)
 
 #################################################################################
 # and the same for govt statements
 
 govt <- read.csv("govtstatements.csv", stringsAsFactors = FALSE)
 
+# LIWC estimates
 govt_raw <- liwc_extractor(govt)
+
+# loessed point estimates
 govt_results <- liwc_loess(govt_raw)
 
+# get the lines for plotting
+govt_lines <- loess_lines(govt_raw)
+  
 #################################################################################
 #################################################################################
-# let's graph negative emotion
+# Graph it!
 
 # Neg emotion: base graph
-base_neg = ggplot() +
-  geom_line(data = FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "FARC statement")) +
+base_neg = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "FARC statement")) +
+  geom_smooth(method = "loess", se = FALSE) +
   geom_jitter() +
-#  geom_point(data = joint_neg, aes(x = joint_dates, y = V2, color = "Joint statement")) +
-  geom_line(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Joint statement")) +
-  geom_line(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Govt statement")) +
+  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Joint statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Joint statement")) +
+  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Govt statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Govt statement")) +
   labs(
     x = "Date",
     y = "Percent Neg Emotion",
@@ -133,18 +159,19 @@ neg_cf <- base_neg +
 
 #################################################################################
 # Pos emotion: base graph
-base_pos = ggplot() +
-  geom_line(data = FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "FARC statement")) +
+base_pos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "FARC statement")) +
+  geom_smooth(method = "loess", se = FALSE) +
   geom_jitter() +
-  geom_line(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Joint statement")) +
-  geom_line(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Govt statement")) +
+  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Joint statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Joint statement")) +
+  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Govt statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Govt statement")) +
   labs(
     x = "Date",
-    y = "Percent Positive Emotion",
+    y = "Percent Pos Emotion",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
-
 
 # pos emotion and major agreements
 pos_major <- base_pos +
@@ -163,24 +190,26 @@ pos_cf <- base_pos +
 
 #################################################################################
 # let's graph 3rd person plural pronouns from FARC -- indicator of extremism
-base_ellos = ggplot() +
-  geom_line(data = FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "FARC statement")) +
+base_ellos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "FARC statement")) +
+  geom_smooth(method = "loess", se = FALSE) +
   geom_jitter() +
-  geom_line(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Joint statement")) +
-  geom_line(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Govt statement")) +
+  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Joint statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Joint statement")) +
+  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Govt statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Govt statement")) +
   labs(
     x = "Date",
-    y = "Percent 3rd Person Pl Pronoun",
+    y = "Percent Pos Emotion",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
+
 
 # add major agreements and ceasefires
 ellos_major <- base_ellos +
   ggtitle("Major Events and Use of 3rd Person Pl. Pronoun") +
   geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
   geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
-
 
 # run all the graphs
 base_neg
@@ -305,7 +334,6 @@ pos_breaks_gg
 #################################################################################
 #################################################################################
 # Loess out some new data
-
 all_dates <- unique(sort(as.numeric(c(FARC_results$date, joint_results$date, govt_results$date))))
 
 # function that takes a df of raw points, estimates loess, and fills out new data with it
