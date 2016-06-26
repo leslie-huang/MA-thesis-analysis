@@ -22,9 +22,9 @@ monthly_viol[,2:4] <- sapply(monthly_viol[,2:4], function(x) { as.numeric(x)})
 # some major dates for plotting
 major_violence <- as.Date(c("7/20/13", "1/16/13", "7/29/14", "11/16/14", "4/15/15", "5/31/15", "6/15/15", "6/22/15"), "%m/%d/%y")
 major_agree <- as.Date(c("8/26/12", "5/26/13", "11/6/13", "5/16/14", "3/7/15", "6/2/15", "9/23/15"), "%m/%d/%y")
+
 cf_start <- as.Date(c("11/20/12", "12/15/13", "5/16/14", "12/20/14", "7/20/15"), "%m/%d/%y")
 cf_end <- as.Date(c("1/20/13", "1/15/14", "5/28/14", "5/22/15", "1/1/16"), "%m/%d/%y")
-
 ceasefires <- data.frame(start = as.Date(c("11/20/12", "12/15/13", "5/16/14", "12/20/14", "7/20/15"), "%m/%d/%y"), end = as.Date(c("1/20/13", "1/15/14", "5/28/14", "5/22/15", "1/1/16"), "%m/%d/%y"))
 
 # df of all dates
@@ -32,8 +32,7 @@ dates <- rbind(data.frame(date = major_violence, group = "major_viol"), data.fra
 dates <- arrange(dates, date)
 
 ################################################################################## 
-import FARC communiques
-FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE)
+# Some functions to extract sentiment, loess it, and return results
 
 # Function to get raw LIWC measures
 liwc_extractor <- function(df) {
@@ -44,29 +43,19 @@ liwc_extractor <- function(df) {
   df_dates <- dplyr::select(df, date)
   date <- as.Date(df_dates[[1]], "%Y-%m-%d")
   
-  # extract the measures we want, and lowess them
-  neg <- as.numeric(liwc_results$EmoNeg)
-  pos <- as.numeric(liwc_results$EmoPos)
-  pp3 <- as.numeric(liwc_results$Ellos)
-  death <- as.numeric(liwc_results$Muerte)
+  # extract the measures we want
+  liwc_results <- dplyr::select(liwc_results, EmoNeg, EmoPos, Ellos, Muerte)
 
   # make the dataframe
-  results_df <- data.frame(cbind(date, neg, pos, pp3, death))
+  results_df <- data.frame(cbind(sapply(liwc_results, function(x) {as.numeric(x)})))
   results_df$date <- as.Date(date, "%Y-%m-%d")
   return(results_df)
 }
 
 # Function to take a df of raw LIWC values and return loessed values
 liwc_loess <- function(liwc_results) {
-
-  neg <- loess(liwc_results$neg ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
-  pos <- loess(liwc_results$pos ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
-  pp3 <- loess(liwc_results$pp3 ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
-  death <- loess(liwc_results$death ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))$y
-  
-  # make the dataframe
   date <- as.Date(liwc_results$date, origin = "1970-01-01")
-  results_df <- data.frame(cbind(date, neg, pos, pp3, death))
+  results_df <- data.frame(cbind(sapply(liwc_results[,1:4], function(x) { loess(x ~ as.numeric(liwc_results$date), control = loess.control(surface = "direct"))$y})))
   results_df$date <- date
   return(results_df)
 }
@@ -74,15 +63,13 @@ liwc_loess <- function(liwc_results) {
 # Function to return loess predictions as a list
 loess_lines <- function(liwc_results) {
   
-  neg <- loess(liwc_results$neg ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
-  pos <- loess(liwc_results$pos ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
-  pp3 <- loess(liwc_results$pp3 ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
-  death <- loess(liwc_results$death ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))
-  
-  # make the list
-  list_models <- list(neg, pos, pp3, death)
+  list_models <- list(sapply(liwc_results[,1:4], function(x) {loess(x ~ as.numeric(liwc_results$date), control=loess.control(surface="direct"))}))
   return(list_models)
 }
+
+#################################################################################
+# import FARC communiques
+FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE)
 
 # raw LIWC measures
 FARC_raw <- liwc_extractor(FARC)
@@ -90,7 +77,7 @@ FARC_raw <- liwc_extractor(FARC)
 # loess it
 FARC_results <- liwc_loess(FARC_raw)
 
-# get the lines for plotting
+# get the loess lines for plotting
 FARC_lines <- loess_lines(FARC_raw)
 
 #################################################################################
@@ -106,12 +93,11 @@ joint_raw <- liwc_extractor(joint)
 # loessed point estimates
 joint_results <- liwc_loess(joint_raw)
 
-# get the lines for plotting
+# get the loess lines for plotting
 joint_lines <- loess_lines(joint_raw)
 
 #################################################################################
 # and the same for govt statements
-
 govt <- read.csv("govtstatements.csv", stringsAsFactors = FALSE)
 
 # LIWC estimates
@@ -120,7 +106,7 @@ govt_raw <- liwc_extractor(govt)
 # loessed point estimates
 govt_results <- liwc_loess(govt_raw)
 
-# get the lines for plotting
+# get the loess lines for plotting
 govt_lines <- loess_lines(govt_raw)
   
 #################################################################################
@@ -398,6 +384,8 @@ viol_cf
 viol_major
 viol_breaks_gg
 
+#################################################################################
+#################################################################################
 # let's check out these time series of data
 
 # ADF tests for stationarity
@@ -421,5 +409,14 @@ viol_VAR <- VAR(na.omit(monthly_viol[,2:3]), p = 2, type = "both")
 serial.test(viol_VAR)
 
 # Now let's run the Johansen cointgration test
-summary(ca.jo(na.omit(monthly_viol[,2:3]), type = "trace", ecdet = "none"))
-# result: no cointegration
+summary(ca.jo(na.omit(monthly_viol[,2:3]), type = "trace", K = 2, ecdet = "trend"))
+# result: cointegration
+
+# test Granger causality both ways
+
+# significant only when lags = 3, with p = 0.01
+grangertest(na.omit(monthly_viol[,2]) ~ na.omit(monthly_viol[,3]), order = 3)
+
+# significant with p = 0.0007
+grangertest(na.omit(monthly_viol[,3]) ~ na.omit(monthly_viol[,2]), order = 1)
+# result: army deaths are Granger caused by FARC actions
