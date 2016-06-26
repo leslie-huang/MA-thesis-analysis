@@ -411,5 +411,15 @@ sapply(monthly_viol[2:4], function(x) {summary(ur.df(na.omit(x), type = "none", 
 # KPSS
 sapply(monthly_viol[2:4], function(x) {kpss.test(x, null = "T")})
 
-# check ndiffs
+# check ndiffs: 1 differencing needed for each trend to make stationary
 sapply(monthly_viol[2:4], function(x) { ndiffs(x)})
+
+# Now let's see if FARC actions and army casualties are cointegrated.
+viol_VAR <- VAR(na.omit(monthly_viol[,2:3]), p = 2, type = "both")
+
+# test for serial correlation of residuals. Increase lags p = 2 in the VAR model to get p val = 0.94: no autocorrelation
+serial.test(viol_VAR)
+
+# Now let's run the Johansen cointgration test
+summary(ca.jo(na.omit(monthly_viol[,2:3]), type = "trace", ecdet = "none"))
+# result: no cointegration
