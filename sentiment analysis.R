@@ -399,5 +399,17 @@ viol_major
 viol_breaks_gg
 
 # let's check out these time series of data
-viol_F <- dplyr::select(monthly_viol, date, FARC_actions)
-ur.df(viol_F)
+
+# ADF tests for stationarity
+sapply(monthly_viol[2:4], function(x) {summary(ur.df(na.omit(x), type = "trend", lags = 1))})
+# Results: FARC actions / casualties / demobilization: unit root, trend, and drift / unit root, trend, and drift / unit root, no trend, no drift
+sapply(monthly_viol[2:4], function(x) {summary(ur.df(na.omit(x), type = "drift", lags = 1))})
+# FARC actions / casualties / demobilization: can't reject null / reject null / reject null: unit root, and no drift
+sapply(monthly_viol[2:4], function(x) {summary(ur.df(na.omit(x), type = "none", lags = 1))})
+# FARC actions / casualties / demobilization: reject null / can't reject / can't reject
+
+# KPSS
+sapply(monthly_viol[2:4], function(x) {kpss.test(x, null = "T")})
+
+# check ndiffs
+sapply(monthly_viol[2:4], function(x) { ndiffs(x)})
