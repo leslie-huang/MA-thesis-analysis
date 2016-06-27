@@ -176,7 +176,7 @@ pos_cf <- base_pos +
 
 #################################################################################
 #################################################################################
-# let's graph 3rd person plural pronouns from FARC -- indicator of extremism
+# let's graph 3rd person plural pronouns -- indicator of extremism
 base_ellos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "FARC statement")) +
   geom_smooth(method = "loess", se = FALSE) +
   geom_jitter() +
@@ -186,11 +186,10 @@ base_ellos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), 
   geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "Govt statement")) +
   labs(
     x = "Date",
-    y = "Percent Pos Emotion",
+    y = "Percent 3rd Person Pl Pronouns",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
-
 
 # add major agreements and ceasefires
 ellos_major <- base_ellos +
@@ -198,16 +197,37 @@ ellos_major <- base_ellos +
   geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
   geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
 
+#################################################################################
+#################################################################################
+# Let's graph death topic
+base_death = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "FARC statement")) +
+  geom_smooth(method = "loess", se = FALSE) +
+  geom_jitter() +
+  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "Joint statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "Joint statement")) +
+  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "Govt statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "Govt statement")) +
+  labs(
+    x = "Date",
+    y = "Percent on Death",
+    color = "Legend") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
+
+#################################################################################
+#################################################################################
 # run all the graphs
 base_neg
 base_pos
 base_ellos
+base_death
 
 neg_cf
 neg_major
 pos_cf
 pos_major
 ellos_major
+death_major
 
 #################################################################################
 #################################################################################
@@ -313,8 +333,18 @@ pos_breaks_gg <- base_pos +
   geom_vline(data = filter(pos_breaks, group == "FARC"), mapping = aes(xintercept = as.numeric(date), color = "FARC statement"), linetype = 2) +
   geom_vline(data = filter(pos_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date), color = "Joint statement"), linetype = 3) # no govt breakpoints
 
+ellos_breaks_gg <- base_ellos +
+  ggtitle("Breakpoints in Use of 3rd Person Pl. Pronoun") +
+  geom_vline(data = filter(pp3_breaks, group == "govt"), mapping = aes(xintercept = as.numeric(date), color = "Govt statement"), linetype = 2)
+
+death_breaks_gg <- base_death +
+  ggtitle("Breakpoints in Death") +
+  geom_vline(data = filter(death_breaks, group == "FARC"), mapping = aes(xintercept = as.numeric(date), color = "FARC statement"), linetype = 2) +
+  geom_vline(data = filter(death_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date), color = "Joint statement"), linetype = 3) # no govt breakpoints
+
 neg_breaks_gg
 pos_breaks_gg
+ellos_breaks_gg
 
 #################################################################################
 #################################################################################
@@ -432,50 +462,59 @@ calculate_breakmeans <- function(df, loessed) {
   df$group <- gsub("pp3_break", "Ellos", df$group)
   df$group <- gsub("death_break", "Muerte", df$group)
   
-  # how many types of sentiment have breaks?
+  # which types of sentiment have breaks?
   groups <- distinct(df, group)$group
-  
-  # make a list of lists to contain the means for each sentiment
-  listoflistsofmeans <- vector("list", length(groups))
+  # list to contain the means for each sentiment
+  listofmeans <- vector("list", length(groups))
 
-  # for each type of sentiment...
+  # for each type of sentiment
   for (i in 1:length(groups)) {
     # get the breakdates for that type
     breaks <- filter(df, group == groups[i])
-    
     # get the name of the type
     senti_name <- groups[i]
-    listoflistofmeans[i] <- senti_name
+    
     # get the correct columns from the loess df, supplied as an argument to the function
-    data <- cbind(loessed$date, loessed[senti_name])
+    data <- cbind(loessed["date"], loessed[senti_name])
     
-    # Case #1: only 1 break, 2 regimes
-    if (length(breaks[1]) == 1) {
-      data1 <- filter(data, date < breaks[1,1])
-      mean1 <- mean(data1[senti_name])
-      
-      data2 <- filter(data, date >= breaks[1,1])
-      mean2 <- mean(data2[senti_name])
-      
-      means <- list(mean1, mean2)
-      return(means)
-    }
+    # number of structural breaks
+    break_len <- length(breaks[[1]])
     
-    # Case #2: 2 breaks, 3 regimes
-    if (length(breaks[1]) == 2) {
+    # IDs to return
+    IDs <- list(senti_name, breaks["date"])
+    # Case #1: 2 breaks, 3 regimes
+    if (break_len == 2) {
       data1 <- filter(data, date < breaks[1,1])
-      mean1 <- mean(data1[senti_name])
+      mean1 <- mean(unlist(data1[senti_name]))
       
       data2 <- filter(data, date >= breaks[1,1], date < breaks[2,1])
-      mean2 <- mean(data2[senti_name])
+      mean2 <- mean(unlist(data2[senti_name]))
       
       data3 <- filter(data, date >= breaks[2,1])
-      mean2 <- mean(data3[senti_name])
+      mean3 <- mean(unlist(data3[senti_name]))
       
-      means <- list(mean1, mean2, mean3)
-      return(means)
+      means <- c(mean1, mean2, mean3)
     }
     
-    listoflistsofmeans[i] <- means
+    # Case #2: only 1 break, 2 regimes
+    else {
+      data1 <- filter(data, date < breaks[1,1])
+      mean1 <- mean(unlist(data1[senti_name]))
+      
+      data2 <- filter(data, date >= breaks[1,1])
+      mean2 <- mean(unlist(data2[senti_name]))
+      
+      means <- c(mean1, mean2)
+    }
+    
+    listofmeans[[i]] <- list(IDs, means)
   }
+  return(listofmeans)
 }
+
+#################################################################################
+#################################################################################
+# get all the means of regimes. Use [[1]][[1]] to access the means,  [[1]][[2]] to get the corresponding breakdates
+FARC_means <- calculate_breakmeans(FARC_breaks_df, FARC_results)
+govt_means <- calculate_breakmeans(govt_breaks_df, govt_results)
+joint_means <- calculate_breakmeans(joint_breaks_df, joint_results)
