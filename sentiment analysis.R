@@ -419,3 +419,63 @@ grangertest(na.omit(monthly_viol[,2]) ~ na.omit(monthly_viol[,3]), order = 3)
 # significant with p = 0.0007
 grangertest(na.omit(monthly_viol[,3]) ~ na.omit(monthly_viol[,2]), order = 1)
 # result: army deaths are Granger caused by FARC actions
+
+#################################################################################
+#################################################################################
+# let's look at the means before and after structural breaks
+
+# Function to calculate means in each type of sentiment during "regimes" bounded by structural breaks. Takes two arguments: df of dates with a group ID of break type, and df of loess values
+calculate_breakmeans <- function(df, loessed) {
+  # need to rename groups so they match up with columns in the loess df
+  df$group <- gsub("neg_break", "EmoNeg", df$group)
+  df$group <- gsub("pos_break", "EmoPos", df$group)
+  df$group <- gsub("pp3_break", "Ellos", df$group)
+  df$group <- gsub("death_break", "Muerte", df$group)
+  
+  # how many types of sentiment have breaks?
+  groups <- distinct(df, group)$group
+  
+  # make a list of lists to contain the means for each sentiment
+  listoflistsofmeans <- vector("list", length(groups))
+
+  # for each type of sentiment...
+  for (i in 1:length(groups)) {
+    # get the breakdates for that type
+    breaks <- filter(df, group == groups[i])
+    
+    # get the name of the type
+    senti_name <- groups[i]
+    listoflistofmeans[i] <- senti_name
+    # get the correct columns from the loess df, supplied as an argument to the function
+    data <- cbind(loessed$date, loessed[senti_name])
+    
+    # Case #1: only 1 break, 2 regimes
+    if (length(breaks[1]) == 1) {
+      data1 <- filter(data, date < breaks[1,1])
+      mean1 <- mean(data1[senti_name])
+      
+      data2 <- filter(data, date >= breaks[1,1])
+      mean2 <- mean(data2[senti_name])
+      
+      means <- list(mean1, mean2)
+      return(means)
+    }
+    
+    # Case #2: 2 breaks, 3 regimes
+    if (length(breaks[1]) == 2) {
+      data1 <- filter(data, date < breaks[1,1])
+      mean1 <- mean(data1[senti_name])
+      
+      data2 <- filter(data, date >= breaks[1,1], date < breaks[2,1])
+      mean2 <- mean(data2[senti_name])
+      
+      data3 <- filter(data, date >= breaks[2,1])
+      mean2 <- mean(data3[senti_name])
+      
+      means <- list(mean1, mean2, mean3)
+      return(means)
+    }
+    
+    listoflistsofmeans[i] <- means
+  }
+}
