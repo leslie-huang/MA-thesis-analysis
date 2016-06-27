@@ -45,7 +45,7 @@ liwc_extractor <- function(df) {
   
   # extract the measures we want
   liwc_results <- dplyr::select(liwc_results, EmoNeg, EmoPos, Ellos, Muerte)
-
+  
   # make the dataframe
   results_df <- data.frame(cbind(sapply(liwc_results, function(x) {as.numeric(x)})))
   results_df$date <- as.Date(date, "%Y-%m-%d")
@@ -114,13 +114,13 @@ govt_lines <- loess_lines(govt_raw)
 # Graph it!
 
 # Neg emotion: base graph
-base_neg = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "FARC statement")) +
+base_neg = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "FARC statement")) +
   geom_smooth(method = "loess", se = FALSE) +
   geom_jitter() +
-  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Joint statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Joint statement")) +
-  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Govt statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = neg, color = "Govt statement")) +
+  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Joint statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Joint statement")) +
+  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Govt statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Govt statement")) +
   labs(
     x = "Date",
     y = "Percent Neg Emotion",
@@ -130,10 +130,9 @@ base_neg = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y 
 
 # Neg emotion and major agreements/violence
 neg_major <- base_neg +
-  ggtitle("Major Events and Percent Negative Emotion Words in Statements") +
+  ggtitle("Major Events and Percent Negative Emotion Words in Statements") + 
   geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
   geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
-
 
 # Neg emotion and ceasefire dates
 neg_cf <- base_neg +
@@ -146,13 +145,13 @@ neg_cf <- base_neg +
 
 #################################################################################
 # Pos emotion: base graph
-base_pos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "FARC statement")) +
+base_pos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "FARC statement")) +
   geom_smooth(method = "loess", se = FALSE) +
   geom_jitter() +
-  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Joint statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Joint statement")) +
-  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Govt statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pos, color = "Govt statement")) +
+  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Joint statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Joint statement")) +
+  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Govt statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Govt statement")) +
   labs(
     x = "Date",
     y = "Percent Pos Emotion",
@@ -176,14 +175,15 @@ pos_cf <- base_pos +
   geom_rect(aes(xmin=cf_start[5], xmax=cf_end[5], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01)
 
 #################################################################################
+#################################################################################
 # let's graph 3rd person plural pronouns from FARC -- indicator of extremism
-base_ellos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "FARC statement")) +
+base_ellos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "FARC statement")) +
   geom_smooth(method = "loess", se = FALSE) +
   geom_jitter() +
-  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Joint statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Joint statement")) +
-  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Govt statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = pp3, color = "Govt statement")) +
+  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "Joint statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "Joint statement")) +
+  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "Govt statement")) +
+  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "Govt statement")) +
   labs(
     x = "Date",
     y = "Percent Pos Emotion",
@@ -211,23 +211,22 @@ ellos_major
 
 #################################################################################
 #################################################################################
-# Find breakpoints
+# Find structural breakpoints
 
-# Function to find breakpoints for each column of a dataframe. Takes one argument: a dataframe whose first column is the date
+# Function to find breakpoints for each column of a dataframe. Takes one argument: a dataframe whose last column is the date
 break_finder <- function(df) {
   # make a list to contain the dates
   break_obs <- vector("list", length(df) - 1)
   
   # get breakpoints
-  for (i in 2:length(df)) {
-   break_obs[i - 1] <- (list(breakpoints(df[[i]] ~ 1)$breakpoints))
+  for (i in 1:(length(df)-1) ) {
+   break_obs[i] <- (list(breakpoints(df[[i]] ~ 1)$breakpoints))
   }
   return(break_obs)
 }
 
 # Function to convert break obs to dates. Takes two arguments: a list of lists (shudder), and an original df
 get_breakdate <- function(listoflists, df) {
-  
   # for each list of break obs
   for (i in 1:length(listoflists)) {
     # if it's not empty
@@ -272,12 +271,12 @@ convert_breaks <- function(listoflists) {
   return(df)
 }
 
-# get the dataframes
+# get the dataframes of breaks, sorted by F/G/J stream
 FARC_breaks_df <- convert_breaks(FARC_breaks)
 govt_breaks_df <- convert_breaks(govt_breaks)
 joint_breaks_df <- convert_breaks(joint_breaks)
 
-# now sort by type instead of author
+# Function to make dataframe of all breaks of a type (e.g. neg)
 break_sorter <- function(a,b,c,d) {
   df1 <- filter(a, group == d)
   if (nrow(df1) != 0) {
@@ -312,7 +311,7 @@ neg_breaks_gg <- base_neg +
 pos_breaks_gg <- base_pos +
   ggtitle("Breakpoints in Positive Emotion") +
   geom_vline(data = filter(pos_breaks, group == "FARC"), mapping = aes(xintercept = as.numeric(date), color = "FARC statement"), linetype = 2) +
-  geom_vline(data = filter(pos_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date), color = "Joint statement"), linetype = 3)
+  geom_vline(data = filter(pos_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date), color = "Joint statement"), linetype = 3) # no govt breakpoints
 
 neg_breaks_gg
 pos_breaks_gg
