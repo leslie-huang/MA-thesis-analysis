@@ -18,6 +18,7 @@ spanish_dict <- dictionary(file = "../LIWC/Spanish_LIWC2007_Dictionary.dic", for
 monthly_viol <- read.csv("../MA-datasets/violence_stats.csv", stringsAsFactors = FALSE)
 monthly_viol$date <- as.Date(as.yearmon(monthly_viol$date, "%Y-%m"))
 monthly_viol[,2:4] <- sapply(monthly_viol[,2:4], function(x) { as.numeric(x)})
+monthly_viol <- subset(monthly_viol, select = c(2:4, 1))
 
 # some major dates for plotting
 major_violence <- as.Date(c("7/20/13", "1/16/13", "7/29/14", "11/16/14", "4/15/15", "5/31/15", "6/15/15", "6/22/15"), "%m/%d/%y")
@@ -216,26 +217,11 @@ base_death = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), 
 
 #################################################################################
 #################################################################################
-# run all the graphs
-base_neg
-base_pos
-base_ellos
-base_death
-
-neg_cf
-neg_major
-pos_cf
-pos_major
-ellos_major
-death_major
-
-#################################################################################
-#################################################################################
 # Find structural breakpoints
 
 # Function to find breakpoints for each column of a dataframe. Takes one argument: a dataframe whose last column is the date
 break_finder <- function(df) {
-  # make a list to contain the dates
+  # make a list to contain the breakdates
   break_obs <- vector("list", length(df) - 1)
   
   # get breakpoints
@@ -345,7 +331,7 @@ death_breaks_gg <- base_death +
 neg_breaks_gg
 pos_breaks_gg
 ellos_breaks_gg
-
+deaths_breaks_gg
 #################################################################################
 #################################################################################
 # now let's take a look at trends in violence/military activity
@@ -514,7 +500,119 @@ calculate_breakmeans <- function(df, loessed) {
 
 #################################################################################
 #################################################################################
-# get all the means of regimes. Use [[1]][[1]] to access the means,  [[1]][[2]] to get the corresponding breakdates
+# get all the means of regimes define by structural breakpoints in emotion. 
 FARC_means <- calculate_breakmeans(FARC_breaks_df, FARC_results)
 govt_means <- calculate_breakmeans(govt_breaks_df, govt_results)
 joint_means <- calculate_breakmeans(joint_breaks_df, joint_results)
+
+neg_breaks_gg
+pos_breaks_gg
+ellos_breaks_gg
+death_breaks_gg
+
+#################################################################################
+#################################################################################
+# now let's do the same for structural breaks in the violence time series
+
+# modified function
+calculate_viol_breakmeans <- function(df, loessed) {
+  loessed <- na.omit(loessed)
+  df$group <- gsub("farc_action", "FARC_actions", df$group)
+  df$group <- gsub("casualties", "deaths_fuerzapublica", df$group)
+
+  # which types of sentiment have breaks?
+  groups <- distinct(df, group)$group
+  
+  # list to contain the means for each sentiment
+  listofmeans <- vector("list", length(groups))
+  
+  # for each type of sentiment
+  for (i in 1:length(groups)) {
+    # get the breakdates for that type
+    breaks <- filter(df, group == groups[i])
+    # get the name of the type
+    senti_name <- groups[i]
+    # get the correct columns from the loess df, supplied as an argument to the function
+    data <- cbind(loessed["date"], loessed[senti_name])
+    # IDs to return
+    IDs <- list(senti_name, breaks["date"])
+
+    data1 <- filter(data, date < breaks[1,1])
+    mean1 <- mean(unlist(data1[senti_name]))
+    
+    data2 <- filter(data, date >= breaks[1,1], date < breaks[2,1])
+    mean2 <- mean(unlist(data2[senti_name]))
+    
+    data3 <- filter(data, date >= breaks[2,1])
+    mean3 <- mean(unlist(data3[senti_name]))
+      
+    means <- c(mean1, mean2, mean3)
+    
+    listofmeans[[i]] <- list(IDs, means)
+  }
+  
+  return(listofmeans)
+}
+
+viol_means <- calculate_viol_breakmeans(viol_breaks_list, monthly_viol)
+
+viol_breaks_gg
+
+#################################################################################
+#################################################################################
+# Results for demo
+
+# Raw LIWC scores
+View(FARC_raw)
+View(govt_raw)
+View(joint_raw)
+
+# Loessed results
+View(FARC_results)
+View(govt_results)
+View(joint_results)
+
+# Violence and major events
+View(monthly_viol)
+View(dates)
+
+# View structural breaks, by type
+View(neg_breaks)
+View(pos_breaks)
+View(pp3_breaks)
+View(death_breaks)
+
+# Structural breaks by party, with means of regimes.
+# [[1]][[1]] to access the means,  [[1]][[2]] to get the corresponding breakdates
+FARC_means
+govt_means
+joint_means
+viol_means
+
+# Base graphs of loessed data (except for violence)
+base_neg
+base_pos
+base_ellos
+base_death
+base_viol
+
+# Graphs with ceasefires and major events
+neg_cf
+neg_major
+
+pos_cf
+pos_major
+
+ellos_major
+
+death_major
+
+viol_major
+viol_cf
+
+# Graphs with structural breaks
+neg_breaks_gg
+pos_breaks_gg
+ellos_breaks_gg
+death_breaks_gg
+viol_breaks_gg
