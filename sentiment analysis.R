@@ -500,7 +500,7 @@ calculate_breakmeans <- function(df, loessed) {
 
 #################################################################################
 #################################################################################
-# get all the means of regimes define by structural breakpoints in emotion. 
+# get all the means of regimes defined by structural breakpoints in emotion. 
 FARC_means <- calculate_breakmeans(FARC_breaks_df, FARC_results)
 govt_means <- calculate_breakmeans(govt_breaks_df, govt_results)
 joint_means <- calculate_breakmeans(joint_breaks_df, joint_results)
@@ -560,6 +560,49 @@ viol_breaks_gg
 
 #################################################################################
 #################################################################################
+# Introducing... public opinion
+public_op <- read.csv("../MA-datasets/public opinion.csv", stringsAsFactors = FALSE)
+
+public_op <- public_op[,1:3]
+public_op$date <- as.Date(as.yearmon(public_op$date, "%Y-%m"))
+public_op[,2:3] <- sapply(public_op[,2:3], function(x) { as.numeric(x)})
+public_op <- subset(public_op, select = c(2:3, 1))
+public_op <- na.omit(public_op)
+
+# graph it
+base_opinion = ggplot(public_op, aes(x = as.Date(date, origin = "1970-01-01"), y = santos_positive_image, color = "Positive image of Pres. Santos")) +
+  geom_smooth(method = "loess", se = FALSE) +
+  geom_jitter() +
+  geom_point(data = public_op, aes(x = as.Date(date, origin = "1970-01-01"), y = approve_santos_decision_talks, color = "Approve of negotiations with guerrillas")) +
+  geom_smooth(method = "loess", se = FALSE, data = public_op, aes(x = as.Date(date, origin = "1970-01-01"), y = approve_santos_decision_talks, color = "Approve of negotiations with guerrillas")) +
+  labs(
+    x = "Date",
+    y = "Percent Approve/Positive Image",
+    color = "Legend") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
+  ggtitle("Public Opinion")
+
+# public opinion and ceasefires
+opinion_cf = base_opinion +
+  ggtitle("Public Opinion and Ceasefires") +
+  geom_rect(aes(xmin=cf_start[1], xmax=cf_end[1], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
+  geom_rect(aes(xmin=cf_start[2], xmax=cf_end[2], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) +
+  geom_rect(aes(xmin=cf_start[3], xmax=cf_end[3], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
+  geom_rect(aes(xmin=cf_start[4], xmax=cf_end[4], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
+  geom_rect(aes(xmin=cf_start[5], xmax=cf_end[5], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01)
+
+# public opinion and major events
+opinion_major = base_opinion + 
+  ggtitle("Major Events and Public Opinion Trends") +
+  geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
+  geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
+
+# get breakdates in public opinion
+opinion_breakd <- get_breakdate(break_finder(na.omit(public_op)), public_op)
+
+#################################################################################
+#################################################################################
 # Results for demo
 
 # Raw LIWC scores
@@ -572,9 +615,10 @@ View(FARC_results)
 View(govt_results)
 View(joint_results)
 
-# Violence and major events
+# Violence, major events, public opinion data
 View(monthly_viol)
 View(dates)
+View(public_op)
 
 # View structural breaks, by type
 View(neg_breaks)
@@ -589,12 +633,13 @@ govt_means
 joint_means
 viol_means
 
-# Base graphs of loessed data (except for violence)
+# Base graphs (all loessed)
 base_neg
 base_pos
 base_ellos
 base_death
 base_viol
+base_opinion
 
 # Graphs with ceasefires and major events
 neg_cf
@@ -609,6 +654,9 @@ death_major
 
 viol_major
 viol_cf
+
+opinion_cf
+opinion_major
 
 # Graphs with structural breaks
 neg_breaks_gg
