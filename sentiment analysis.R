@@ -6,7 +6,7 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "quantedaData", "ggplot2", "stringr", "LIWCalike", "topicmodels", "lda", "stm", "LDAvis", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "quantedaData", "ggplot2", "stringr", "LIWCalike", "topicmodels", "lda", "stm", "LDAvis", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "HMM", "msm", "depmixS4")
 lapply(libraries, require, character.only=TRUE)
 
 # get LIWC dict
@@ -664,3 +664,32 @@ pos_breaks_gg
 ellos_breaks_gg
 death_breaks_gg
 viol_breaks_gg
+
+#################################################################################
+#################################################################################
+
+# possible states: hardline or concessions
+hmm_states <- c("hardline", "concessions")
+# possible symbols: technically any value between 0.0000 and 100.0000
+hmm_symbols <- seq(0, 100, by = 0.0001)
+
+neg_hmm <- initHMM(hmm_states, hmm_symbols)
+forms <- list(FARC_results$EmoNeg ~ 1, FARC_results$EmoPos ~ 1, FARC_results$Ellos ~ 1)
+
+mod <- depmix(forms, family = list(gaussian(), gaussian(), gaussian()), nstates = 2, data = FARC_results[,-4])
+hmm_mod <- fit(mod)
+summary(hmm_mod)
+head(posterior(hmm_mod))
+
+# per the documentation, I need nonzero values for the initial transition probabilities in the qmatrix() option. Use arbitrary value of 0.5
+qmat <- rbind(c(0.5,0.5), c(0.5,0.5))
+
+# specify arbitrary hmodel also
+hmodel1 <- list(hmmNorm(mean = 10, sd = 3), hmmNorm(mean = 10, sd = 3))
+
+# and we need the data to be sorted by time 
+FARC_results1 <- FARC_results[order(FARC_results$date),]
+
+# run msm()
+FARC_msm <- msm(EmoNeg ~ date, data = FARC_results1[,-4], qmatrix = qmat, hmodel = hmodel1, hcovariates = list(~ EmoPos, ~ Ellos))
+FARC_msm
