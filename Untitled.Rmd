@@ -155,7 +155,7 @@ hmodel1 <- list(hmmNorm(mean = 10, sd = 3), hmmNorm(mean = 10, sd = 3))
 ```
 
 ### msm()
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
+```{r, echo=TRUE, message=FALSE, warning=TRUE}
 
 # and we need the data to be sorted by time 
 FARC_results1 <- FARC_results[order(FARC_results$date),]
@@ -165,4 +165,7 @@ FARC_msm <- msm(EmoNeg ~ date, data = FARC_results1[,-4], qmatrix = qmat, hmodel
 
 # look at the results
 FARC_msm
+
+# average time spent in each state
+sojourn.msm(FARC_msm)
 ```

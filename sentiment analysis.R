@@ -668,17 +668,33 @@ viol_breaks_gg
 #################################################################################
 #################################################################################
 
-# possible states: hardline or concessions
-hmm_states <- c("hardline", "concessions")
-# possible symbols: technically any value between 0.0000 and 100.0000
-hmm_symbols <- seq(0, 100, by = 0.0001)
+# # possible states: hardline or concessions
+# hmm_states <- c("hardline", "concessions")
+# # possible symbols: technically any value between 0.0000 and 100.0000
+# hmm_symbols <- seq(0, 100, by = 0.0001)
+# neg_hmm <- initHMM(hmm_states, hmm_symbols)
 
-neg_hmm <- initHMM(hmm_states, hmm_symbols)
+# formulas
 forms <- list(FARC_results$EmoNeg ~ 1, FARC_results$EmoPos ~ 1, FARC_results$Ellos ~ 1)
 
+# Find the optimal number of states using BIC
+num_states <- seq(2, 10, by = 1)
+
+BIC_vals <- sapply(num_states, function(x) {BIC(depmix(forms, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results[,-4]))})
+
+BIC_df <- data.frame(cbind(num_states, BIC_vals))
+
+# plot the BIC values to select the optimal number of states
+BIC_plot <- ggplot(BIC_df, aes(x = num_states, y = BIC_vals)) +
+  geom_point() +
+  ggtitle("BIC Values for n = 2:10 Latent States HMM")
+
+# run the model for states n = 2
 mod <- depmix(forms, family = list(gaussian(), gaussian(), gaussian()), nstates = 2, data = FARC_results[,-4])
 hmm_mod <- fit(mod)
 summary(hmm_mod)
+
+# what state are we in at a given time t?
 head(posterior(hmm_mod))
 
 # per the documentation, I need nonzero values for the initial transition probabilities in the qmatrix() option. Use arbitrary value of 0.5
@@ -693,3 +709,4 @@ FARC_results1 <- FARC_results[order(FARC_results$date),]
 # run msm()
 FARC_msm <- msm(EmoNeg ~ date, data = FARC_results1[,-4], qmatrix = qmat, hmodel = hmodel1, hcovariates = list(~ EmoPos, ~ Ellos))
 FARC_msm
+sojourn.msm(FARC_msm)

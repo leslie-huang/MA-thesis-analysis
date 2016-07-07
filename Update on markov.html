@@ -194,9 +194,12 @@ hmodel1 &lt;- list(hmmNorm(mean = 10, sd = 3), hmmNorm(mean = 10, sd = 3))</code
 FARC_results1 &lt;- FARC_results[order(FARC_results$date),]
 
 # run msm()
-FARC_msm &lt;- msm(EmoNeg ~ date, data = FARC_results1[,-4], qmatrix = qmat, hmodel = hmodel1, hcovariates = list(~ EmoPos, ~ Ellos))
-
-# look at the results
+FARC_msm &lt;- msm(EmoNeg ~ date, data = FARC_results1[,-4], qmatrix = qmat, hmodel = hmodel1, hcovariates = list(~ EmoPos, ~ Ellos))</code></pre>
+<pre><code>## Warning in msm.check.times(mf$&quot;(time)&quot;, mf$&quot;(subject)&quot;, mf$&quot;(state)&quot;):
+## Different states observed at the same time on the same subject at
+## observations 5 and 6, 33 and 34, 51 and 52, 54 and 55, 67 and 68, 68 and
+## 69, 108 and 109</code></pre>
+<pre class="r"><code># look at the results
 FARC_msm</code></pre>
 <pre><code>## 
 ## Call:
@@ -230,6 +233,11 @@ FARC_msm</code></pre>
 ## 
 ## -2 * log-likelihood:  498.8197 
 ## [Note, to obtain old print format, use &quot;printold.msm&quot;]</code></pre>
+<pre class="r"><code># average time spent in each state
+sojourn.msm(FARC_msm)</code></pre>
+<pre><code>##         estimates       SE         L        U
+## State 1  1.866479 1.500129 0.3862731 9.018866
+## State 2  1.985263 1.584295 0.4154660 9.486379</code></pre>
 </div>
 </div>
 
