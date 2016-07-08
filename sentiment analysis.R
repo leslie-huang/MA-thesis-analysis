@@ -677,14 +677,15 @@ viol_breaks_gg
 # Run hidden Markov model
 # let's limit it to just 3 sentiment measures
 FARC_results1 <- FARC_results[, -4]
+FARC_results1 <- filter(FARC_results1, date >= "2012-01-01")
 
 # formulas
-forms <- list(FARC_results1$EmoNeg ~ 1, FARC_results1$EmoPos ~ 1, FARC_results1$Ellos ~ 1)
+forms1 <- list(FARC_results1$EmoNeg ~ 1, FARC_results1$EmoPos ~ 1, FARC_results1$Ellos ~ 1)
 
-# Find the optimal number of states using BIC
+# Find the optimal number of states using BIC -- before fitting
 num_states <- seq(2, 10, by = 1)
 
-BIC_vals <- sapply(num_states, function(x) {BIC(depmix(forms, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results1))})
+BIC_vals <- sapply(num_states, function(x) {BIC(depmix(forms1, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results1))})
 
 BIC_df <- data.frame(cbind(num_states, BIC_vals))
 
@@ -693,7 +694,7 @@ BIC_plot <- ggplot(BIC_df, aes(x = num_states, y = BIC_vals)) +
   geom_point() +
   ggtitle("BIC Values for n = 2:10 Latent States HMM")
 
-# now add the covariates: monthly violence
+# add the covariates: monthly violence
 # Function takes 1 parameter: a dataframe, and returns one parameter: a dataframe
 add_monthlies <- function(df) {
   dates <- df["date"]
@@ -723,11 +724,33 @@ add_monthlies <- function(df) {
 }
 
 # run to add violence/public opinion levels to FARC df
-FARC_results1 <- add_monthlies(FARC_results)
+FARC_results2 <- add_monthlies(FARC_results1)
 govt_results1 <- add_monthlies(govt_results)
 
-# run the model for states n = 2
-mod <- depmix(forms, family = list(gaussian(), gaussian(), gaussian()), nstates = 2, data = FARC_results1)
+forms2 <- list(FARC_results2$EmoNeg ~ 1, FARC_results2$EmoPos ~ 1, FARC_results2$Ellos ~ 1)
+
+# what are BIC values of the fitted models?
+BIC_vals2 <- sapply(num_states, function(x) {BIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)], transitions = list(~ FARC_actions, ~ army_casualties, ~ pres_approve, ~ peace_approve))))})
+
+BIC_df2 <- data.frame(cbind(num_states, BIC_vals2))
+
+# plot the BIC values to select the optimal number of states
+BIC_plot2 <- ggplot(BIC_df2, aes(x = num_states, y = BIC_vals2)) +
+  geom_point() +
+  ggtitle("BIC Values for n = 2:10 Latent States Fitted HMM w/ Covariates")
+
+# what are AIC values of the fitted models?
+AIC_vals <- sapply(num_states, function(x) {AIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)], transitions = list(~ FARC_actions, ~ army_casualties, ~ pres_approve, ~ peace_approve))))})
+
+AIC_df <- data.frame(cbind(num_states, AIC_vals))
+
+# plot the BIC values to select the optimal number of states
+AIC_plot <- ggplot(AIC_df, aes(x = num_states, y = AIC_vals)) +
+  geom_point() +
+  ggtitle("AIC Values for n = 2:10 Latent States Fitted HMM w/ Covariates")
+
+# run the model for states n = 3
+mod <- depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = 3, data = FARC_results2[,-(6:9)], transitions = list(~ FARC_actions, ~ army_casualties, ~ pres_approve, ~ peace_approve))
 hmm_mod <- fit(mod)
 summary(hmm_mod)
 
