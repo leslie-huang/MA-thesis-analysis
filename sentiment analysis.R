@@ -674,13 +674,17 @@ viol_breaks_gg
 # hmm_symbols <- seq(0, 100, by = 0.0001)
 # neg_hmm <- initHMM(hmm_states, hmm_symbols)
 
+# Run hidden Markov model
+# let's limit it to just 3 sentiment measures
+FARC_results1 <- FARC_results[, -4]
+
 # formulas
-forms <- list(FARC_results$EmoNeg ~ 1, FARC_results$EmoPos ~ 1, FARC_results$Ellos ~ 1)
+forms <- list(FARC_results1$EmoNeg ~ 1, FARC_results1$EmoPos ~ 1, FARC_results1$Ellos ~ 1)
 
 # Find the optimal number of states using BIC
 num_states <- seq(2, 10, by = 1)
 
-BIC_vals <- sapply(num_states, function(x) {BIC(depmix(forms, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results[,-4]))})
+BIC_vals <- sapply(num_states, function(x) {BIC(depmix(forms, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results1))})
 
 BIC_df <- data.frame(cbind(num_states, BIC_vals))
 
@@ -689,14 +693,51 @@ BIC_plot <- ggplot(BIC_df, aes(x = num_states, y = BIC_vals)) +
   geom_point() +
   ggtitle("BIC Values for n = 2:10 Latent States HMM")
 
+# now add the covariates: monthly violence
+# Function takes 1 parameter: a dataframe, and returns one parameter: a dataframe
+add_monthlies <- function(df) {
+  dates <- df["date"]
+  
+  # add columns for the monthly data we're adding
+  col_names <- c("FARC_actions", "army_casualties", "pres_approve", "peace_approve")
+  df[, col_names] <- NA
+  for (i in 1:length(dates[[1]])) {
+    date <- dates[i, 1]
+    year <- format(date, "%Y")
+    month <- format(date, "%m")
+    
+    monthly_date <- as.Date(paste(year, month, "01", sep = "-"))
+    
+    # get the stats from violence and opinion dfs
+    viol <- filter(monthly_viol, date == monthly_date)
+    public <- filter(public_op, date == monthly_date)
+    
+    # write them to new df
+    df["FARC_actions"][i, 1] <- as.numeric(viol[1])
+    df["army_casualties"][i, 1] <- as.numeric(viol[2])
+    df["pres_approve"][i, 1] <- as.numeric(public[1])
+    df["peace_approve"][i, 1] <- as.numeric(public[2])
+  }
+  
+  return(df)
+}
+
+# run to add violence/public opinion levels to FARC df
+FARC_results1 <- add_monthlies(FARC_results)
+govt_results1 <- add_monthlies(govt_results)
+
 # run the model for states n = 2
-mod <- depmix(forms, family = list(gaussian(), gaussian(), gaussian()), nstates = 2, data = FARC_results[,-4])
+mod <- depmix(forms, family = list(gaussian(), gaussian(), gaussian()), nstates = 2, data = FARC_results1)
 hmm_mod <- fit(mod)
 summary(hmm_mod)
 
 # what state are we in at a given time t?
-head(posterior(hmm_mod))
+head(posterior(hmm_mod)) # graph this later
 
+
+
+
+#### using msm()
 # per the documentation, I need nonzero values for the initial transition probabilities in the qmatrix() option. Use arbitrary value of 0.5
 qmat <- rbind(c(0.5,0.5), c(0.5,0.5))
 
