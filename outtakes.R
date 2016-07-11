@@ -133,3 +133,31 @@ jsonLDA <- createJSON(phi = LDApost$terms,
                       term.frequency = colSums(trim_FARC))
 serVis(jsonLDA, out.dir = "visCollLDA", open.browser = TRUE)
 
+
+
+
+# # possible states: hardline or concessions
+# hmm_states <- c("hardline", "concessions")
+# # possible symbols: technically any value between 0.0000 and 100.0000
+# hmm_symbols <- seq(0, 100, by = 0.0001)
+# neg_hmm <- initHMM(hmm_states, hmm_symbols)
+
+
+
+
+
+#### using msm()
+# per the documentation, I need nonzero values for the initial transition probabilities in the qmatrix() option. Use arbitrary value of 0.5
+qmat <- rbind(c(0.5,0.5), c(0.5,0.5))
+
+# specify arbitrary hmodel also
+hmodel1 <- list(hmmNorm(mean = 10, sd = 3), hmmNorm(mean = 10, sd = 3))
+
+# and we need the data to be sorted by time 
+FARC_results1 <- FARC_results[order(FARC_results$date),]
+
+# run msm()
+FARC_msm <- msm(EmoNeg ~ date, data = FARC_results1[,-4], qmatrix = qmat, hmodel = hmodel1, hcovariates = list(~ EmoPos, ~ Ellos))
+FARC_msm
+sojourn.msm(FARC_msm)
+

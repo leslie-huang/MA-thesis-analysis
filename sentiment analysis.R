@@ -668,12 +668,6 @@ viol_breaks_gg
 #################################################################################
 #################################################################################
 
-# # possible states: hardline or concessions
-# hmm_states <- c("hardline", "concessions")
-# # possible symbols: technically any value between 0.0000 and 100.0000
-# hmm_symbols <- seq(0, 100, by = 0.0001)
-# neg_hmm <- initHMM(hmm_states, hmm_symbols)
-
 # Run hidden Markov model
 # let's limit it to just 3 sentiment measures
 FARC_results1 <- FARC_results[, -4]
@@ -730,7 +724,7 @@ govt_results1 <- add_monthlies(govt_results)
 forms2 <- list(FARC_results2$EmoNeg ~ 1, FARC_results2$EmoPos ~ 1, FARC_results2$Ellos ~ 1)
 
 # what are BIC values of the fitted models?
-BIC_vals2 <- sapply(num_states, function(x) {BIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)], transitions = list(~ FARC_actions, ~ army_casualties, ~ pres_approve, ~ peace_approve))))})
+BIC_vals2 <- sapply(num_states, function(x) {BIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)])))})
 
 BIC_df2 <- data.frame(cbind(num_states, BIC_vals2))
 
@@ -759,18 +753,113 @@ head(posterior(hmm_mod)) # graph this later
 
 
 
+#################################################################################
+#################################################################################
+# Transition model: sentiment-responds-to-sentiment
 
-#### using msm()
-# per the documentation, I need nonzero values for the initial transition probabilities in the qmatrix() option. Use arbitrary value of 0.5
-qmat <- rbind(c(0.5,0.5), c(0.5,0.5))
+# Classify overall sentiment as "high" or "low": Compare negative and positive emotion proportions within a given document. 1 = high, 0 = low
+FARC_results3 <- FARC_results
+FARC_results3["sentiment_level"] <- as.numeric(FARC_results3$EmoNeg <= FARC_results3$EmoPos)
+FARC_results3["side"] <- "FARC"
+govt_results3 <- govt_results
+govt_results3["side"] <- "govt"
+govt_results3["sentiment_level"] <- as.numeric(govt_results3$EmoNeg <= govt_results3$EmoPos)
 
-# specify arbitrary hmodel also
-hmodel1 <- list(hmmNorm(mean = 10, sd = 3), hmmNorm(mean = 10, sd = 3))
+# combine them into one stream
+transition_chain <- rbind(FARC_results3, govt_results3)
+# and sort by date
+transition_chain <- transition_chain[order(as.Date(transition_chain$date, format = "%Y-%m-%d")), ]
+# and filter to the peace process
+transition_chain <- filter(transition_chain, date > "2012-01-01")
 
-# and we need the data to be sorted by time 
-FARC_results1 <- FARC_results[order(FARC_results$date),]
+# pairwise comparison to gauge "responsiveness": how often are the parties giving statements at t and t-1 different?
 
-# run msm()
-FARC_msm <- msm(EmoNeg ~ date, data = FARC_results1[,-4], qmatrix = qmat, hmodel = hmodel1, hcovariates = list(~ EmoPos, ~ Ellos))
-FARC_msm
-sojourn.msm(FARC_msm)
+get_responsiveness <- function(df) {
+  # put boolean of pairwise comparisons here
+  vect <- rep(NA, (length(df[ , 1]) - 1))
+  
+  for (i in 2:length(df[ , 1])) {
+    side_t <- df["side"][i, ]
+    side_t_1 <- df["side"][i-1, ]
+    
+    vect[i] <- side_t == side_t_1
+  }
+  
+  return(vect)
+}
+
+pairwise_responsiveness <- get_responsiveness(transition_chain)
+
+
+#################################################################################
+#################################################################################
+# PCA analysis
+FARC_corpus <- corpus(FARC$text, docvars = FARC_results$dates)
+
+govt_corpus <- corpus(govt$text, docvars = govt_results$dates)
+
+all_corpora <- FARC_corpus + govt_corpus
+
+# add docvars
+sides <- c(rep("FARC", length(FARC_corpus[, 1])), rep("govt", length(govt_corpus[, 1])))
+# docvars(all_corpora, field = "side") <- sides
+
+# make dfm
+all_dfm <- dfm(all_corpora, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
+
+# run PCA
+statements_PCA <- prcomp(all_dfm, center = TRUE, scale. = TRUE)
+summary(statements_PCA)
+
+# plot it
+plot(statements_PCA, type = "l", main="PCA of FARC and Govt Statements")
+# first 2 PCs account for ~10% of variance. Could be better...
+
+# import ggbiplot
+devtools::install_github("ggbiplot", "vqv")
+library(ggbiplot)
+
+# create graph of PC1 and PC2
+PC_graph <- ggbiplot(statements_PCA, obs.scale = 1, var.scale = 1, groups = sides)
+PC_graph <- PC_graph + theme(legend.direction = "horizontal", legend.position = "top")
+PC_graph
+
+# Graph PC1 as a time series:
+
+# collect date and side metadata with PC1 values
+statements_PC1_2 <- data.frame(statements_PCA$x[1:length(statements_PCA$x[,1]),1:2])
+statements_PC1_2["date"] <- c(FARC_results$date, govt_results$date)
+statements_PC1_2["side"] <- sides
+colnames(statements_PC1_2) <- c("PC1", "PC2", "date", "side")
+
+PC1_gg <- ggplot(filter(statements_PC1_2, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "FARC")) +
+  geom_jitter() +
+  geom_point(data = filter(statements_PC1_2, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
+  ggtitle("Plot of First Principal Components over Time") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
+
+# Graph PC2
+# collect date and side metadata with PC1 values
+PC2_gg <- ggplot(filter(statements_PC1_2, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "FARC")) +
+  geom_jitter() +
+  geom_point(data = filter(statements_PC1_2, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "Govt")) +
+  ggtitle("Plot of Second Principal Components over Time") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
+
+# FARC statement # 94 is an outlier. Let's try removing it, and rerun PCA
+# trimmed_statements_PC1_2 <- filter(statements_PC1_2, PC2 < 231)
+FARC_corpus_trimmed <- corpus(FARC$text[-94], docvars = FARC_results$dates[-94])
+all_corpora_trimmed <- FARC_corpus_trimmed + govt_corpus
+all_dfm_trimmed <- dfm(all_corpora_trimmed, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
+statements_PCA_trimmed <- prcomp(all_dfm_trimmed, center = TRUE, scale. = TRUE)
+summary(statements_PCA_trimmed)
+
+# plot it: still not great
+plot(statements_PCA_trimmed, type = "l", main="PCA of FARC and Govt Statements")
+
+statements_PC1_2 <- data.frame(statements_PCA$x[1:length(statements_PCA$x[,1]),1:2])
+statements_PC1_2["date"] <- c(FARC_results$date, govt_results$date)
+statements_PC1_2["side"] <- sides
+colnames(statements_PC1_2) <- c("PC1", "PC2", "date", "side")
