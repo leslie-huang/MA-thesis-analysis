@@ -6,8 +6,11 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "quantedaData", "ggplot2", "stringr", "LIWCalike", "topicmodels", "lda", "stm", "LDAvis", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "HMM", "msm", "depmixS4")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov")
 lapply(libraries, require, character.only=TRUE)
+
+devtools::install_github("ggbiplot", "vqv")
+library(ggbiplot)
 
 # get LIWC dict
 spanish_dict <- dictionary(file = "../LIWC/Spanish_LIWC2007_Dictionary.dic", format = "LIWC")
@@ -800,9 +803,9 @@ govt_corpus <- corpus(govt$text, docvars = govt_results$dates)
 
 all_corpora <- FARC_corpus + govt_corpus
 
-# add docvars
+# docvars for inserting: sides and dates
 sides <- c(rep("FARC", length(FARC_corpus[, 1])), rep("govt", length(govt_corpus[, 1])))
-# docvars(all_corpora, field = "side") <- sides
+pca_dates <- c(FARC_results$date, govt_results$date)
 
 # make dfm
 all_dfm <- dfm(all_corpora, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
@@ -815,10 +818,6 @@ summary(statements_PCA)
 plot(statements_PCA, type = "l", main="PCA of FARC and Govt Statements")
 # first 2 PCs account for ~10% of variance. Could be better...
 
-# import ggbiplot
-devtools::install_github("ggbiplot", "vqv")
-library(ggbiplot)
-
 # create graph of PC1 and PC2
 PC_graph <- ggbiplot(statements_PCA, obs.scale = 1, var.scale = 1, groups = sides)
 PC_graph <- PC_graph + theme(legend.direction = "horizontal", legend.position = "top")
@@ -828,7 +827,7 @@ PC_graph
 
 # collect date and side metadata with PC1 values
 statements_PC1_2 <- data.frame(statements_PCA$x[1:length(statements_PCA$x[,1]),1:2])
-statements_PC1_2["date"] <- c(FARC_results$date, govt_results$date)
+statements_PC1_2["date"] <- pca_dates
 statements_PC1_2["side"] <- sides
 colnames(statements_PC1_2) <- c("PC1", "PC2", "date", "side")
 
@@ -859,7 +858,68 @@ summary(statements_PCA_trimmed)
 # plot it: still not great
 plot(statements_PCA_trimmed, type = "l", main="PCA of FARC and Govt Statements")
 
-statements_PC1_2 <- data.frame(statements_PCA$x[1:length(statements_PCA$x[,1]),1:2])
-statements_PC1_2["date"] <- c(FARC_results$date, govt_results$date)
-statements_PC1_2["side"] <- sides
-colnames(statements_PC1_2) <- c("PC1", "PC2", "date", "side")
+statements_PC1_2_trimmed <- data.frame(statements_PCA_trimmed$x[1:length(statements_PCA_trimmed$x[,1]),1:2])
+statements_PC1_2_trimmed["date"] <- pca_dates[-94]
+statements_PC1_2_trimmed["side"] <- sides[-94]
+colnames(statements_PC1_2_trimmed) <- c("PC1", "PC2", "date", "side")
+
+# Plot PC1 time series
+PC1_gg_trimmed <- ggplot(filter(statements_PC1_2_trimmed, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "FARC")) +
+  geom_smooth(method = "loess", se = FALSE) +
+  geom_jitter() +
+  geom_point(data = filter(statements_PC1_2_trimmed, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
+  geom_smooth(method = "loess", se = FALSE, data = statements_PC1_2_trimmed, aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
+  ggtitle("Plot of First Principal Components over Time (Outlier Removed)") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  labs(
+    x = "Date",
+    y = "PC1",
+    color = "Legend")
+
+# Graph PC2
+# collect date and side metadata with PC1 values
+PC2_gg_trimmed <- ggplot(filter(statements_PC1_2_trimmed, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "FARC")) +
+  geom_smooth(method = "loess", se = FALSE) +
+  geom_jitter() +
+  geom_point(data = filter(statements_PC1_2_trimmed, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "Govt")) +
+  geom_smooth(method = "loess", se = FALSE, data = statements_PC1_2_trimmed, aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "Govt")) +
+  ggtitle("Plot of Second Principal Components over Time (Outlier Removed)") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  labs(
+    x = "Date",
+    y = "PC2",
+    color = "Legend")
+
+
+#################################################################################
+#################################################################################
+# Robust PCA
+rob_pca <- PcaHubert(all_dfm)
+# First 2 components account for 65% of variance
+print(rob_pca)
+summary(rob_pca)
+
+# plot
+screeplot(rob_pca, type = "lines", main = "Robust PCA with 10 Components")
+
+# let's plot the time series of PC1
+rob_pc1 <- data.frame(rob_pca@scores)
+rob_pc1 <- dplyr::select(rob_pc1, PC1)
+rob_pc1["side"] <- sides
+rob_pc1["date"] <- pca_dates
+
+# Robust PC1 graph
+PC1_gg_robust <- ggplot(filter(rob_pc1, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "FARC")) +
+  geom_smooth(method = "loess", se = FALSE) +
+  geom_jitter() +
+  geom_point(data = filter(rob_pc1, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
+  geom_smooth(method = "loess", se = FALSE, data = rob_pc1, aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
+  ggtitle("Plot of First Principal Components over Time (Robust PCA)") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) + 
+  labs(
+    x = "Date",
+    y = "PC1",
+    color = "Legend")
