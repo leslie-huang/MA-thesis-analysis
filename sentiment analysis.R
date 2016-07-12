@@ -6,7 +6,7 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "MCMCglmm")
 lapply(libraries, require, character.only=TRUE)
 
 devtools::install_github("ggbiplot", "vqv")
@@ -754,46 +754,6 @@ summary(hmm_mod)
 # what state are we in at a given time t?
 head(posterior(hmm_mod)) # graph this later
 
-
-
-#################################################################################
-#################################################################################
-# Transition model: sentiment-responds-to-sentiment
-
-# Classify overall sentiment as "high" or "low": Compare negative and positive emotion proportions within a given document. 1 = high, 0 = low
-FARC_results3 <- FARC_results
-FARC_results3["sentiment_level"] <- as.numeric(FARC_results3$EmoNeg <= FARC_results3$EmoPos)
-FARC_results3["side"] <- "FARC"
-govt_results3 <- govt_results
-govt_results3["side"] <- "govt"
-govt_results3["sentiment_level"] <- as.numeric(govt_results3$EmoNeg <= govt_results3$EmoPos)
-
-# combine them into one stream
-transition_chain <- rbind(FARC_results3, govt_results3)
-# and sort by date
-transition_chain <- transition_chain[order(as.Date(transition_chain$date, format = "%Y-%m-%d")), ]
-# and filter to the peace process
-transition_chain <- filter(transition_chain, date > "2012-01-01")
-
-# pairwise comparison to gauge "responsiveness": how often are the parties giving statements at t and t-1 different?
-
-get_responsiveness <- function(df) {
-  # put boolean of pairwise comparisons here
-  vect <- rep(NA, (length(df[ , 1]) - 1))
-  
-  for (i in 2:length(df[ , 1])) {
-    side_t <- df["side"][i, ]
-    side_t_1 <- df["side"][i-1, ]
-    
-    vect[i] <- side_t == side_t_1
-  }
-  
-  return(vect)
-}
-
-pairwise_responsiveness <- get_responsiveness(transition_chain)
-
-
 #################################################################################
 #################################################################################
 # PCA analysis
@@ -923,3 +883,99 @@ PC1_gg_robust <- ggplot(filter(rob_pc1, side == "FARC"), aes(x = as.Date(date, o
     x = "Date",
     y = "PC1",
     color = "Legend")
+
+#################################################################################
+#################################################################################
+# Transition model: sentiment-responds-to-sentiment
+
+# Classify overall sentiment as "high" or "low": Compare negative and positive emotion proportions within a given document. 1 = high, 0 = low
+FARC_results3 <- FARC_results
+FARC_results3["sentiment_level"] <- as.numeric(2 * FARC_results3$EmoNeg <= FARC_results3$EmoPos)
+FARC_results3["side"] <- "FARC"
+govt_results3 <- govt_results
+govt_results3["side"] <- "govt"
+govt_results3["sentiment_level"] <- as.numeric(2 * govt_results3$EmoNeg <= govt_results3$EmoPos)
+
+# combine them into one stream
+transition_chain <- rbind(FARC_results3, govt_results3)
+# and sort by date
+transition_chain <- transition_chain[order(as.Date(transition_chain$date, format = "%Y-%m-%d")), ]
+# and filter to the peace process
+transition_chain <- filter(transition_chain, date > "2012-01-01")
+
+# pairwise comparison to gauge "responsiveness": how often are the parties giving statements at t and t-1 different?
+
+get_responsiveness <- function(df) {
+  # put boolean of pairwise comparisons here
+  vect <- rep(NA, (length(df[ , 1]) - 1))
+  
+  for (i in 2:length(df[ , 1])) {
+    side_t <- df["side"][i, ]
+    side_t_1 <- df["side"][i-1, ]
+    
+    vect[i] <- side_t != side_t_1
+  }
+  
+  return(vect)
+}
+
+# how frequent are "responding pairs"?
+pairwise_responsiveness <- get_responsiveness(transition_chain)
+pairwise_num <- sum(na.omit(as.numeric(pairwise_responsiveness)))
+pairwise_num
+
+# Make the MCMC matrix
+mc_mat <- dplyr::select(transition_chain, date, sentiment_level, side)
+
+# Set up x = current state, y = next state.
+# State1 = FARC-low, State 2 = FARC-high, State 3 = govt-low, State 4 = govt-high
+# Function takes 1 parameter: a df with "side" and "sentiment_level" variables
+state_maker <- function(df) {
+  df["state_x"] <- NA
+  
+  # fill in the appropriate states
+  for (i in 1:length(df[, 1])) {
+    
+    # Divide FARC into states 1 and 2
+    if (df["side"][i, ] == "FARC") {
+      
+      if (df["sentiment_level"][i, ] == 0) {
+        df["state_x"][i, ] <- 1
+      }
+      
+      else {
+        df["state_x"][i, ] <- 2
+      }
+    }
+    
+    # Divide govt into states 3 and 4
+    if (df["side"][i, ] == "govt") {
+      
+      if (df["sentiment_level"][i, ] == 0) {
+      df["state_x"][i, ] <- 3
+      }
+      
+    else {
+      df["state_x"][i, ] <- 4
+    }
+      
+  }
+  }
+  
+  df["state_y"] <- NA
+  
+  for (i in 1:length(df[, 1]) -1) {
+    df["state_y"][i, ] <- df["state_x"][i+1, ]
+  }
+  
+  return(df)
+  }
+
+mc_mat <- state_maker(mc_mat)
+# add violence and public opinion for random effects
+mc_mat <- add_monthlies(mc_mat)
+
+# Run MCMC
+mc_model <- MCMCglmm(state_y ~ state_x, random = NULL, data = mc_mat, family = "categorical", rcov = ~us(trait):units)
+summary(mc_model)
+plot(mc_model$VCV)
