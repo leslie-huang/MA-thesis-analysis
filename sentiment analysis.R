@@ -334,7 +334,8 @@ death_breaks_gg <- base_death +
 neg_breaks_gg
 pos_breaks_gg
 ellos_breaks_gg
-deaths_breaks_gg
+death_breaks_gg
+
 #################################################################################
 #################################################################################
 # now let's take a look at trends in violence/military activity
@@ -373,6 +374,7 @@ ggtitle("Major Events and Violence Trends") +
 # let's find the structural breaks ** ignore the "day"
 viol_breaks <- get_breakdate(break_finder(monthly_viol), monthly_viol)
 
+# Function to make list of violence breaks with categorical var for the measure of violence
 convert_vbreaks <- function(listoflists) {
   df <- as.data.frame(unlist(listoflists))
   df$group <- NA
@@ -404,6 +406,10 @@ viol_breaks_gg
 
 #################################################################################
 #################################################################################
+# TIME SERIES ANALYSIS
+#################################################################################
+#################################################################################
+
 # let's check out these time series of data
 
 # ADF tests for stationarity
@@ -439,11 +445,13 @@ grangertest(na.omit(monthly_viol[,2]) ~ na.omit(monthly_viol[,3]), order = 3)
 grangertest(na.omit(monthly_viol[,3]) ~ na.omit(monthly_viol[,2]), order = 1)
 # result: army deaths are Granger caused by FARC actions
 
-#################################################################################
-#################################################################################
-# let's look at the means before and after structural breaks
 
-# Function to calculate means in each type of sentiment during "regimes" bounded by structural breaks. Takes two arguments: df of dates with a group ID of break type, and df of loess values
+
+#################################################################################
+#################################################################################
+# Comparison of means: let's look at the means before and after structural breaks
+
+# Function to calculate means in each type of sentiment during "regimes" bounded by structural breaks. Takes two arguments: df of dates with a group ID of break type, and df of loess values. Returns one argument: list of lists of Sentiment Type, Breakdate, and Means
 calculate_breakmeans <- function(df, loessed) {
   # need to rename groups so they match up with columns in the loess df
   df$group <- gsub("neg_break", "EmoNeg", df$group)
@@ -503,7 +511,7 @@ calculate_breakmeans <- function(df, loessed) {
 
 #################################################################################
 #################################################################################
-# get all the means of regimes defined by structural breakpoints in emotion. 
+# get all the means of regimes defined by structural breakpoints in emotion
 FARC_means <- calculate_breakmeans(FARC_breaks_df, FARC_results)
 govt_means <- calculate_breakmeans(govt_breaks_df, govt_results)
 joint_means <- calculate_breakmeans(joint_breaks_df, joint_results)
@@ -517,7 +525,7 @@ death_breaks_gg
 #################################################################################
 # now let's do the same for structural breaks in the violence time series
 
-# modified function
+# modified version of the breakmeans function
 calculate_viol_breakmeans <- function(df, loessed) {
   loessed <- na.omit(loessed)
   df$group <- gsub("farc_action", "FARC_actions", df$group)
@@ -560,6 +568,8 @@ calculate_viol_breakmeans <- function(df, loessed) {
 viol_means <- calculate_viol_breakmeans(viol_breaks_list, monthly_viol)
 
 viol_breaks_gg
+
+
 
 #################################################################################
 #################################################################################
@@ -606,7 +616,7 @@ opinion_breakd <- get_breakdate(break_finder(na.omit(public_op)), public_op)
 
 #################################################################################
 #################################################################################
-# Results for demo
+# Results
 
 # Raw LIWC scores
 View(FARC_raw)
@@ -668,18 +678,30 @@ ellos_breaks_gg
 death_breaks_gg
 viol_breaks_gg
 
-#################################################################################
-#################################################################################
 
-# Run hidden Markov model
-# let's limit it to just 3 sentiment measures
+
+#################################################################################
+#################################################################################
+# Markov models
+
+
+# Hidden Markov model: FARC
+# let's limit it to just 3 sentiment measures and starting in 2012
 FARC_results1 <- FARC_results[, -4]
 FARC_results1 <- filter(FARC_results1, date >= "2012-01-01")
 
-# formulas
+# formulas for the model
 forms1 <- list(FARC_results1$EmoNeg ~ 1, FARC_results1$EmoPos ~ 1, FARC_results1$Ellos ~ 1)
 
-# Find the optimal number of states using BIC -- before fitting
+#################################################################################
+#################################################################################
+# What is the optimal number of states? We will optimize for
+# (1) BIC, not fitted model
+# (2) BIC, fitted model with covariates added
+# (3) AIC, fitted model with covariates added
+
+#################################################################################
+# Find the optimal number of states based on BIC -- not fitted model
 num_states <- seq(2, 10, by = 1)
 
 BIC_vals <- sapply(num_states, function(x) {BIC(depmix(forms1, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results1))})
@@ -691,8 +713,10 @@ BIC_plot <- ggplot(BIC_df, aes(x = num_states, y = BIC_vals)) +
   geom_point() +
   ggtitle("BIC Values for n = 2:10 Latent States HMM")
 
-# add the covariates: monthly violence
-# Function takes 1 parameter: a dataframe, and returns one parameter: a dataframe
+#################################################################################
+# Run it again after adding the covariates: monthly violence and public opinion
+
+# Function takes 1 parameter: a dataframe, and returns one parameter with monthly stats for violence and public opinion added: a dataframe
 add_monthlies <- function(df) {
   dates <- df["date"]
   
@@ -720,13 +744,14 @@ add_monthlies <- function(df) {
   return(df)
 }
 
-# run to add violence/public opinion levels to FARC df
+#################################################################################
+# Run function to add violence/public opinion levels to FARC df
 FARC_results2 <- add_monthlies(FARC_results1)
 govt_results1 <- add_monthlies(govt_results)
 
 forms2 <- list(FARC_results2$EmoNeg ~ 1, FARC_results2$EmoPos ~ 1, FARC_results2$Ellos ~ 1)
 
-# what are BIC values of the fitted models?
+# Optimize BIC vals for fitted model
 BIC_vals2 <- sapply(num_states, function(x) {BIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)])))})
 
 BIC_df2 <- data.frame(cbind(num_states, BIC_vals2))
@@ -736,23 +761,30 @@ BIC_plot2 <- ggplot(BIC_df2, aes(x = num_states, y = BIC_vals2)) +
   geom_point() +
   ggtitle("BIC Values for n = 2:10 Latent States Fitted HMM w/ Covariates")
 
+#################################################################################
 # what are AIC values of the fitted models?
 AIC_vals <- sapply(num_states, function(x) {AIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)], transitions = list(~ FARC_actions, ~ army_casualties, ~ pres_approve, ~ peace_approve))))})
 
 AIC_df <- data.frame(cbind(num_states, AIC_vals))
 
-# plot the BIC values to select the optimal number of states
+# plot the AIC values to select the optimal number of states
 AIC_plot <- ggplot(AIC_df, aes(x = num_states, y = AIC_vals)) +
   geom_point() +
   ggtitle("AIC Values for n = 2:10 Latent States Fitted HMM w/ Covariates")
 
-# run the model for states n = 3
+#################################################################################
+#################################################################################
+# HMM wih 3 states and covars
+
 mod <- depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = 3, data = FARC_results2[,-(6:9)], transitions = list(~ FARC_actions, ~ army_casualties, ~ pres_approve, ~ peace_approve))
 hmm_mod <- fit(mod)
 summary(hmm_mod)
 
 # what state are we in at a given time t?
-head(posterior(hmm_mod)) # graph this later
+head(posterior(hmm_mod)) 
+# graph this later
+
+
 
 #################################################################################
 #################################################################################
