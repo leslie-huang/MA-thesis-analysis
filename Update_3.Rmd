@@ -14,7 +14,7 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "MCMCglmm")
 lapply(libraries, require, character.only=TRUE)
 
 # get LIWC dict
@@ -200,16 +200,15 @@ FARC_corpus_trimmed <- corpus(FARC$text[-94], docvars = FARC_results$dates[-94])
 all_corpora_trimmed <- FARC_corpus_trimmed + govt_corpus
 all_dfm_trimmed <- dfm(all_corpora_trimmed, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
 statements_PCA_trimmed <- prcomp(all_dfm_trimmed, center = TRUE, scale. = TRUE)
-summary(statements_PCA_trimmed)
-```
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-# plot it: still not great
-plot(statements_PCA_trimmed, type = "l", main="PCA of FARC and Govt Statements")
 ```
 
 ### Graph time series of the first two PCs with outlier removed and log transformation
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
+FARC_corpus_trimmed <- corpus(FARC$text[-94], docvars = FARC_results$dates[-94])
+all_corpora_trimmed <- FARC_corpus_trimmed + govt_corpus
+all_dfm_trimmed <- dfm(all_corpora_trimmed, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
+statements_PCA_trimmed <- prcomp(all_dfm_trimmed, center = TRUE, scale. = TRUE)
+
 statements_PC1_2_trimmed <- data.frame(statements_PCA_trimmed$x[1:length(statements_PCA_trimmed$x[,1]),1:2])
 statements_PC1_2_trimmed["date"] <- pca_dates[-94]
 statements_PC1_2_trimmed["side"] <- sides[-94]
@@ -246,6 +245,8 @@ PC2_gg_trimmed <- ggplot(filter(statements_PC1_2_trimmed, side == "FARC"), aes(x
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+summary(statements_PCA_trimmed)
+plot(statements_PCA_trimmed, type = "l", main="PCA of FARC and Govt Statements")
 PC1_gg_trimmed
 PC2_gg_trimmed
 ```
@@ -288,4 +289,136 @@ PC1_gg_robust <- ggplot(filter(rob_pc1, side == "FARC"), aes(x = as.Date(date, o
 PC1_gg_robust
 ```
 
-## Markov transition chain
+## MCMC for sentiment responsiveness
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+# Transition model: sentiment-responds-to-sentiment
+
+# Classify overall sentiment as "high" or "low": Compare negative and positive emotion proportions within a given document. 1 = high, 0 = low
+FARC_results3 <- FARC_results
+FARC_results3["sentiment_level"] <- as.numeric(2 * FARC_results3$EmoNeg <= FARC_results3$EmoPos)
+FARC_results3["side"] <- "FARC"
+govt_results3 <- govt_results
+govt_results3["side"] <- "govt"
+govt_results3["sentiment_level"] <- as.numeric(2 * govt_results3$EmoNeg <= govt_results3$EmoPos)
+
+# combine them into one stream
+transition_chain <- rbind(FARC_results3, govt_results3)
+# and sort by date
+transition_chain <- transition_chain[order(as.Date(transition_chain$date, format = "%Y-%m-%d")), ]
+# and filter to the peace process
+transition_chain <- filter(transition_chain, date > "2012-01-01")
+
+# pairwise comparison to gauge "responsiveness": how often are the parties giving statements at t and t-1 different?
+
+get_responsiveness <- function(df) {
+  # put boolean of pairwise comparisons here
+  vect <- rep(NA, (length(df[ , 1]) - 1))
+  
+  for (i in 2:length(df[ , 1])) {
+    side_t <- df["side"][i, ]
+    side_t_1 <- df["side"][i-1, ]
+    
+    vect[i] <- side_t != side_t_1
+  }
+  
+  return(vect)
+}
+
+# how frequent are "responding pairs"?
+pairwise_responsiveness <- get_responsiveness(transition_chain)
+pairwise_num <- sum(na.omit(as.numeric(pairwise_responsiveness)))
+pairwise_num
+
+# Make the MCMC matrix
+mc_mat <- dplyr::select(transition_chain, date, sentiment_level, side)
+
+# Set up x = current state, y = next state.
+# State1 = FARC-low, State 2 = FARC-high, State 3 = govt-low, State 4 = govt-high
+# Function takes 1 parameter: a df with "side" and "sentiment_level" variables
+state_maker <- function(df) {
+  df["state_x"] <- NA
+  
+  # fill in the appropriate states
+  for (i in 1:length(df[, 1])) {
+    
+    # Divide FARC into states 1 and 2
+    if (df["side"][i, ] == "FARC") {
+      
+      if (df["sentiment_level"][i, ] == 0) {
+        df["state_x"][i, ] <- 1
+      }
+      
+      else {
+        df["state_x"][i, ] <- 2
+      }
+    }
+    
+    # Divide govt into states 3 and 4
+    if (df["side"][i, ] == "govt") {
+      
+      if (df["sentiment_level"][i, ] == 0) {
+      df["state_x"][i, ] <- 3
+      }
+      
+    else {
+      df["state_x"][i, ] <- 4
+    }
+      
+  }
+  }
+  
+  df["state_y"] <- NA
+  
+  for (i in 1:length(df[, 1]) -1) {
+    df["state_y"][i, ] <- df["state_x"][i+1, ]
+  }
+  
+  return(df)
+  }
+
+mc_mat <- state_maker(mc_mat)
+# add violence and public opinion for random effects
+# Function takes 1 parameter: a dataframe, and returns one parameter: a dataframe
+add_monthlies <- function(df) {
+  dates <- df["date"]
+  
+  # add columns for the monthly data we're adding
+  col_names <- c("FARC_actions", "army_casualties", "pres_approve", "peace_approve")
+  df[, col_names] <- NA
+  for (i in 1:length(dates[[1]])) {
+    date <- dates[i, 1]
+    year <- format(date, "%Y")
+    month <- format(date, "%m")
+    
+    monthly_date <- as.Date(paste(year, month, "01", sep = "-"))
+    
+    # get the stats from violence and opinion dfs
+    viol <- filter(monthly_viol, date == monthly_date)
+    public <- filter(public_op, date == monthly_date)
+    
+    # write them to new df
+    df["FARC_actions"][i, 1] <- as.numeric(viol[1])
+    df["army_casualties"][i, 1] <- as.numeric(viol[2])
+    df["pres_approve"][i, 1] <- as.numeric(public[1])
+    df["peace_approve"][i, 1] <- as.numeric(public[2])
+  }
+  
+  return(df)
+}
+
+
+
+mc_mat <- add_monthlies(mc_mat)
+```
+
+### Let's have a look at the data:
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+head(mc_mat)
+```
+
+### Run MCMC
+```{r, echo=TRUE, fig.height=12, message=FALSE, warning=FALSE}
+mc_model <- MCMCglmm(state_y ~ state_x, random = NULL, data = mc_mat, family = "categorical", rcov = ~us(trait):units)
+summary(mc_model)
+plot(mc_model$VCV)
+```

@@ -807,11 +807,14 @@ PC2_gg <- ggplot(filter(statements_PC1_2, side == "FARC"), aes(x = as.Date(date,
   scale_x_date(date_minor_breaks = "1 month",
                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
 
-# FARC statement # 94 is an outlier. Let's try removing it, and rerun PCA
+
+#################################################################################
+#################################################################################
+# FARC statement # 94 is an outlier. Let's try removing it, adding log transformation, and rerun PCA
 # trimmed_statements_PC1_2 <- filter(statements_PC1_2, PC2 < 231)
 FARC_corpus_trimmed <- corpus(FARC$text[-94], docvars = FARC_results$dates[-94])
 all_corpora_trimmed <- FARC_corpus_trimmed + govt_corpus
-all_dfm_trimmed <- dfm(all_corpora_trimmed, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
+all_dfm_trimmed <- log(dfm(all_corpora_trimmed, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish")))
 statements_PCA_trimmed <- prcomp(all_dfm_trimmed, center = TRUE, scale. = TRUE)
 summary(statements_PCA_trimmed)
 

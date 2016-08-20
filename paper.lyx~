@@ -81,32 +81,229 @@
 
 \begin_body
 
+\begin_layout Title
+A text analysis of FARC and Colombian statements issued during peace talks
+\end_layout
+
+\begin_layout Author
+Leslie Huang
+\end_layout
+
+\begin_layout Address
+New York University Department of Politics
+\end_layout
+
+\begin_layout Address
+This paper is submitted for the M.A.
+ thesis requirement
+\end_layout
+
+\begin_layout Abstract
+The international relations literature has employed game theoretical and
+ empirical approaches to the puzzle of 
+\begin_inset Quotes eld
+\end_inset
+
+cheap talk
+\begin_inset Quotes erd
+\end_inset
+
+ in negotiations between adversaries.
+ However, there currently does not exist any research that analyzes the
+ text of such talk and its associations with levels of ongoing violence
+ and the negotiations.
+ In the context of the peace negotiations between the Colombian government
+ and the Fuerzas Armadas Revolucionarias de Colombia (FARC), I seek to answer
+ the following questions: How does government 
+\begin_inset Quotes eld
+\end_inset
+
+talk
+\begin_inset Quotes erd
+\end_inset
+
+ respond to rebel 
+\begin_inset Quotes eld
+\end_inset
+
+talk
+\begin_inset Quotes erd
+\end_inset
+
+? What is the association between rhetoric and violence?
+\end_layout
+
+\begin_layout Subsection*
+Introduction
+\end_layout
+
 \begin_layout Standard
+This paper offers several original contributions: a new dataset of government
+ and rebel/terrorist texts as well as jointly released statements, all during
+ an ongoing conflict;
+\end_layout
+
+\begin_layout Subsection*
+Theory and background
+\end_layout
+
+\begin_layout Subparagraph*
+The conflict.
+\end_layout
+
+\begin_layout Standard
+Colombia's conflict with Fuerzas Armadas Revolucionarias de Colombia (FARC;
+ Revolutionary Armed Forces of Colombia [also known as Fuerzas Armadas Revolucio
+narias de Colombia--Ejército del Pueblo, or FARC-EP]) began in the aftermath
+ of the ten-year period of civil war known as La Violencia.
+ Originally founded in 1964 as a Marxist insurgency, FARC sought to overthrow
+ the government, and its base was communists and rural peasants.
+ (CFR) FARC's violence included kidnappings for ransom and disappearances
+ of civilians and security personnel, extortion, and murder.
+ Now notorious as the longest-running and only remaining guerrilla insurgency
+ in the Western Hemisphere, the violence has claimed the lives of more than
+ 200,000 civilians and displacing millions.
+ (BBC News) 
+\end_layout
+
+\begin_layout Standard
+In the 1980s and 1990s, FARC's activities expanded to include the drug trade,
+ beginning with taxation of cocaine producers but eventually cocaine production
+ itself.
+ (Wilson) This sparked the formation of right-wing paramilitary groups such
+ as the Autodefensas Unidas de Colombia (AUC; United Self-Defense Forces
+ of Colombia), whose bloody battles with FARC were often about control over
+ drug trafficking.
+ (Wilson) FARC and the paramilitary groups, as well as the government, are
+ accused of human rights abuses.
+ In the last 20 years, FARC's involvement with cocaine trafficking has prompted
+ action from the U.S.
+ government, and it has caught international attention with kidnappings
+ for ransom and assassinations of political and military figures.
+ Less notorious was the use of landmines, which have resulted in thousands
+ killed or maimed.
+\end_layout
+
+\begin_layout Standard
+The Ejército de Liberación Nacional (ELN; National Liberation Army), a smaller
+ and also Marxist group, has also been active in the same period, also engaging
+ in kidnappings for ransom, violence, and drug trafficking.
+ (CFR) ELN began pursuing cooperation with FARC and peace talks with the
+ government as FARC's peace process came underway over the last several
+ years.
+\end_layout
+
+\begin_layout Subparagraph*
+Peace process.
+\end_layout
+
+\begin_layout Standard
+During the tenure of president (now senator) Álvaro Uribe from 2002-2010,
+ the government cracked down on Marxist groups and drug traffickers, resulting
+ in significant reductions the strength of FARC as well as other armed groups.
+ (CFR) FARC's willingness to negotiate is attributed in part to this crackdown.
+ Peace talks, brokered by Cuba and Norway, began in the fall of 2012 in
+ Havana.
+ The talks were limited to an agenda of six topics: agrarian reform/land
+ development; political participation; ending of the conflict (i.e.
+ ceasefire, post-conflict justice, disarmament, and reintegration); illegal
+ drugs; victims; and implementation.
+ The talks have been championed by president Juan Manuel Santos, who succeeded
+ Uribe in 2010 and was re-elected in 2014 during the peace negotiations.
+ As the talks have dragged on, Santos's approval ratings have plummeted
+ along with public optimism about the talks, and he has faced the vociferous
+ opposition of Uribe and other hardline politicians as well as members of
+ the military that disapprove of negotiating with FARC.
+\end_layout
+
+\begin_layout Standard
+With many of its leaders and founders killed in the years leading up to
+ the peace negotiations, FARC is currently led by a rebel known as Timochenko.
+ Numerous Secretariat members are on their negotiating team, led by the
+ rebel alias Ivan Marquez.
+ Despite this high-ranking participation and the declaration of several
+ unilateral ceasefires during the negotiations period, attacks have continued
+ during the peace talks, ranging from the kidnapping of rural policemen
+ to the kidnapping of a high-ranking general and the bombing of oil pipelines.
+ Throughout (and prior to) the talks, FARC has released public statements
+ on their website and maintain an active Internet presence--their website
+ even features the blogs of peace negotiators.
+\end_layout
+
+\begin_layout Subparagraph*
+Sentiment analysis of extremist texts.
+ 
+\end_layout
+
+\begin_layout Standard
+Relevant analysis of extremist texts (
+\begin_inset Quotes eld
+\end_inset
+
+text
+\begin_inset Quotes erd
+\end_inset
+
+ being any form of written statement) has emanated from James Pennebaker
+ and coauthors in the field of psychology.
+ With a focus on divining the emotional and psychological states of individuals,
+ Pennebaker's research has found associations between frequency of usage
+ of particular types of words and emotional, cognitive, and social attributes.
+ (Pennebaker and Chung) In analysis of extremist texts from American Nazi
+ and militant animal rights organizations, they found that 
+\begin_inset Quotes eld
+\end_inset
+
+third-person plural pronouns [e.g.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+we
+\begin_inset Quotes erd
+\end_inset
+
+] are the single best predictor of extremism...
+ suggest[ing] that the group is defining itself to a large degree by the
+ existence of an oppositional group.
+ (Pennebaker and Chung) Consistent with that result, their study of texts
+ issued by Osama bin Laden and Ayman al-Zawahiri of al Qaeda found greater
+ frequency in the use of third-person plural pronouns, as well as emotional
+ words and first-person pronouns.
+ The data in that study differs in several significant ways from the data
+ in this paper: the texts have been translated, are authored by specific
+ individuals, and were originally oral rather than written texts.
+ Other analysis of extremist texts has tended to focus on large corpora
+ online postings: the emotional affect of postings on extremist Internet
+ forums (Abbasi and Chen), or network analysis or topic modelling of forum
+ or blog posts.
+ (Chau and Xu)
+\end_layout
+
+\begin_layout Subparagraph*
+Peace negotiation literature: spoilers.
+\end_layout
+
+\begin_layout Subsection*
 Data
 \end_layout
 
 \begin_layout Standard
-This paper's analysis uses an original dataset comprising communiques and
- statements from FARC and the Colombian government separately, and joint
- communiques issued from the peace negotiations.
- All documents in the dataset were in the original Spanish, thus avoiding
- the obvious pitfalls of inter-translator variance, loss of nuance through
- translation, etc.
- The primary time period of interest is the ongoing peace negotiations,
- October 2012 through May 2016, an interval bounded by the first joint communiqu
-e issued from the peace talks and by the beginning of this project.
- Conveniently, the same president has been in office in Colombia during
- that time, removing some of the variance we would expect to see from different
- speakers.
- (Given the automated nature of web-scraping, the data can easily be recollected
- and analyzed following the conclusion of peace talks.) Some documents published
- prior to October 2012, by each of the FARC and the Colombian government,
- were also available.
+One of this paper's contributions is an original dataset comprising communiques
+ and statements from each of FARC and the Colombian government, and joint
+ communiques issued by the peace negotiators in Havana.
+ All documents are in the original Spanish, thus avoiding the obvious pitfalls
+ of inter-translator variance, loss of nuance through translation, etc.
+ The time period of interest is September 2012 through May 2016, an interval
+ bounded by the announcement of formal peace talks and by the beginning
+ of this project.
+ (FARC and the government agreed on a bilateral ceasefire in June 2016,
+ outside of this time period.) 
 \end_layout
 
 \begin_layout Standard
-The documents were collected using web-scraping in Python.
- First, every FARC communique from the 
+The documents were web-scraped with Python from the following sources: First,
+ every communique from the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -115,29 +312,27 @@ Comunicados
 \end_inset
 
  section of the official FARC website (http://farc-ep.co/comunicado.html)
- was scraped, for a total of 119.
+ was scraped, for a total of 119, of which ### fell between 9/2012 and 5/2016.
  Some communiques were authored by specific FARC generals, but this analysis
- does not examine the individual-level authorship.
- Non-topical communiques were removed from the dataset: for example, a statement
- on May 30, 2016, announced the death (from heart attack) of a high-ranking
- FARC official who had been participating in the peace talks.
+ does not examine individual-level authorship.
+ A small number of non-topical communiques were removed from the dataset:
+ for example, a statement on May 30, 2016, announced the death (from heart
+ attack) of a high-ranking FARC official who had been participating in the
+ peace talks.
 \end_layout
 
 \begin_layout Standard
 Second, every joint communique from the official Mesa de Conversaciones
  (negotiating table) website was scraped (https://www.mesadeconversaciones.com.co/d
-ocumentos/comunicados-conjuntos), for a total of 71.
- I did not include joint reports (of which fewer than ten exist) issued
- from the peace talks because their purpose, format, length, and audience
- differed from the public statements that comprise the dataset.
+ocumentos/comunicados-conjuntos), for a total of 71 documents.
+ I excluded joint reports (of which fewer than ten exist) issued from the
+ peace talks because their purpose, format, length, and audience differed
+ from the other public statements.
  
 \end_layout
 
 \begin_layout Standard
-Third, because the Colombian government issues statements on all manner
- of topics besides FARC, some human screening of the statements was necessary.
- Documents from 2012-15 were collected in the following manner: all press
- releases from those years were scraped from the 
+Third, statements from the Colombian government were scraped from the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -146,7 +341,13 @@ Sala de Prensa
 \end_inset
 
  (Press Room) section of the Colombian president's website (http://wp.presidencia.
-gov.co) and included in the dataset if the words 
+gov.co).
+ Conveniently, the same president, Santos, has been in office during the
+ peace talks, removing variance we might expect to see between different
+ administrations.
+ Because the Colombian government issues statements on all manner of topics
+ besides FARC, some human screening of the statements was necessary.
+ Press releases from 2012-15 were scraped if the words 
 \begin_inset Quotes eld
 \end_inset
 
@@ -154,8 +355,9 @@ Farc
 \begin_inset Quotes erd
 \end_inset
 
- (the typical capitalization used in Spanish media, with the exception of
- FARC's own publications) and 
+ (the typical capitalization used in the Spanish, with the exception of
+ FARC's own publications, which usually refer to the organization as FARC-EP)
+ and 
 \begin_inset Quotes eld
 \end_inset
 
@@ -164,10 +366,9 @@ paz
 \end_inset
 
  (peace) were in the text of the document.
- Documents from 2016 were scraped separately from a new website of the Colombian
- president (http://es.presidencia.gov.co/noticia); they were included in the
- initial dataset if the website's search tool returned them as results following
- a search for the terms 
+ Documents from 2016 were scraped from a new website of the Colombian president
+ (http://es.presidencia.gov.co/noticia); they were included in the preliminary
+ dataset if they were returned as results of a search for the terms 
 \begin_inset Quotes eld
 \end_inset
 
@@ -179,16 +380,16 @@ farc
 \begin_inset Quotes eld
 \end_inset
 
-paz.
+paz
 \begin_inset Quotes erd
 \end_inset
 
- The scraped dataset comprised 545 documents published between January 1,
- 2012, and June 1, 2016.
- However, this still included statements that mentioned FARC or peace but
- were (a) not relevant to the peace talks or (b) not authored by the Colombian
- government.
- (For example, one statement from May 27, 2013, was titled 
+ using the website's search tool.
+ Altogether, the preliminary government dataset consisted of 545 documents
+ published between January 1, 2012, and June 1, 2016, but it still included
+ statements that were (a) not relevant to the peace talks or (b) not authored
+ by the Colombian government.
+ For example, one statement from May 27, 2013, was titled 
 \begin_inset Quotes eld
 \end_inset
 
@@ -204,7 +405,333 @@ Quotes from Joe Biden
 \begin_inset Quotes erd
 \end_inset
 
-).) 
+).
+ The author manually scanned through each document and removed ones that
+ were irrelevant (e.g.
+ if the peace talks with FARC were mentioned in passing), leaving ### documents
+ in the dataset.
+\end_layout
+
+\begin_layout Standard
+Violence data.
+\end_layout
+
+\begin_layout Standard
+In addition to a timeline of major events (e.g.
+ significant kidnappings or attacks), monthly statistics for the level of
+ violence were gathered from several sources.
+ The number of service personnel killed per month was taken from 
+\begin_inset Quotes eld
+\end_inset
+
+Lo que hemos ganado
+\begin_inset Quotes erd
+\end_inset
+
+ (whose source was the Defense Ministry) and a Defense Ministry report.
+ It should be noted that these numbers may include casualties from Colombia's
+ war with the ELN.
+ The number of 
+\begin_inset Quotes eld
+\end_inset
+
+armed actions
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+offensive actions
+\begin_inset Quotes erd
+\end_inset
+
+ of FARC per month were collected from the statistics made available by
+ two Colombian peace analysis groups.
+ For 2012-2014, the source of the data was Fundación Paz y Reconciliación
+ (PARES).
+ For 2015-2016, the data came from Centro de Recursos para el Análisis de
+ Conflictos (CERAC).
+\end_layout
+
+\begin_layout Standard
+Public opinion data.
+ 
+\end_layout
+
+\begin_layout Standard
+Monthly public opinion data was collected from the Centro Nacional De Consultorí
+a, a Colombian consultancy firm.
+ Answers to the questions, 
+\begin_inset Quotes eld
+\end_inset
+
+Do you have a positive or negative image of President Juan Manuel Santos?
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Do you approve of the decision of President Santos to open peace talks with
+ guerrillas?
+\begin_inset Quotes erd
+\end_inset
+
+, were recorded as the approval ratings for the president and the peace
+ process, respectively.
+ 
+\end_layout
+
+\begin_layout Standard
+Structural breaks.
+\end_layout
+
+\begin_layout Subsection*
+Estimation method
+\end_layout
+
+\begin_layout Standard
+Sentiment analysis.
+ Linguistic Inquiry and Word Count (LIWC) was developed by Pennebaker.
+ LIWC in English has been used to analyze texts written by individuals from
+ terrorist organizations (and translated into English), e.g.
+ transcripts of statements by Osama bin Laden and Ayman al-Zawahiri.
+ (Pennebaker and Chung) The LIWC methodology reflects Pennebaker et al.'s
+ approach to text analysis, which is centered around 
+\begin_inset Quotes eld
+\end_inset
+
+examin[ing] people's social and psychological states by analyzing their
+ use of function and emotion words
+\begin_inset Quotes erd
+\end_inset
+
+ (Pennebaker and Chung 453), the former being relatively neutral words such
+ articles or pronouns.
+ Consequently, LIWC measures are very simple: words belonging to specific
+ categories--parts of speech (e.g.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+articles,
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+pronouns
+\begin_inset Quotes erd
+\end_inset
+
+) that are the aforementioned function words, or types of emotion (within
+ the categories of 
+\begin_inset Quotes eld
+\end_inset
+
+positive
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+negative
+\begin_inset Quotes erd
+\end_inset
+
+, there are subcategories such as 
+\begin_inset Quotes eld
+\end_inset
+
+optimism
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+anxiety or fear
+\begin_inset Quotes erd
+\end_inset
+
+)--are counted, and their percentage of total words in the document is calculate
+d.
+ The Spanish LIWC was translated from the English-language LIWC and augmented
+ with additional words (e.g.
+ synonyms for included words in Spanish) by Ramírez-Esparza, Pennebaker,
+ García, and Suriá Martínez.
+ 
+\end_layout
+
+\begin_layout Standard
+The LIWC measures are admittedly crude word counts, the categories of words
+ are not tailored for political science purposes or for the conflict of
+ interest, and the dictionaries are intended for the analysis of personality
+ traits of individual people, not organizations.
+ Nevertheless, they reveal insights into the nature of the documents under
+ analysis.
+ This paper focuses on the following categories: positive emotion, negative
+ emotion, death, and third-person plural pronouns, which research from psycholog
+y has found to be used at higher rates by extremist groups.
+ (Pennebaker and Chung)
+\end_layout
+
+\begin_layout Standard
+Modelling hidden states.
+ The hidden (or latent) Markov model (HMM) is a special case of the Markov
+ process.
+ In this model, the discrete state at a time 
+\begin_inset Formula $t$
+\end_inset
+
+ is unobservable, but its emissions, or symbols, can be observed.
+ A transition matrix, consisting of transition probabilities of moving from
+ one state to another, is based on the probability of observing a symbol
+ during a given state.
+ 
+\end_layout
+
+\begin_layout Standard
+The number of latent states is determined by substantive/theoretical grounds
+ and confirmed by the Bayesian information criterion (BIC) and the Akaike
+ information criterion (AIC).
+ For this analysis, each actor (i.e., FARC or the government) can be in one
+ of two hidden states: hardline or willing to make concessions.
+ The observed symbols are measures of sentiment from documents.
+ This particular HMM focuses on one actor over time.
+ This, with 
+\begin_inset Formula $S_{H}$
+\end_inset
+
+ and 
+\begin_inset Formula $S_{C}$
+\end_inset
+
+ being the hardline and concessions states, respectively, the transition
+ matrix takes on the form
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+ & S_{H} & S_{C}\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\begin{array}{c}
+S_{H}\\
+S_{C}
+\end{array}\left(\begin{array}{cc}
+P_{HH} & P_{HC}\\
+P_{CH} & P_{CC}
+\end{array}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $P_{HH}$
+\end_inset
+
+ is the probability of moving from a hardline state to a hardline state,
+ 
+\begin_inset Formula $P_{HC}$
+\end_inset
+
+ is the probability of moving from a hardline to a concessions state, and
+ so on.
+ These probabilities will provide insight into whether states are 
+\begin_inset Quotes eld
+\end_inset
+
+sticky
+\begin_inset Quotes erd
+\end_inset
+
+: for example, if a FARC attack prompts a government hardline response,
+ is this state persistent over time? I assume that the process is stationary,
+ i.e.
+ the probability of moving from state 
+\begin_inset Formula $i$
+\end_inset
+
+ to state 
+\begin_inset Formula $j$
+\end_inset
+
+ does not depend on how long the process has been in state 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To estimate these transition probabilities,
+\end_layout
+
+\begin_layout Standard
+Modelling sentiment response.
+ To model the manner in which one actor's sentiment may respond to the other
+ actor's sentiment (e.g.
+ FARC issues a dire statement, and the government responds in kind with
+ an equally dire response), I assume that a document responds to the most
+ recent document that preceded it.
+\end_layout
+
+\begin_layout Standard
+Estimation methods.
+ To estimate the Markov transition probabilities, I use a multinomial logit
+ model with random effects.
+ This also requires a substantial flattening of sentiment measures into
+ a very crude, single indicator of 
+\begin_inset Quotes eld
+\end_inset
+
+high
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+low
+\begin_inset Quotes erd
+\end_inset
+
+ sentiment.
+ According to previous research, in normal usage positive emotion words
+ occur twice as frequently as negative emotion words.
+ (Pennebaker and Chung)
+\end_layout
+
+\begin_layout Subsection*
+Results and discussion
+\end_layout
+
+\begin_layout Subsection*
+Conclusion
 \end_layout
 
 \end_body
