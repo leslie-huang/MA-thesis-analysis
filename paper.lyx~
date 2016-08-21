@@ -272,16 +272,27 @@ we
  words and first-person pronouns.
  The data in that study differs in several significant ways from the data
  in this paper: the texts have been translated, are authored by specific
- individuals, and were originally oral rather than written texts.
+ individuals, and were originally oral, not written, texts.
  Other analysis of extremist texts has tended to focus on large corpora
  of online postings: the emotional affect of postings on extremist Internet
  forums (Abbasi and Chen), network analysis of the authors of extremist
  blogs (Chau and Xu), and content analysis of extremist documents.
- (Smith et al)
+ (Smith et al).
+ On the other side, analysis of texts from a former Australian prime minister,
+ John Howard, found fear-mongering rhetoric.
+ (De Castella)
 \end_layout
 
 \begin_layout Subparagraph*
 Peace negotiation literature: spoilers.
+\end_layout
+
+\begin_layout Standard
+Text analysis literature: use of Markov.
+ Monte Carlo Markov Chain techniques have also been used to predict the
+ whether a nation will become involved in a war if its neighbors are and
+ the effect that economic performance has on the probability of conflict.
+ (Ward et al) (Blomberg)
 \end_layout
 
 \begin_layout Subsection*

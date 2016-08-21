@@ -714,40 +714,40 @@ BIC_plot <- ggplot(BIC_df, aes(x = num_states, y = BIC_vals)) +
   ggtitle("BIC Values for n = 2:10 Latent States HMM")
 
 #################################################################################
-# Run it again after adding the covariates: monthly violence and public opinion
-
-# Function takes 1 parameter: a dataframe, and returns one parameter with monthly stats for violence and public opinion added: a dataframe
-add_monthlies <- function(df) {
-  dates <- df["date"]
-  
-  # add columns for the monthly data we're adding
-  col_names <- c("FARC_actions", "army_casualties", "pres_approve", "peace_approve")
-  df[, col_names] <- NA
-  for (i in 1:length(dates[[1]])) {
-    date <- dates[i, 1]
-    year <- format(date, "%Y")
-    month <- format(date, "%m")
-    
-    monthly_date <- as.Date(paste(year, month, "01", sep = "-"))
-    
-    # get the stats from violence and opinion dfs
-    viol <- filter(monthly_viol, date == monthly_date)
-    public <- filter(public_op, date == monthly_date)
-    
-    # write them to new df
-    df["FARC_actions"][i, 1] <- as.numeric(viol[1])
-    df["army_casualties"][i, 1] <- as.numeric(viol[2])
-    df["pres_approve"][i, 1] <- as.numeric(public[1])
-    df["peace_approve"][i, 1] <- as.numeric(public[2])
-  }
-  
-  return(df)
-}
+# # Run it again after adding the covariates: monthly violence and public opinion
+# 
+# # Function takes 1 parameter: a dataframe, and returns one parameter with monthly stats for violence and public opinion added: a dataframe
+# add_monthlies <- function(df) {
+#   dates <- df["date"]
+#   
+#   # add columns for the monthly data we're adding
+#   col_names <- c("FARC_actions", "army_casualties", "pres_approve", "peace_approve")
+#   df[, col_names] <- NA
+#   for (i in 1:length(dates[[1]])) {
+#     date <- dates[i, 1]
+#     year <- format(date, "%Y")
+#     month <- format(date, "%m")
+#     
+#     monthly_date <- as.Date(paste(year, month, "01", sep = "-"))
+#     
+#     # get the stats from violence and opinion dfs
+#     viol <- filter(monthly_viol, date == monthly_date)
+#     public <- filter(public_op, date == monthly_date)
+#     
+#     # write them to new df
+#     df["FARC_actions"][i, 1] <- as.numeric(viol[1])
+#     df["army_casualties"][i, 1] <- as.numeric(viol[2])
+#     df["pres_approve"][i, 1] <- as.numeric(public[1])
+#     df["peace_approve"][i, 1] <- as.numeric(public[2])
+#   }
+#   
+#   return(df)
+# }
 
 #################################################################################
 # Run function to add violence/public opinion levels to FARC df
-FARC_results2 <- add_monthlies(FARC_results1)
-govt_results1 <- add_monthlies(govt_results)
+# FARC_results2 <- add_monthlies(FARC_results1)
+# govt_results1 <- add_monthlies(govt_results)
 
 forms2 <- list(FARC_results2$EmoNeg ~ 1, FARC_results2$EmoPos ~ 1, FARC_results2$Ellos ~ 1)
 
@@ -759,24 +759,24 @@ BIC_df2 <- data.frame(cbind(num_states, BIC_vals2))
 # plot the BIC values to select the optimal number of states
 BIC_plot2 <- ggplot(BIC_df2, aes(x = num_states, y = BIC_vals2)) +
   geom_point() +
-  ggtitle("BIC Values for n = 2:10 Latent States Fitted HMM w/ Covariates")
+  ggtitle("BIC Values for n = 2:10 Latent States Fitted HMM")
 
 #################################################################################
 # what are AIC values of the fitted models?
-AIC_vals <- sapply(num_states, function(x) {AIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)], transitions = list(~ FARC_actions, ~ army_casualties, ~ pres_approve, ~ peace_approve))))})
+AIC_vals <- sapply(num_states, function(x) {AIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)])))})
 
 AIC_df <- data.frame(cbind(num_states, AIC_vals))
 
 # plot the AIC values to select the optimal number of states
 AIC_plot <- ggplot(AIC_df, aes(x = num_states, y = AIC_vals)) +
   geom_point() +
-  ggtitle("AIC Values for n = 2:10 Latent States Fitted HMM w/ Covariates")
+  ggtitle("AIC Values for n = 2:10 Latent States Fitted HMM")
 
 #################################################################################
 #################################################################################
-# HMM wih 3 states and covars
+# HMM wih 3 states
 
-mod <- depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = 3, data = FARC_results2[,-(6:9)], transitions = list(~ FARC_actions, ~ army_casualties, ~ pres_approve, ~ peace_approve))
+mod <- depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = 3, data = FARC_results2[,-(6:9)])
 hmm_mod <- fit(mod)
 summary(hmm_mod)
 
@@ -805,6 +805,9 @@ all_dfm <- dfm(all_corpora, language = "spanish", stem = TRUE, ignoredFeatures =
 # run PCA
 statements_PCA <- prcomp(all_dfm, center = TRUE, scale. = TRUE)
 summary(statements_PCA)
+
+# what are the loadings?
+head(statements_PCA$rotation)
 
 # plot it
 plot(statements_PCA, type = "l", main="PCA of FARC and Govt Statements")
@@ -846,7 +849,7 @@ PC2_gg <- ggplot(filter(statements_PC1_2, side == "FARC"), aes(x = as.Date(date,
 # trimmed_statements_PC1_2 <- filter(statements_PC1_2, PC2 < 231)
 FARC_corpus_trimmed <- corpus(FARC$text[-94], docvars = FARC_results$dates[-94])
 all_corpora_trimmed <- FARC_corpus_trimmed + govt_corpus
-all_dfm_trimmed <- log(dfm(all_corpora_trimmed, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish")))
+all_dfm_trimmed <- dfm(all_corpora_trimmed, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
 statements_PCA_trimmed <- prcomp(all_dfm_trimmed, center = TRUE, scale. = TRUE)
 summary(statements_PCA_trimmed)
 
@@ -890,34 +893,34 @@ PC2_gg_trimmed <- ggplot(filter(statements_PC1_2_trimmed, side == "FARC"), aes(x
 
 #################################################################################
 #################################################################################
-# Robust PCA
-rob_pca <- PcaHubert(all_dfm)
-# First 2 components account for 65% of variance
-print(rob_pca)
-summary(rob_pca)
-
-# plot
-screeplot(rob_pca, type = "lines", main = "Robust PCA with 10 Components")
-
-# let's plot the time series of PC1
-rob_pc1 <- data.frame(rob_pca@scores)
-rob_pc1 <- dplyr::select(rob_pc1, PC1)
-rob_pc1["side"] <- sides
-rob_pc1["date"] <- pca_dates
-
-# Robust PC1 graph
-PC1_gg_robust <- ggplot(filter(rob_pc1, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "FARC")) +
-  geom_smooth(method = "loess", se = FALSE) +
-  geom_jitter() +
-  geom_point(data = filter(rob_pc1, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
-  geom_smooth(method = "loess", se = FALSE, data = rob_pc1, aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
-  ggtitle("Plot of First Principal Components over Time (Robust PCA)") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) + 
-  labs(
-    x = "Date",
-    y = "PC1",
-    color = "Legend")
+# # Robust PCA
+# rob_pca <- PcaHubert(all_dfm)
+# # First 2 components account for 65% of variance
+# print(rob_pca)
+# summary(rob_pca)
+# 
+# # plot
+# screeplot(rob_pca, type = "lines", main = "Robust PCA with 10 Components")
+# 
+# # let's plot the time series of PC1
+# rob_pc1 <- data.frame(rob_pca@scores)
+# rob_pc1 <- dplyr::select(rob_pc1, PC1)
+# rob_pc1["side"] <- sides
+# rob_pc1["date"] <- pca_dates
+# 
+# # Robust PC1 graph
+# PC1_gg_robust <- ggplot(filter(rob_pc1, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "FARC")) +
+#   geom_smooth(method = "loess", se = FALSE) +
+#   geom_jitter() +
+#   geom_point(data = filter(rob_pc1, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
+#   geom_smooth(method = "loess", se = FALSE, data = rob_pc1, aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
+#   ggtitle("Plot of First Principal Components over Time (Robust PCA)") +
+#   scale_x_date(date_minor_breaks = "1 month",
+#                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) + 
+#   labs(
+#     x = "Date",
+#     y = "PC1",
+#     color = "Legend")
 
 #################################################################################
 #################################################################################
@@ -959,11 +962,18 @@ pairwise_responsiveness <- get_responsiveness(transition_chain)
 pairwise_num <- sum(na.omit(as.numeric(pairwise_responsiveness)))
 pairwise_num
 
-# Make the MCMC matrix
+
+
+#################################################################################
+#################################################################################
+# MCMC
+
+# make the MCMC matrix
 mc_mat <- dplyr::select(transition_chain, date, sentiment_level, side)
 
-# Set up x = current state, y = next state.
+# x = current state, y = next state.
 # State1 = FARC-low, State 2 = FARC-high, State 3 = govt-low, State 4 = govt-high
+
 # Function takes 1 parameter: a df with "side" and "sentiment_level" variables
 state_maker <- function(df) {
   df["state_x"] <- NA
