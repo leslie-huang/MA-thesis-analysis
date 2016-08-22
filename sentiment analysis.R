@@ -978,9 +978,9 @@ pairwise_num
 
 #################################################################################
 #################################################################################
-# MCMC
+# Multinomial logit fitted MLE
 
-# make the MCMC matrix
+# let's get our dataset
 mc_mat <- dplyr::select(transition_chain, date, sentiment_level, side)
 
 # x = current state, y = next state.
@@ -1030,9 +1030,9 @@ state_maker <- function(df) {
 
 mc_mat <- state_maker(mc_mat)
 # add violence and public opinion for random effects
-mc_mat <- add_monthlies(mc_mat)
+# mc_mat <- add_monthlies(mc_mat)
 
-# Run MCMC
-mc_model <- MCMCglmm(state_y ~ state_x, random = NULL, data = mc_mat, family = "categorical", rcov = ~us(trait):units)
-summary(mc_model)
-plot(mc_model$VCV)
+# add year for random/fixed effects
+mc_mat$year <- mc_mat$date
+mc_mat$year <- sapply(mc_mat$year, function(x) {substr(toString(x), 1, 4)})
+
