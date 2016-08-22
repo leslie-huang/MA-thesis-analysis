@@ -6,7 +6,7 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "MCMCglmm")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "MCMCglmm", "ggfortify")
 lapply(libraries, require, character.only=TRUE)
 
 devtools::install_github("ggbiplot", "vqv")
@@ -890,6 +890,18 @@ PC2_gg_trimmed <- ggplot(filter(statements_PC1_2_trimmed, side == "FARC"), aes(x
     y = "PC2",
     color = "Legend")
 
+# what words are correlated with PC1 or PC2?
+PC_df <- fortify(statements_PCA$rotation)
+words <- row.names(PC_df)
+PC_df <- cbind(words, PC_df)
+
+# top words associated with PC1
+PC_df1 <- arrange(PC_df, PC1)
+View(PC_df1)
+
+# top words associated with PC2
+PC_df2 <- arrange(PC_df, PC2)
+View(PC_df2)
 
 #################################################################################
 #################################################################################

@@ -99,22 +99,16 @@ This paper is submitted for the M.A.
 \end_layout
 
 \begin_layout Abstract
-The international relations literature has employed game theoretical and
- empirical approaches to the puzzle of 
-\begin_inset Quotes eld
-\end_inset
-
-cheap talk
-\begin_inset Quotes erd
-\end_inset
-
- in negotiations between adversaries.
- However, there currently does not exist any research that analyzes the
- text of such talk and its associations with levels of ongoing violence
- and the negotiations.
- In the context of the peace negotiations between the Colombian government
- and the Fuerzas Armadas Revolucionarias de Colombia (FARC), I seek to answer
- the following questions: How does government 
+Will peace negotiations fall apart or yield an agreement and, ultimately,
+ peace? The international relations literature has employed game theoretical
+ and empirical approaches to make these predictions.
+ However, there currently does not exist any research that uses sentiment
+ analysis of texts issued during peace talks to make inferences.
+ What are the associations between these texts associations and levels of
+ ongoing violence or milestones reached in negotiations? In the context
+ of the peace negotiations between the Colombian government and the Fuerzas
+ Armadas Revolucionarias de Colombia (FARC), I seek to answer the following
+ questions: How does government 
 \begin_inset Quotes eld
 \end_inset
 
@@ -230,6 +224,10 @@ With many of its leaders and founders killed in the years leading up to
  even features the blogs of peace negotiators.
 \end_layout
 
+\begin_layout Standard
+Literature
+\end_layout
+
 \begin_layout Subparagraph*
 Sentiment analysis of extremist texts.
  
@@ -288,11 +286,12 @@ Peace negotiation literature: spoilers.
 \end_layout
 
 \begin_layout Standard
-Text analysis literature: use of Markov.
- Monte Carlo Markov Chain techniques have also been used to predict the
- whether a nation will become involved in a war if its neighbors are and
- the effect that economic performance has on the probability of conflict.
- (Ward et al) (Blomberg)
+Sentiment analysis literature: use of hidden Markov models.
+\end_layout
+
+\begin_layout Standard
+Literature review: other papers that try to predict whether peace negotiations
+ will be successful or fall apart.
 \end_layout
 
 \begin_layout Subsection*
@@ -732,9 +731,26 @@ low
 \end_inset
 
  sentiment.
- According to previous research, in normal usage positive emotion words
- occur twice as frequently as negative emotion words.
- (Pennebaker and Chung)
+ Previous research has shown that in normal usage, positive emotion words
+ occur twice as frequently as negative emotion words (Pennebaker and Chung),
+ therefore I created an indicator based on this measure: 
+\begin_inset Quotes eld
+\end_inset
+
+high
+\begin_inset Quotes erd
+\end_inset
+
+ sentiment if the proportion of positive words is at least twice the proportion
+ of negative words, and 
+\begin_inset Quotes eld
+\end_inset
+
+low
+\begin_inset Quotes erd
+\end_inset
+
+ otherwise.
 \end_layout
 
 \begin_layout Subsection*
@@ -743,6 +759,10 @@ Results and discussion
 
 \begin_layout Subsection*
 Conclusion
+\end_layout
+
+\begin_layout Standard
+Further research
 \end_layout
 
 \end_body

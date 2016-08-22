@@ -274,14 +274,37 @@ we
  words and first-person pronouns.
  The data in that study differs in several significant ways from the data
  in this paper: the texts have been translated, are authored by specific
- individuals, and were originally oral, not written, texts.
+ individuals
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Some of the FARC statements are signed by specific individuals, but in this
+ paper the author is simply 
+\begin_inset Quotes eld
+\end_inset
+
+FARC.
+\begin_inset Quotes erd
+\end_inset
+
+ There is significant heterogeneity in the nature of government statements,
+ and some are transcripts of speeches delivered by president Santos: however,
+ whether presidents themselves or speechwriters or staff members have actually
+ authored texts is itself a question that has been explored.
+\end_layout
+
+\end_inset
+
+, and were originally oral rather than printed texts.
  Other analysis of extremist texts has tended to focus on large corpora
  of online postings: the emotional affect of postings on extremist Internet
  forums (Abbasi and Chen), network analysis of the authors of extremist
  blogs (Chau and Xu), and content analysis of extremist documents.
  (Smith et al).
- On the other side, analysis of texts from a former Australian prime minister,
- John Howard, found fear-mongering rhetoric.
+ Text analysis of politicians, on the other hand, tends to have a difference
+ focus, but one study of speeches of a former Australian prime minister,
+ John Howard, found varying levels of fear-mongering rhetoric.
  (De Castella)
 \end_layout
 
@@ -296,6 +319,12 @@ Sentiment analysis literature: use of hidden Markov models.
 \begin_layout Standard
 Literature review: other papers that try to predict whether peace negotiations
  will be successful or fall apart.
+\end_layout
+
+\begin_layout Standard
+Numerous papers in the international relations literature have offered reasons
+ that violence during peace negotiations may be a spoiler in some cases
+ but not in others.
 \end_layout
 
 \begin_layout Subsection*
@@ -507,9 +536,13 @@ Structural breaks.
 Estimation method
 \end_layout
 
-\begin_layout Standard
+\begin_layout Subparagraph*
 Sentiment analysis.
- Linguistic Inquiry and Word Count (LIWC) was developed by Pennebaker.
+ 
+\end_layout
+
+\begin_layout Standard
+Linguistic Inquiry and Word Count (LIWC) was developed by Pennebaker.
  LIWC in English has been used to analyze texts written by individuals from
  terrorist organizations (and translated into English), e.g.
  transcripts of statements by Osama bin Laden and Ayman al-Zawahiri.
@@ -598,9 +631,13 @@ y has found to be used at higher rates by extremist groups.
  (Pennebaker and Chung)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Subparagraph*
 Modelling hidden states.
- The hidden (or latent) Markov model (HMM) is a special case of the Markov
+ 
+\end_layout
+
+\begin_layout Standard
+The hidden (or latent) Markov model (HMM) is a special case of the Markov
  process.
  In this model, the discrete state at a time 
 \begin_inset Formula $t$
