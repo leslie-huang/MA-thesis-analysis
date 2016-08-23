@@ -6,7 +6,7 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "MCMCglmm", "ggfortify")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "MCMCglmm", "ggfortify", "mlogit")
 lapply(libraries, require, character.only=TRUE)
 
 devtools::install_github("ggbiplot", "vqv")
@@ -983,7 +983,8 @@ pairwise_num
 # let's get our dataset
 mc_mat <- dplyr::select(transition_chain, date, sentiment_level, side)
 
-# x = current state, y = next state.
+# x = current state at t, y = next state at t+1
+
 # State1 = FARC-low, State 2 = FARC-high, State 3 = govt-low, State 4 = govt-high
 
 # Function takes 1 parameter: a df with "side" and "sentiment_level" variables
@@ -1029,10 +1030,20 @@ state_maker <- function(df) {
   }
 
 mc_mat <- state_maker(mc_mat)
+
 # add violence and public opinion for random effects
-# mc_mat <- add_monthlies(mc_mat)
+mc_mat <- add_monthlies(mc_mat)
 
 # add year for random/fixed effects
 mc_mat$year <- mc_mat$date
 mc_mat$year <- sapply(mc_mat$year, function(x) {substr(toString(x), 1, 4)})
 
+# factor and relevel
+mc_mat$state_y <- factor(mc_mat$state_y)
+mc_mat$state_y2 <- relevel(mc_mat$state_y, ref = "1")
+
+
+# Run the model
+
+mnl_mod <- multinom(state_y2 ~ state_x + year, data = mc_mat, na.action = na.omit)
+summary(mnl_mod)

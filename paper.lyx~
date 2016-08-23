@@ -82,7 +82,8 @@
 \begin_body
 
 \begin_layout Title
-A text analysis of FARC and Colombian statements issued during peace talks
+Text analysis of sentiment in peace talks: FARC and Colombian government
+ statements during negotiations 2012-2016
 \end_layout
 
 \begin_layout Author
@@ -94,8 +95,8 @@ New York University Department of Politics
 \end_layout
 
 \begin_layout Address
-This paper is submitted for the M.A.
- thesis requirement
+This M.A.
+ paper is submitted in partial requirement of the PhD in politics
 \end_layout
 
 \begin_layout Abstract
@@ -104,11 +105,14 @@ Will peace negotiations fall apart or yield an agreement and, ultimately,
  and empirical approaches to make these predictions.
  However, there currently does not exist any research that uses sentiment
  analysis of texts issued during peace talks to make inferences.
- What are the associations between these texts associations and levels of
- ongoing violence or milestones reached in negotiations? In the context
- of the peace negotiations between the Colombian government and the Fuerzas
- Armadas Revolucionarias de Colombia (FARC), I seek to answer the following
- questions: How does government 
+ What are the associations between these texts and levels of ongoing violence
+ or milestones reached in negotiations? 
+\end_layout
+
+\begin_layout Abstract
+In the context of the peace negotiations between the Colombian government
+ and the Fuerzas Armadas Revolucionarias de Colombia (FARC), I seek to answer
+ the following questions: How does government 
 \begin_inset Quotes eld
 \end_inset
 
