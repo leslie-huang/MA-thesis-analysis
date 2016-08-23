@@ -1,4 +1,5 @@
 # Leslie Huang
+# MA paper
 # LIWC analysis of FARC communiques
 
 rm(list=ls())
@@ -6,7 +7,7 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "MCMCglmm", "ggfortify", "mlogit")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov")
 lapply(libraries, require, character.only=TRUE)
 
 devtools::install_github("ggbiplot", "vqv")
@@ -580,7 +581,6 @@ public_op <- public_op[,1:3]
 public_op$date <- as.Date(as.yearmon(public_op$date, "%Y-%m"))
 public_op[,2:3] <- sapply(public_op[,2:3], function(x) { as.numeric(x)})
 public_op <- subset(public_op, select = c(2:3, 1))
-public_op <- na.omit(public_op)
 
 # graph it
 base_opinion = ggplot(public_op, aes(x = as.Date(date, origin = "1970-01-01"), y = santos_positive_image, color = "Positive image of Pres. Santos")) +
@@ -717,32 +717,32 @@ BIC_plot <- ggplot(BIC_df, aes(x = num_states, y = BIC_vals)) +
 # # Run it again after adding the covariates: monthly violence and public opinion
 # 
 # # Function takes 1 parameter: a dataframe, and returns one parameter with monthly stats for violence and public opinion added: a dataframe
-# add_monthlies <- function(df) {
-#   dates <- df["date"]
-#   
-#   # add columns for the monthly data we're adding
-#   col_names <- c("FARC_actions", "army_casualties", "pres_approve", "peace_approve")
-#   df[, col_names] <- NA
-#   for (i in 1:length(dates[[1]])) {
-#     date <- dates[i, 1]
-#     year <- format(date, "%Y")
-#     month <- format(date, "%m")
-#     
-#     monthly_date <- as.Date(paste(year, month, "01", sep = "-"))
-#     
-#     # get the stats from violence and opinion dfs
-#     viol <- filter(monthly_viol, date == monthly_date)
-#     public <- filter(public_op, date == monthly_date)
-#     
-#     # write them to new df
-#     df["FARC_actions"][i, 1] <- as.numeric(viol[1])
-#     df["army_casualties"][i, 1] <- as.numeric(viol[2])
-#     df["pres_approve"][i, 1] <- as.numeric(public[1])
-#     df["peace_approve"][i, 1] <- as.numeric(public[2])
-#   }
-#   
-#   return(df)
-# }
+add_monthlies <- function(df) {
+  dates <- df["date"]
+
+  # add columns for the monthly data we're adding
+  col_names <- c("FARC_actions", "army_casualties", "pres_approve", "peace_approve")
+  df[, col_names] <- NA
+  for (i in 1:length(dates[[1]])) {
+    date <- dates[i, 1]
+    year <- format(date, "%Y")
+    month <- format(date, "%m")
+
+    monthly_date <- as.Date(paste(year, month, "01", sep = "-"))
+
+    # get the stats from violence and opinion dfs
+    viol <- filter(monthly_viol, date == monthly_date)
+    public <- filter(public_op, date == monthly_date)
+
+    # write them to new df
+    df["FARC_actions"][i, 1] <- as.numeric(viol[1])
+    df["army_casualties"][i, 1] <- as.numeric(viol[2])
+    df["pres_approve"][i, 1] <- as.numeric(public[1])
+    df["peace_approve"][i, 1] <- as.numeric(public[2])
+  }
+
+  return(df)
+}
 
 #################################################################################
 # Run function to add violence/public opinion levels to FARC df
@@ -980,10 +980,10 @@ pairwise_num
 #################################################################################
 # Multinomial logit fitted MLE
 
-# let's get our dataset
-mc_mat <- dplyr::select(transition_chain, date, sentiment_level, side)
+# Let's get our dataset!!!!!!
+mnl_df <- dplyr::select(transition_chain, date, sentiment_level, side)
 
-# x = current state at t, y = next state at t+1
+# state_x = current state at t, state_y = next state at t+1
 
 # State1 = FARC-low, State 2 = FARC-high, State 3 = govt-low, State 4 = govt-high
 
@@ -1029,21 +1029,23 @@ state_maker <- function(df) {
   return(df)
   }
 
-mc_mat <- state_maker(mc_mat)
+mnl_df <- state_maker(mnl_df)
 
-# add violence and public opinion for random effects
-mc_mat <- add_monthlies(mc_mat)
+# add the violence and public opinion stats to the dataset (for fixed effects) and then take their logs
+mnl_df <- add_monthlies(mnl_df)
+ <- log(mnl_df["pres_approve"])
 
 # add year for random/fixed effects
-mc_mat$year <- mc_mat$date
-mc_mat$year <- sapply(mc_mat$year, function(x) {substr(toString(x), 1, 4)})
+mnl_df$year <- mnl_df$date
+mnl_df$year <- sapply(mnl_df$year, function(x) {substr(toString(x), 1, 4)})
+mnl_df$state_y <- factor(mnl_df$state_y)
 
 # factor and relevel
-mc_mat$state_y <- factor(mc_mat$state_y)
-mc_mat$state_y2 <- relevel(mc_mat$state_y, ref = "1")
-
+mnl_df$state_y2 <- relevel(mnl_df$state_y, ref = "1")
 
 # Run the model
 
-mnl_mod <- multinom(state_y2 ~ state_x + year, data = mc_mat, na.action = na.omit)
+mnl_mod <- multinom(state_y2 ~ state_x + year, data = mnl_df, na.action = na.omit)
 summary(mnl_mod)
+
+
