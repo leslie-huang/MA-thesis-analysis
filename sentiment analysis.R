@@ -7,11 +7,14 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "mlogit")
 lapply(libraries, require, character.only=TRUE)
 
 devtools::install_github("ggbiplot", "vqv")
 library(ggbiplot)
+
+devtools::install_github("leeper/margins")
+library("margins")
 
 # get LIWC dict
 spanish_dict <- dictionary(file = "../LIWC/Spanish_LIWC2007_Dictionary.dic", format = "LIWC")
@@ -75,6 +78,15 @@ loess_lines <- function(liwc_results) {
 #################################################################################
 # import FARC communiques
 FARC <- read.csv("../MA-datasets/FARC_communiques.csv", stringsAsFactors = FALSE)
+
+# fill in a document that didn't get scraped
+FARC[120, 1] <- "2016-05-30"
+FARC[120, 2] <- "Informamos sobre la muerte del Camarada Bernardo Peñaloza"
+FARC[120, 3] <- ""
+FARC[120, 4] <- "COMUNICADO: Mayo 30 de 2016 Lamentamos informar a toda la guerrillerada y a la opinión pública nacional e internacional, que el día 25 de Mayo el camarada Bernardo Peñaloza, ex integrante de la Comisión de Paz en los diálogos de la Habana, tras una larga y fructífera vida entregada a la lucha por la revolución y los cambios sociales, en territorio colombiano y en cumplimiento de sus tareas, falleció como consecuencia de un paro cardiaco.Expresamos nuestras condolencias a sus familiares y amigos que lo conocieron. Rendimos homenaje a su memoria y a su ejemplo de dedicación y lealtad a la causa de los oprimidos. Paz en su tumba. Estado Mayor Central de las FARC EP."
+
+# exclude documents prior to 2012
+FARC <- filter(FARC, date >= "2012-01-01")
 
 # raw LIWC measures
 FARC_raw <- liwc_extractor(FARC)
@@ -617,6 +629,37 @@ opinion_breakd <- get_breakdate(break_finder(na.omit(public_op)), public_op)
 
 #################################################################################
 #################################################################################
+# Function takes 1 parameter: a dataframe, and returns one parameter with monthly stats for violence and public opinion added: a dataframe
+add_monthlies <- function(df) {
+  dates <- df["date"]
+  
+  # add columns for the monthly data we're adding
+  col_names <- c("FARC_actions", "army_casualties", "pres_approve", "peace_approve")
+  df[, col_names] <- NA
+  for (i in 1:length(dates[[1]])) {
+    date <- dates[i, 1]
+    year <- format(date, "%Y")
+    month <- format(date, "%m")
+    
+    monthly_date <- as.Date(paste(year, month, "01", sep = "-"))
+    
+    # get the stats from violence and opinion dfs
+    viol <- filter(monthly_viol, date == monthly_date)
+    public <- filter(public_op, date == monthly_date)
+    
+    # write them to new df
+    df["FARC_actions"][i, 1] <- as.numeric(viol[1])
+    df["army_casualties"][i, 1] <- as.numeric(viol[2])
+    df["pres_approve"][i, 1] <- as.numeric(public[1])
+    df["peace_approve"][i, 1] <- as.numeric(public[2])
+  }
+  
+  return(df)
+}
+
+
+#################################################################################
+#################################################################################
 # Results
 
 # Raw LIWC scores
@@ -640,7 +683,7 @@ View(pos_breaks)
 View(pp3_breaks)
 View(death_breaks)
 
-# Structural breaks by party, with means of regimes.
+# Structural breaks by party, with means for each regimes.
 # [[1]][[1]] to access the means,  [[1]][[2]] to get the corresponding breakdates
 FARC_means
 govt_means
@@ -716,39 +759,12 @@ BIC_plot <- ggplot(BIC_df, aes(x = num_states, y = BIC_vals)) +
 
 #################################################################################
 # # Run it again after adding the covariates: monthly violence and public opinion
-# 
-# # Function takes 1 parameter: a dataframe, and returns one parameter with monthly stats for violence and public opinion added: a dataframe
-add_monthlies <- function(df) {
-  dates <- df["date"]
 
-  # add columns for the monthly data we're adding
-  col_names <- c("FARC_actions", "army_casualties", "pres_approve", "peace_approve")
-  df[, col_names] <- NA
-  for (i in 1:length(dates[[1]])) {
-    date <- dates[i, 1]
-    year <- format(date, "%Y")
-    month <- format(date, "%m")
-
-    monthly_date <- as.Date(paste(year, month, "01", sep = "-"))
-
-    # get the stats from violence and opinion dfs
-    viol <- filter(monthly_viol, date == monthly_date)
-    public <- filter(public_op, date == monthly_date)
-
-    # write them to new df
-    df["FARC_actions"][i, 1] <- as.numeric(viol[1])
-    df["army_casualties"][i, 1] <- as.numeric(viol[2])
-    df["pres_approve"][i, 1] <- as.numeric(public[1])
-    df["peace_approve"][i, 1] <- as.numeric(public[2])
-  }
-
-  return(df)
-}
 
 #################################################################################
 # Run function to add violence/public opinion levels to FARC df
-# FARC_results2 <- add_monthlies(FARC_results1)
-# govt_results1 <- add_monthlies(govt_results)
+FARC_results2 <- add_monthlies(FARC_results1)
+govt_results1 <- add_monthlies(govt_results)
 
 forms2 <- list(FARC_results2$EmoNeg ~ 1, FARC_results2$EmoPos ~ 1, FARC_results2$Ellos ~ 1)
 
@@ -1032,21 +1048,40 @@ state_maker <- function(df) {
 
 mnl_df <- state_maker(mnl_df)
 
-# add the violence and public opinion stats to the dataset (for fixed effects) and then take their logs
+# add the violence and public opinion stats to the dataset (for fixed effects) and then take their logs (+1 to deal with zeros)
 mnl_df <- add_monthlies(mnl_df)
-mnl_df[6:9] <- log(mnl_df[6:9])
+mnl_df[6:9] <- log(mnl_df[6:9] + 1)
 
 # add year for random/fixed effects
 mnl_df$year <- mnl_df$date
 mnl_df$year <- sapply(mnl_df$year, function(x) {substr(toString(x), 1, 4)})
-mnl_df$state_y <- factor(mnl_df$state_y)
+mnl_df$year <- factor(mnl_df$year)
 
 # factor and relevel
+mnl_df$state_y <- factor(mnl_df$state_y)
+mnl_df$state_x <- factor(mnl_df$state_x)
 mnl_df$state_y2 <- relevel(mnl_df$state_y, ref = "1")
 
-# Run the model
+# can't use multinom because not MLE
+# mnl_mod <- multinom(state_y2 ~ state_x + FARC_actions + pres_approve + year, data = mnl_df, na.action = na.omit)
+# summary(mnl_mod)
 
-mnl_mod <- multinom(state_y2 ~ state_x + year, data = mnl_df, na.action = na.omit)
-summary(mnl_mod)
+# get the relative risk ratios
+# exp(coef(mnl_mod))
 
+# Convert for mlogit pkg
+ml_df <- mnl_df
+ml_df <- mlogit.data(ml_df, choice = "state_y2", shape = "wide")
 
+# Model #1 specification
+ml_mod1 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + pres_approve + year, data = ml_df, reflevel = "4")
+summary(ml_mod1)
+
+# relative risk ratio
+exp(coef(ml_mod1))
+
+# predicted vals
+mod1_fit <- fitted(ml_mod1)
+
+# Export to Stata.... sigh
+write.dta(mnl_df, "mnl_data.dta")

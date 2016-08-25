@@ -1096,12 +1096,14 @@ government/high.
 The analysis was performed using a multinomial logit with maximum likelihood
  estimation.
  I control for year effects because of the correlation between sentiment
- level and time.
- I also include controls for the effects of violence and public opinion.
+ level and time 
 \end_layout
 
 \begin_layout Standard
-
+To model the manner in which one actor's sentiment may respond to the other
+ actor's sentiment (e.g.
+ FARC issues a dire statement, and the government responds in kind with
+ an equally dire response), 
 \end_layout
 
 \begin_layout Subsection*

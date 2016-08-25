@@ -10,6 +10,7 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{dcolumn}
+\usepackage{blkarray}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -97,6 +98,10 @@ New York University Department of Politics
 \begin_layout Address
 This M.A.
  paper is submitted in partial requirement of the PhD in politics
+\end_layout
+
+\begin_layout Address
+Adviser: Arthur Spirling
 \end_layout
 
 \begin_layout Abstract
@@ -195,8 +200,9 @@ In the 1980s and 1990s, FARC's activities expanded to include the drug trade,
  action from the U.S.
  government, and it has caught international attention with kidnappings
  for ransom and assassinations of political and military figures.
- Less widely known is FARC's use of landmines, which have resulted in thousands
- killed or maimed.
+ Less widely known abroad is FARC's use of landmines, which have resulted
+ in thousands killed or maimed, and their kidnapping and forced conscription
+ of children.
 \end_layout
 
 \begin_layout Subparagraph*
@@ -219,8 +225,11 @@ During the tenure of president (now senator) Álvaro Uribe from 2002-2010,
  Uribe in 2010 and was re-elected in 2014 during the peace negotiations.
  As the talks have dragged on, Santos's approval ratings have plummeted
  along with public optimism about the talks, and he has faced the vociferous
- opposition of Uribe and other hardline politicians as well as members of
- the military that disapprove of negotiating with FARC.
+ opposition of right-wing politicians such as Uribe, as well as members
+ of the military, that initially disapproved of negotiating with FARC and
+ oppose any agreement provisions that, in their view, give the former rebels
+ political representation instead of prosecution for crimes committed.
+ [New York Times]
 \end_layout
 
 \begin_layout Standard
@@ -239,13 +248,15 @@ With many of its leaders and founders killed in the years leading up to
 
 \begin_layout Standard
 This project examines texts from the peace process up until May 31, 2016;
- however, it should be noted that president Santos and Timochenko signed
- a bilateral ceasefire agreement on June 22, 2016.
- (Guardian) Although the peace agreement is not yet final, the bilateral
+ however, it must be noted that president Santos and Timochenko signed a
+ bilateral ceasefire agreement on June 22, 2016, and announced that they
+ had reached a final deal on August 24, 2016, which will subsequently need
+ to be approved by popular referendum.
+ [Guardian] Although the peace agreement is not yet final, the bilateral
  ceasefire is significant because the government has long refused to stop
  military operations against FARC during the negotiations, even during FARC's
  unilateral ceasefires (violations of which will be discussed below).
- That decision is seen as the government's safeguard against a 
+ That decision has been seen as a safeguard to thwart a 
 \begin_inset Quotes eld
 \end_inset
 
@@ -253,9 +264,9 @@ long con
 \begin_inset Quotes erd
 \end_inset
 
- being played by a FARC uninterested in peace--that is to say, continued
- military operations would prevent FARC from using the peace negotiations
- as a cover to increase their military strength.
+ being played by a FARC using the negotiations to buy time to regroup--that
+ is to say, continued military operations prevent FARC from using the negotiatio
+ns as a cover to increase their military strength.
  (NOREF) 
 \end_layout
 
@@ -410,14 +421,19 @@ Sala de Prensa
 \end_inset
 
  (Press Room) section of the Colombian president's website.
- [(http://wp.presidencia.gov.co)] Conveniently, the same president, Santos,
- has been in office during the peace talks, removing variance we might expect
- to see between different administrations.
- Because the Colombian government issues statements on all manner of topics
- besides FARC, some human screening of the statements was necessary.
- The method of scraping also different slightly for 2012-2015 and 2016 because
- of differences in the structure of the current and archived websites.
- Press releases from 2012-15 were scraped if the words 
+ [(http://wp.presidencia.gov.co)] The same president, Santos, has been in office
+ during the peace talks, conveniently obviating any variance that might
+ result from different administrations.
+ Because the government issues statements on all manner of topics besides
+ FARC, a simple keyword search was used.
+ The method of scraping differed slightly for 2012-2015 and 2016 because
+ of differences in the structures of the current and archived presidential
+ websites.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Press releases from 2012-15 were scraped if the words 
 \begin_inset Quotes eld
 \end_inset
 
@@ -425,9 +441,9 @@ Farc
 \begin_inset Quotes erd
 \end_inset
 
- (the typical capitalization used in the Spanish, with the exception of
- FARC's own publications, which usually refer to the organization as FARC-EP)
- and 
+ (note: this is the typical usage in Spanish-language sources, with the
+ exception of FARC's own publications, which usually refer to the organization
+ as FARC-EP) and 
 \begin_inset Quotes eld
 \end_inset
 
@@ -455,10 +471,16 @@ paz
 \end_inset
 
  using the website's search tool.
+\end_layout
+
+\end_inset
+
  Altogether, the preliminary government dataset consisted of 545 documents
- published between January 1, 2012, and June 1, 2016, but it still included
- statements that were (a) not relevant to the peace talks or (b) not authored
- by the Colombian government.
+ published between January 1, 2012, and June 1, 2016.
+ However, additional human screening of the statements was necessary to
+ remove statements that contained the keywords but were (a) not relevant
+ to the peace talks or (b) not reasonably attributable to the Colombian
+ government.
  
 \begin_inset Foot
 status open
@@ -480,14 +502,19 @@ Quotes from Joe Biden
 \begin_inset Quotes erd
 \end_inset
 
-).
+), in which the U.S.
+ vice president expressed support for the peace process.
 \end_layout
 
 \end_inset
 
  I removed those that were irrelevant on the basis of content (e.g.
  if the peace talks with FARC were mentioned only in passing), which reduced
- the government texts to 243.
+ the number of government texts to 243.
+\end_layout
+
+\begin_layout Standard
+[Insert summary statistics table of docs]
 \end_layout
 
 \begin_layout Subparagraph*
@@ -500,7 +527,7 @@ Monthly statistics on levels of ongoing violence were gathered from several
  The number of service personnel killed per month were collected from a
  Fundación Paz y Reconciliación (PARES) report and a Defense Ministry report.
  (The PARES report cites the Defense Ministry as the source for its figures.)
- (
+ [
 \begin_inset Quotes eld
 \end_inset
 
@@ -508,9 +535,12 @@ Lo que hemos ganado
 \begin_inset Quotes erd
 \end_inset
 
-) (Ministerio de Defensa) It should be noted that these numbers may include
- casualties from Colombia's war with the ELN.
- The number of 
+] [Ministerio de Defensa] It should be noted that these numbers may include
+ casualties from Colombia's much smaller ongoing conflict with the ELN;
+ however, in other Defense Ministry statistics that are disaggregated by
+ rebel group (e.g.
+ number of demobilized militants), FARC's contribution is overwhelming.
+ An additional statistic, the number of 
 \begin_inset Quotes eld
 \end_inset
 
@@ -526,12 +556,12 @@ offensive actions
 \begin_inset Quotes erd
 \end_inset
 
- of FARC per month were collected from the statistics made available by
- two Colombian peace analysis groups.
+ of FARC per month were collected from data available from two Colombian
+ conflict analysis groups.
  For 2012-2014, the source of the data was Fundación Paz y Reconciliación
  (PARES).
- For 2015-2016, the data came from Centro de Recursos para el Análisis de
- Conflictos (CERAC).
+ For 2015-2016, data from PARES was not available and was collected instead
+ from the Centro de Recursos para el Análisis de Conflictos (CERAC).
 \end_layout
 
 \begin_layout Subparagraph*
@@ -565,6 +595,8 @@ status open
 
 \begin_layout Plain Layout
 Author's translation from Spanish.
+ It should be noted that the latter question is missing before September
+ 2012 because the peace process had not started yet!
 \end_layout
 
 \end_inset
@@ -576,6 +608,7 @@ Author's translation from Spanish.
 
 \begin_layout Standard
 Structural breaks.
+ [Summary statistics about where structural breaks occur]
 \end_layout
 
 \begin_layout Subsection*
@@ -583,14 +616,15 @@ Estimation method
 \end_layout
 
 \begin_layout Subparagraph*
-Sentiment analysis.
+Text analysis.
  
 \end_layout
 
 \begin_layout Standard
 Linguistic Inquiry and Word Count (LIWC) was developed by Pennebaker.
- LIWC in English has been used to analyze texts written by individuals from
- terrorist organizations (and translated into English), e.g.
+ [INSERT CITES] LIWC in English has been used to analyze texts written by
+ individuals from terrorist organizations (and translated into English),
+ e.g.
  transcripts of statements by Osama bin Laden and Ayman al-Zawahiri.
  (Pennebaker and Chung) The LIWC methodology reflects Pennebaker et al.'s
  approach to text analysis, which is centered around 
@@ -603,7 +637,7 @@ examin[ing] people's social and psychological states by analyzing their
 \end_inset
 
  (Pennebaker and Chung 453), the former being relatively neutral words such
- articles or pronouns.
+ articles or pronouns rather than words that are content- or document-specific.
  Consequently, LIWC measures are very simple: words belonging to specific
  categories--parts of speech (e.g.
  
@@ -672,8 +706,8 @@ The LIWC measures are admittedly crude word counts, the categories of words
  Nevertheless, they reveal insights into the nature of the documents under
  analysis.
  This paper focuses on the following categories: positive emotion, negative
- emotion, death, and third-person plural pronouns, which research from psycholog
-y has found to be used at higher rates by extremist groups.
+ emotion, and third-person plural pronouns, which research from psychology
+ has found to be used at higher rates by extremist groups.
  (Pennebaker and Chung)
 \end_layout
 
@@ -683,28 +717,43 @@ Modelling hidden states.
 \end_layout
 
 \begin_layout Standard
-The hidden (or latent) Markov model (HMM) is a special case of the Markov
- process.
- In this model, the discrete state at a time 
-\begin_inset Formula $t$
-\end_inset
-
- is unobservable, but its emissions, or symbols, can be observed.
- A transition matrix, consisting of transition probabilities of moving from
- one state to another, is based on the probability of observing a symbol
- during a given state.
+The first estimation task in this paper is to use the relative frequencies
+ of word categories to model latent states that represent whether an actor
+ is hardline or conciliatory.
+ (For the purposes of this discussion, I assume two possible discrete states.)
+ In other words, given a sequence of FARC documents, we are interested in
+ the random variable that represents whether FARC is in a hardline state
+ or a conciliatory state--a hidden state, as negotiants may bluff to get
+ better terms.
+ This model focuses on one actor at a time; we will look at how sentiment
+ responds to sentiment subsequently.
  
 \end_layout
 
 \begin_layout Standard
-The number of latent states is determined by substantive/theoretical grounds
- and confirmed by the Bayesian information criterion (BIC) and the Akaike
- information criterion (AIC).
- For this analysis, each actor (i.e., FARC or the government) can be in one
- of two hidden states: hardline or willing to make concessions.
- The observed symbols are measures of sentiment from documents.
- This particular HMM focuses on one actor over time.
- This, with 
+The hidden (or latent) Markov model (HMM) is a special case of a Markov
+ process.
+ At each time 
+\begin_inset Formula $t$
+\end_inset
+
+ the process is at a state that is hidden or unobservable; however, from
+ each state we can observe emissions, or symbols.
+ In this case, the observed sequence of emissions is a stream of sentiment
+ measures (e.g.
+ percent negative emotion words in FARC statements), e.g.
+ 
+\begin_inset Formula $(0.01,0.12,0.04,0.01)$
+\end_inset
+
+.
+ We are interested in the corresponding sequence of hidden states which
+ generated the sequence of emissions: e.g.
+ 
+\begin_inset Formula $(S_{H},S_{H},S_{C},S_{H}),$
+\end_inset
+
+ where 
 \begin_inset Formula $S_{H}$
 \end_inset
 
@@ -712,62 +761,54 @@ The number of latent states is determined by substantive/theoretical grounds
 \begin_inset Formula $S_{C}$
 \end_inset
 
- being the hardline and concessions states, respectively, the transition
- matrix takes on the form
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-\begin{array}{ccc}
- & S_{H} & S_{C}\end{array}
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-\begin{array}{c}
-S_{H}\\
-S_{C}
-\end{array}\left(\begin{array}{cc}
-P_{HH} & P_{HC}\\
-P_{CH} & P_{CC}
-\end{array}\right)
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-where 
-\begin_inset Formula $P_{HH}$
-\end_inset
-
- is the probability of moving from a hardline state to a hardline state,
+ are the hardline and conciliatory states, respectively.
  
-\begin_inset Formula $P_{HC}$
+\end_layout
+
+\begin_layout Standard
+The sequence of states is a Markov chain: the probabilities of 
+\begin_inset Formula $S_{H}$
 \end_inset
 
- is the probability of moving from a hardline to a concessions state, and
- so on.
- These probabilities will provide insight into whether states are 
-\begin_inset Quotes eld
+ and 
+\begin_inset Formula $S_{C}$
 \end_inset
 
-sticky
-\begin_inset Quotes erd
+ exhibit the Markov property, namely, the probability of 
+\begin_inset Formula $S_{H}$
 \end_inset
 
-: for example, if a FARC attack prompts a government hardline response,
- is this state persistent over time? I assume that the process is stationary,
- i.e.
+ or 
+\begin_inset Formula $S_{C}$
+\end_inset
+
+ at time 
+\begin_inset Formula $t$
+\end_inset
+
+ depends only on the realization of the state 
+\begin_inset Formula $S_{H}$
+\end_inset
+
+ or 
+\begin_inset Formula $S_{C}$
+\end_inset
+
+ at time 
+\begin_inset Formula $t-1$
+\end_inset
+
+.
+ Thus, the realization of state at 
+\begin_inset Formula $t-1$
+\end_inset
+
+ captures all information about what occurred prior to 
+\begin_inset Formula $t-1$
+\end_inset
+
+.
+ I also assume that the process is stationary, i.e.
  the probability of moving from state 
 \begin_inset Formula $i$
 \end_inset
@@ -781,27 +822,213 @@ sticky
 \end_inset
 
 .
+ Additionally, the probability of an observed emission 
+\begin_inset Formula $W$
+\end_inset
+
+ at time 
+\begin_inset Formula $t$
+\end_inset
+
+ depends only on the state 
+\begin_inset Formula $S$
+\end_inset
+
+ at 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ [Jurafsky] 
 \end_layout
 
 \begin_layout Standard
-To estimate these transition probabilities,
+The probabilities of moving from each state to each other state are transition
+ probabilities, represented as the entries in the transition matrix 
+\begin_inset Formula $P$
+\end_inset
+
+ below:
 \end_layout
 
 \begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+[
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{blockarray}{ccc}
+\end_layout
+
+\begin_layout Plain Layout
+
+ & S_{H} & S_{C} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{block}{c(cc)}
+\end_layout
+
+\begin_layout Plain Layout
+
+   S_{H} & P_{HH} & P_{HC} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+   S_{C} & P_{CH} & P_{CC} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{block}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{blockarray}
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Each entry 
+\begin_inset Formula $P_{ij}=Pr(S_{t+1}=state_{j}|S_{t}=state_{i})$
+\end_inset
+
+.
+ Thus, 
+\begin_inset Formula $P_{HH}$
+\end_inset
+
+ is the probability of transitioning from a hardline state to a hardline
+ state, 
+\begin_inset Formula $P_{HC}$
+\end_inset
+
+ is the probability of moving from a hardline to a concessions state, and
+ so on.
+ The transition probabilities must sum to 1.
+\end_layout
+
+\begin_layout Standard
+This discussion has used a discrete state space with two possible states;
+ however, it can be generalized to a larger number of states.
+ Although in some cases substantive/theoretical grounds may define an appropriat
+e number of latent states for a HMM, for the spectrum of 
+\begin_inset Quotes eld
+\end_inset
+
+hardline
+\begin_inset Quotes erd
+\end_inset
+
+ to 
+\begin_inset Quotes eld
+\end_inset
+
+conciliatory
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Mathematically, the optimal number of states can be identified by the Bayesian
+ information criterion (BIC) and the Akaike information criterion (AIC)
+ values.
+ 
+\end_layout
+
+\begin_layout Subparagraph*
 Modelling sentiment response.
- To model the manner in which one actor's sentiment may respond to the other
- actor's sentiment (e.g.
- FARC issues a dire statement, and the government responds in kind with
- an equally dire response), I assume that a document responds to the most
- recent document that preceded it.
+ 
 \end_layout
 
 \begin_layout Standard
-Estimation methods.
- To estimate the Markov transition probabilities, I use a multinomial logit
- model with random effects.
- This also requires a substantial flattening of sentiment measures into
- a very crude, single indicator of 
+The second part of this paper examines a time-ordered series of documents
+ issued by FARC and the government to examine whether sentiment can predict
+ sentiment.
+ This is to say, if a FARC issues a statement with 
+\begin_inset Quotes eld
+\end_inset
+
+high
+\begin_inset Quotes erd
+\end_inset
+
+ sentiment, does that predict the government's response will also have 
+\begin_inset Quotes eld
+\end_inset
+
+high
+\begin_inset Quotes erd
+\end_inset
+
+ sentiment? I assume that each text responds to the document that immediately
+ preceded it.
+ The irregularity of the data presents some challenges, as little alternation
+ occurs in some stretches of the sequence of texts.
+ (For example, 
+\begin_inset Formula $F,F,F,G,G,G,G,F$
+\end_inset
+
+.) This is partly owing to the fact that the dataset includes roughly twice
+ as many statements from the government as from FARC.
+ 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+However, repeated issuances from one party could itself be revealing.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Modelling this requires some new measures.
+ Based on previous research that has shown that in normal usage, positive
+ emotion words occur twice as frequently as negative emotion words (Pennebaker
+ and Chung), I constructed an indicator for 
 \begin_inset Quotes eld
 \end_inset
 
@@ -817,19 +1044,8 @@ low
 \begin_inset Quotes erd
 \end_inset
 
- sentiment.
- Previous research has shown that in normal usage, positive emotion words
- occur twice as frequently as negative emotion words (Pennebaker and Chung),
- therefore I created an indicator based on this measure: 
-\begin_inset Quotes eld
-\end_inset
-
-high
-\begin_inset Quotes erd
-\end_inset
-
- sentiment if the proportion of positive words is at least twice the proportion
- of negative words, and 
+ sentiment, taking on the former value if the proportion of positive words
+ is at least twice the proportion of negative words, and 
 \begin_inset Quotes eld
 \end_inset
 
@@ -838,10 +1054,79 @@ low
 \end_inset
 
  otherwise.
+ Although crude, this indicator is less noisy than using raw LIWC measures.
+ I constructed another categorical variable for sentiment-party, i.e.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+FARC/low,
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+FARC/high,
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+government/low,
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+government/high.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The analysis was performed using a multinomial logit with maximum likelihood
+ estimation.
+ 
+\end_layout
+
+\begin_layout Standard
+To model the manner in which one actor's sentiment may respond to the other
+ actor's sentiment (e.g.
+ FARC issues a dire statement, and the government responds in kind with
+ an equally dire response), 
 \end_layout
 
 \begin_layout Subsection*
 Results and discussion
+\end_layout
+
+\begin_layout Standard
+HMM
+\end_layout
+
+\begin_layout Standard
+These probabilities can also provide insight into whether states are 
+\begin_inset Quotes eld
+\end_inset
+
+sticky.
+\begin_inset Quotes erd
+\end_inset
+
+ If a FARC attack prompts a government hardline response, is this state
+ persistent over time? 
+\end_layout
+
+\begin_layout Standard
+Multinomial logit
 \end_layout
 
 \begin_layout Subsection*
