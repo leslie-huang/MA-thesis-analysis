@@ -114,8 +114,8 @@ As peace negotiations can stretch on for years and are often marred by continued
  questions.
  Using texts from the ongoing (2012-present) peace talks between the Colombian
  government and the Fuerzas Armadas Revolucionarias de Colombia (FARC),
- I use sentiment analysis to reveal whether actors are in hardline or conciliato
-ry state.
+ I use word usage ratios to reveal whether actors are in hardline or conciliator
+y state.
  I also show that one actor's sentiment (i.e.
  
 \begin_inset Quotes eld
@@ -152,16 +152,26 @@ Theory and background
 \end_layout
 
 \begin_layout Subparagraph*
-The conflict.
+The Colombian conflict.
 \end_layout
 
 \begin_layout Standard
-Colombia's conflict with Fuerzas Armadas Revolucionarias de Colombia (FARC;
- Revolutionary Armed Forces of Colombia [also known as Fuerzas Armadas Revolucio
-narias de Colombia--Ejército del Pueblo, or FARC-EP]) began in the aftermath
- of the ten-year period of civil war known as La Violencia.
- Originally founded in 1964 as a Marxist insurgency, FARC sought to overthrow
- the government, and its base was communists and rural peasants.
+FARC (Fuerzas Armadas Revolucionarias de Colombia / Revolutionary Armed
+ Forces of Colombia) was founded in 1964 the aftermath of the ten-year period
+ of civil war known as La Violencia.
+ 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The group refers to itself as Fuerzas Armadas Revolucionarias de Colombia--Ejérc
+ito del Pueblo (People's Army), or FARC-EP.
+\end_layout
+
+\end_inset
+
+ Originally a Marxist insurgency, FARC sought to overthrow the government,
+ and its base was communists and rural peasants.
  (CFR) FARC's tactics included murder, kidnappings for ransom and disappearances
  of civilians and security personnel, and extortion.
  Now notorious as the longest-running and only remaining guerrilla insurgency
@@ -224,11 +234,11 @@ During the tenure of president (now senator) Álvaro Uribe from 2002-2010,
  The talks have been championed by president Juan Manuel Santos, who succeeded
  Uribe in 2010 and was re-elected in 2014 during the peace negotiations.
  As the talks have dragged on, Santos's approval ratings have plummeted
- along with public optimism about the talks, and he has faced the vociferous
- opposition of right-wing politicians such as Uribe, as well as members
- of the military, that initially disapproved of negotiating with FARC and
- oppose any agreement provisions that, in their view, give the former rebels
- political representation instead of prosecution for crimes committed.
+ along with public optimism about the talks, in the face of vociferous oppositio
+n of right-wing politicians such as Uribe, as well as members of the military,
+ that initially disapproved of negotiating with FARC and oppose agreement
+ provisions that, in their view, would give the former rebels political
+ representation instead of prosecution for crimes committed.
  [New York Times]
 \end_layout
 
@@ -242,8 +252,18 @@ With many of its leaders and founders killed in the years leading up to
  during the peace talks, ranging from the kidnapping of rural policemen
  to the kidnapping of a high-ranking general and the bombing of oil pipelines.
  Throughout (and prior to) the talks, FARC has released public statements
- on their website and maintain an active Internet presence--their website
- even features the blogs of peace negotiators.
+ on their website and have created an additional website about the peace
+ process, which features the individual blogs of negotiators.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+See, for instance, http://pazfarc-ep.org/index.php/ivan-marquez
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -378,18 +398,23 @@ Data
 \end_layout
 
 \begin_layout Standard
-I use an original dataset of communiques and statements issued separately
- by FARC and the Colombian government, and joint communiques issued by the
- peace negotiators in Havana.
- All documents are in the original Spanish, thus avoiding the obvious pitfalls
- of inter-translator variance, loss of nuance through translation, etc.
+This paper uses an original dataset of communiques and statements issued
+ separately by FARC and the Colombian government, and joint communiques
+ issued by the peace negotiators in Havana.
+ The statements were scraped and cleaned in Python by the author.
+ All are in the original Spanish, thus avoiding the obvious pitfalls of
+ inter-translator variance, loss of nuance through translation, etc.
  The time period being studied is 2012 through May 31, 2016 (the latter
- bound was determined by the beginning of this project).
+ bound determined by the beginning of this project).
+\end_layout
+
+\begin_layout Subparagraph*
+Sources.
+ 
 \end_layout
 
 \begin_layout Standard
-The documents were collected using web scraping in Python from the following
- sources: First, every communique from the 
+FARC-authored documents were scraped from the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -397,17 +422,20 @@ Comunicados
 \begin_inset Quotes erd
 \end_inset
 
- section of the official FARC website was scraped, [CITE] for a total of
- 120, of which 11 that were issued prior to 2012 were removed.
- Some communiques were authored by specific FARC generals; however, this
- paper's analysis does not examine individual-level authorship.
+ (Communiques) section of the official FARC website.[CITE] Some communiques
+ were authored by specific FARC generals; however, this paper's analysis
+ does not examine individual-level authorship.
+ A total of 120 FARC texts are included in the dataset (11 documents issued
+ prior to 2012 were excluded from the main analysis).
+ 
 \end_layout
 
 \begin_layout Standard
-For joint statements, every communique from the official Mesa de Conversaciones
- (Table for Dialogue) website was scraped, [CITE] for a total of 70 documents.
- This excludes reports issued by the negotiators, which have a different
- purpose, format, and audience than the statements.
+Joint statements were scraped from the official Mesa de Conversaciones (Table
+ for Dialogue) website of the negotiations.
+ [CITE] This contributed 70 documents, and excludes reports also published
+ during the negotiations, which have a different purpose, format, and audience
+ than the statements.
 \end_layout
 
 \begin_layout Standard
@@ -422,13 +450,13 @@ Sala de Prensa
 
  (Press Room) section of the Colombian president's website.
  [(http://wp.presidencia.gov.co)] The same president, Santos, has been in office
- during the peace talks, conveniently obviating any variance that might
- result from different administrations.
+ during the peace talks, conveniently obviating variance that might result
+ from different administrations.
  Because the government issues statements on all manner of topics besides
- FARC, a simple keyword search was used.
- The method of scraping differed slightly for 2012-2015 and 2016 because
- of differences in the structures of the current and archived presidential
- websites.
+ FARC, a simple keyword search was used as an initial screening method.
+ The implementation of this search differed slightly for 2012-2015 and 2016
+ because of differences in the structures of the current and archived presidenti
+al websites.
 \begin_inset Foot
 status open
 
@@ -451,10 +479,11 @@ paz
 \begin_inset Quotes erd
 \end_inset
 
- (peace) were in the text of the document.
- Documents from 2016 were scraped from a new website of the Colombian president
- [http://es.presidencia.gov.co/noticia]; they were included in the preliminary
- dataset if they were returned as results of a search for the terms 
+ (peace) appeared in the text of the document.
+ This was executed with a basic search script in Python during the scraping.
+ A new website of the Colombian president [http://es.presidencia.gov.co/noticia]
+ for press releases in 2016 did not allow batch downloading of press releases
+ by date; a search for the terms 
 \begin_inset Quotes eld
 \end_inset
 
@@ -470,7 +499,8 @@ paz
 \begin_inset Quotes erd
 \end_inset
 
- using the website's search tool.
+ using the website's search tool was performed and all results of that search
+ were scraped.
 \end_layout
 
 \end_inset
@@ -502,8 +532,8 @@ Quotes from Joe Biden
 \begin_inset Quotes erd
 \end_inset
 
-), in which the U.S.
- vice president expressed support for the peace process.
+), in which the vice president expressed U.S.
+ support for the peace process.
 \end_layout
 
 \end_inset
@@ -616,12 +646,12 @@ Estimation method
 \end_layout
 
 \begin_layout Subparagraph*
-Text analysis.
+Sentiment measures.
  
 \end_layout
 
 \begin_layout Standard
-Linguistic Inquiry and Word Count (LIWC) was developed by Pennebaker.
+The Linguistic Inquiry and Word Count (LIWC) was developed by Pennebaker.
  [INSERT CITES] LIWC in English has been used to analyze texts written by
  individuals from terrorist organizations (and translated into English),
  e.g.
@@ -1004,7 +1034,8 @@ high
  sentiment? I assume that each text responds to the document that immediately
  preceded it.
  The irregularity of the data presents some challenges, as little alternation
- occurs in some stretches of the sequence of texts.
+ occurs in some stretches of the sequence of texts, and both actors sometimes
+ release multiple statements on the same day.
  (For example, 
 \begin_inset Formula $F,F,F,G,G,G,G,F$
 \end_inset
@@ -1093,6 +1124,11 @@ government/high.
 \end_layout
 
 \begin_layout Standard
+Another approach is possible: creating a sequence that strictly alternates
+ between FARC and the government
+\end_layout
+
+\begin_layout Standard
 The analysis was performed using a multinomial logit with maximum likelihood
  estimation.
  I control for year effects because of the correlation between sentiment
@@ -1100,16 +1136,12 @@ The analysis was performed using a multinomial logit with maximum likelihood
  I also include controls for the effects of violence and public opinion.
 \end_layout
 
-\begin_layout Standard
-
-\end_layout
-
 \begin_layout Subsection*
 Results and discussion
 \end_layout
 
 \begin_layout Standard
-HMM
+HMM.
 \end_layout
 
 \begin_layout Standard
@@ -1126,7 +1158,12 @@ sticky.
 \end_layout
 
 \begin_layout Standard
-Multinomial logit
+During the negotiations on political representation, for instance, FARC's
+ demands initially included 
+\end_layout
+
+\begin_layout Standard
+Multinomial logit.
 \end_layout
 
 \begin_layout Subsection*
@@ -1134,7 +1171,17 @@ Conclusion
 \end_layout
 
 \begin_layout Standard
+This paper is a first attempt at applying some text and sentiment analysis
+ methods from psychology to the study of conflict negotiations.
+ 
+\end_layout
+
+\begin_layout Standard
 Further research
+\end_layout
+
+\begin_layout Standard
+Refine/adapt sentiment analysis for political science 
 \end_layout
 
 \begin_layout Standard

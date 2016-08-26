@@ -17,16 +17,33 @@ format statadate %td
 
 * tsset statadate, daily
 
+* create an ID var
+gen ID = _n
+
+* get it together for femlogit
+xtset ID year
+xtset
+
 * need to make some factors
 describe year
 destring year, replace
 
 * MNL Model #1
-mlogit state_y i.state_x FARC_actions pres_approve i.year
+mlogit state_y i.state_x FARC_actions pres_approve i.year, robust
 
 mlogit, rrr
 
 test 2.state_x 3.state_x
+
+
+* tests
+* get rid of factor vars because mlogtest doesn't like them
+xi i.state_x i.year
+mlogit state_y _Is* army_casualties pres_approve _Iy*
+mlogtest, lr
+mlogtest , hausman smhsiao base
+
+* graphs graphs graphs
 
 margins state_x, atmeans predict(outcome(1))
 marginsplot, name(state_x) 
@@ -43,3 +60,6 @@ mlogit state_y i.state_x army_casualties pres_approve i.year
 
 * Model #3
 mlogit state_y i.state_x FARC_actions peace_approve i.year
+
+* Model #4
+
