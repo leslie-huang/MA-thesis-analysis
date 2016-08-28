@@ -85,8 +85,9 @@ FARC[120, 2] <- "Informamos sobre la muerte del Camarada Bernardo Peñaloza"
 FARC[120, 3] <- ""
 FARC[120, 4] <- "COMUNICADO: Mayo 30 de 2016 Lamentamos informar a toda la guerrillerada y a la opinión pública nacional e internacional, que el día 25 de Mayo el camarada Bernardo Peñaloza, ex integrante de la Comisión de Paz en los diálogos de la Habana, tras una larga y fructífera vida entregada a la lucha por la revolución y los cambios sociales, en territorio colombiano y en cumplimiento de sus tareas, falleció como consecuencia de un paro cardiaco.Expresamos nuestras condolencias a sus familiares y amigos que lo conocieron. Rendimos homenaje a su memoria y a su ejemplo de dedicación y lealtad a la causa de los oprimidos. Paz en su tumba. Estado Mayor Central de las FARC EP."
 
-# exclude documents prior to 2012
-FARC <- filter(FARC, date >= "2012-01-01")
+# exclude documents prior to 9/2012
+FARC$date <- as.Date(FARC$date, "%Y-%m-%d")
+FARC <- filter(FARC, date >= "2012-09-01")
 
 # raw LIWC measures
 FARC_raw <- liwc_extractor(FARC)
@@ -127,110 +128,6 @@ govt_results <- liwc_loess(govt_raw)
 # get the loess lines for plotting
 govt_lines <- loess_lines(govt_raw)
   
-#################################################################################
-#################################################################################
-# Graph it!
-
-# Neg emotion: base graph
-base_neg = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "FARC statement")) +
-  geom_smooth(method = "loess", se = FALSE) +
-  geom_jitter() +
-  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Joint statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Joint statement")) +
-  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Govt statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Govt statement")) +
-  labs(
-    x = "Date",
-    y = "Percent Neg Emotion",
-    color = "Legend") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
-
-# Neg emotion and major agreements/violence
-neg_major <- base_neg +
-  ggtitle("Major Events and Percent Negative Emotion Words in Statements") + 
-  geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
-  geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
-
-# Neg emotion and ceasefire dates
-neg_cf <- base_neg +
-  ggtitle("Ceasefires and Percent Negative Emotion Words in Statements") +
-  geom_rect(aes(xmin=cf_start[1], xmax=cf_end[1], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[2], xmax=cf_end[2], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) +
-  geom_rect(aes(xmin=cf_start[3], xmax=cf_end[3], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[4], xmax=cf_end[4], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[5], xmax=cf_end[5], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01)
-
-#################################################################################
-# Pos emotion: base graph
-base_pos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "FARC statement")) +
-  geom_smooth(method = "loess", se = FALSE) +
-  geom_jitter() +
-  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Joint statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Joint statement")) +
-  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Govt statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Govt statement")) +
-  labs(
-    x = "Date",
-    y = "Percent Pos Emotion",
-    color = "Legend") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
-
-# pos emotion and major agreements
-pos_major <- base_pos +
-  ggtitle("Major Events and Percent Positive Emotion Words in Statements") +
-  geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
-  geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
-
-# pos emotion and ceasefires
-pos_cf <- base_pos +
-  ggtitle("Ceasefires and Percent Positive Emotion Words in Statements") +
-  geom_rect(aes(xmin=cf_start[1], xmax=cf_end[1], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[2], xmax=cf_end[2], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) +
-  geom_rect(aes(xmin=cf_start[3], xmax=cf_end[3], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[4], xmax=cf_end[4], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[5], xmax=cf_end[5], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01)
-
-#################################################################################
-#################################################################################
-# let's graph 3rd person plural pronouns -- indicator of extremism
-base_ellos = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "FARC statement")) +
-  geom_smooth(method = "loess", se = FALSE) +
-  geom_jitter() +
-  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "Joint statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "Joint statement")) +
-  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "Govt statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Ellos, color = "Govt statement")) +
-  labs(
-    x = "Date",
-    y = "Percent 3rd Person Pl Pronouns",
-    color = "Legend") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
-
-# add major agreements and ceasefires
-ellos_major <- base_ellos +
-  ggtitle("Major Events and Use of 3rd Person Pl. Pronoun") +
-  geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
-  geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
-
-#################################################################################
-#################################################################################
-# Let's graph death topic
-base_death = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "FARC statement")) +
-  geom_smooth(method = "loess", se = FALSE) +
-  geom_jitter() +
-  geom_point(data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "Joint statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "Joint statement")) +
-  geom_point(data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "Govt statement")) +
-  geom_smooth(method = "loess", se = FALSE, data = govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = Muerte, color = "Govt statement")) +
-  labs(
-    x = "Date",
-    y = "Percent on Death",
-    color = "Legend") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
 
 #################################################################################
 #################################################################################
@@ -324,67 +221,9 @@ pos_breaks <- break_sorter(FARC_breaks_df, govt_breaks_df, joint_breaks_df, "pos
 pp3_breaks <- break_sorter(FARC_breaks_df, govt_breaks_df, joint_breaks_df, "pp3_break")
 death_breaks <- break_sorter(FARC_breaks_df, govt_breaks_df, joint_breaks_df, "death_break")
 
-# let's look at them on the graph
-neg_breaks_gg <- base_neg +
-  ggtitle("Breakpoints in Negative Emotion") +
-  geom_vline(data = filter(neg_breaks, group == "FARC"), mapping = aes(xintercept = as.numeric(date), color = "FARC statement"), linetype = 2) +
-  geom_vline(data = filter(neg_breaks, group == "govt"), mapping = aes(xintercept = as.numeric(date), color = "Govt statement"), linetype = 1) +
-  geom_vline(data = filter(neg_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date), color = "Joint statement"), linetype = 3)
-
-pos_breaks_gg <- base_pos +
-  ggtitle("Breakpoints in Positive Emotion") +
-  geom_vline(data = filter(pos_breaks, group == "FARC"), mapping = aes(xintercept = as.numeric(date), color = "FARC statement"), linetype = 2) +
-  geom_vline(data = filter(pos_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date), color = "Joint statement"), linetype = 3) # no govt breakpoints
-
-ellos_breaks_gg <- base_ellos +
-  ggtitle("Breakpoints in Use of 3rd Person Pl. Pronoun") +
-  geom_vline(data = filter(pp3_breaks, group == "govt"), mapping = aes(xintercept = as.numeric(date), color = "Govt statement"), linetype = 2)
-
-death_breaks_gg <- base_death +
-  ggtitle("Breakpoints in Death") +
-  geom_vline(data = filter(death_breaks, group == "FARC"), mapping = aes(xintercept = as.numeric(date), color = "FARC statement"), linetype = 2) +
-  geom_vline(data = filter(death_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date), color = "Joint statement"), linetype = 3) # no govt breakpoints
-
-neg_breaks_gg
-pos_breaks_gg
-ellos_breaks_gg
-death_breaks_gg
-
 #################################################################################
 #################################################################################
-# now let's take a look at trends in violence/military activity
-
-# make our base graph
-base_viol = ggplot(monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = FARC_actions, color = "FARC actions")) +
-  geom_smooth(method = "loess", se = FALSE) +
-  geom_jitter() +
-  geom_point(data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = deaths_fuerzapublica, color = "Army casualties (excl. wounded)")) +
-  geom_smooth(method = "loess", se = FALSE, data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = deaths_fuerzapublica, color = "Army casualties (excl. wounded)")) +
-  geom_point(data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = desmovilizados, color = "Militants demobilized")) +
-  geom_smooth(method = "loess", se = FALSE, data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = desmovilizados, color = "Militants demobilized"))  +
-  labs(
-    x = "Date",
-    y = "Number of Incidents",
-    color = "Legend") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  ggtitle("Level of Violence and Military Actions")
-
-# let's see whether this lines up with ceasefires
-viol_cf <- base_viol +
-  ggtitle("Level of Violence and Ceasefires") +
-  geom_rect(aes(xmin=cf_start[1], xmax=cf_end[1], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[2], xmax=cf_end[2], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) +
-  geom_rect(aes(xmin=cf_start[3], xmax=cf_end[3], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[4], xmax=cf_end[4], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[5], xmax=cf_end[5], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01)
-
-# or major events
-viol_major <- base_viol +
-ggtitle("Major Events and Violence Trends") +
-  geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
-  geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
-
+# Let's look at violence
 # let's find the structural breaks ** ignore the "day"
 viol_breaks <- get_breakdate(break_finder(monthly_viol), monthly_viol)
 
@@ -404,19 +243,8 @@ convert_vbreaks <- function(listoflists) {
   return(df)
 }
 
-# graph structural breaks in violence trends
+# get structural breaks in violence trends for graphing
 viol_breaks_list <- convert_vbreaks(viol_breaks)
-
-viol_breaks_gg <- base_viol +
-  ggtitle("Breakpoints in Violence") +
-  geom_vline(data = filter(viol_breaks_list, group == "farc_action"), mapping = aes(xintercept = as.numeric(date), color = "FARC actions"), linetype = 2) +
-  geom_vline(data = filter(viol_breaks_list, group == "casualties"), mapping = aes(xintercept = as.numeric(date), color = "Army casualties (excl. wounded)"), linetype = 2) +
-  geom_vline(data = filter(viol_breaks_list, group == "desmovilizados"), mapping = aes(xintercept = as.numeric(date), color = "Militants demobilized"), linetype = 2)
-
-# the graphs
-viol_cf
-viol_major
-viol_breaks_gg
 
 #################################################################################
 #################################################################################
@@ -660,72 +488,6 @@ add_monthlies <- function(df) {
 
 #################################################################################
 #################################################################################
-# Results
-
-# Raw LIWC scores
-View(FARC_raw)
-View(govt_raw)
-View(joint_raw)
-
-# Loessed results
-View(FARC_results)
-View(govt_results)
-View(joint_results)
-
-# Violence, major events, public opinion data
-View(monthly_viol)
-View(dates)
-View(public_op)
-
-# View structural breaks, by type
-View(neg_breaks)
-View(pos_breaks)
-View(pp3_breaks)
-View(death_breaks)
-
-# Structural breaks by party, with means for each regimes.
-# [[1]][[1]] to access the means,  [[1]][[2]] to get the corresponding breakdates
-FARC_means
-govt_means
-joint_means
-viol_means
-
-# Base graphs (all loessed)
-base_neg
-base_pos
-base_ellos
-base_death
-base_viol
-base_opinion
-
-# Graphs with ceasefires and major events
-neg_cf
-neg_major
-
-pos_cf
-pos_major
-
-ellos_major
-
-death_major
-
-viol_major
-viol_cf
-
-opinion_cf
-opinion_major
-
-# Graphs with structural breaks
-neg_breaks_gg
-pos_breaks_gg
-ellos_breaks_gg
-death_breaks_gg
-viol_breaks_gg
-
-
-
-#################################################################################
-#################################################################################
 # Markov models
 
 
@@ -803,153 +565,6 @@ head(posterior(hmm_mod))
 
 
 
-#################################################################################
-#################################################################################
-# PCA analysis
-FARC_corpus <- corpus(FARC$text, docvars = FARC_results$dates)
-
-govt_corpus <- corpus(govt$text, docvars = govt_results$dates)
-
-all_corpora <- FARC_corpus + govt_corpus
-
-# docvars for inserting: sides and dates
-sides <- c(rep("FARC", length(FARC_corpus[, 1])), rep("govt", length(govt_corpus[, 1])))
-pca_dates <- c(FARC_results$date, govt_results$date)
-
-# make dfm
-all_dfm <- dfm(all_corpora, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
-
-# run PCA
-statements_PCA <- prcomp(all_dfm, center = TRUE, scale. = TRUE)
-summary(statements_PCA)
-
-# what are the loadings?
-head(statements_PCA$rotation)
-
-# plot it
-plot(statements_PCA, type = "l", main="PCA of FARC and Govt Statements")
-# first 2 PCs account for ~10% of variance. Could be better...
-
-# create graph of PC1 and PC2
-PC_graph <- ggbiplot(statements_PCA, obs.scale = 1, var.scale = 1, groups = sides)
-PC_graph <- PC_graph + theme(legend.direction = "horizontal", legend.position = "top")
-PC_graph
-
-# Graph PC1 as a time series:
-
-# collect date and side metadata with PC1 values
-statements_PC1_2 <- data.frame(statements_PCA$x[1:length(statements_PCA$x[,1]),1:2])
-statements_PC1_2["date"] <- pca_dates
-statements_PC1_2["side"] <- sides
-colnames(statements_PC1_2) <- c("PC1", "PC2", "date", "side")
-
-PC1_gg <- ggplot(filter(statements_PC1_2, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "FARC")) +
-  geom_jitter() +
-  geom_point(data = filter(statements_PC1_2, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
-  ggtitle("Plot of First Principal Components over Time") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
-
-# Graph PC2
-# collect date and side metadata with PC1 values
-PC2_gg <- ggplot(filter(statements_PC1_2, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "FARC")) +
-  geom_jitter() +
-  geom_point(data = filter(statements_PC1_2, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "Govt")) +
-  ggtitle("Plot of Second Principal Components over Time") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA))
-
-
-#################################################################################
-#################################################################################
-# FARC statement # 94 is an outlier. Let's try removing it, adding log transformation, and rerun PCA
-# trimmed_statements_PC1_2 <- filter(statements_PC1_2, PC2 < 231)
-FARC_corpus_trimmed <- corpus(FARC$text[-94], docvars = FARC_results$dates[-94])
-all_corpora_trimmed <- FARC_corpus_trimmed + govt_corpus
-all_dfm_trimmed <- dfm(all_corpora_trimmed, language = "spanish", stem = TRUE, ignoredFeatures = stopwords("spanish"))
-statements_PCA_trimmed <- prcomp(all_dfm_trimmed, center = TRUE, scale. = TRUE)
-summary(statements_PCA_trimmed)
-
-# plot it: still not great
-plot(statements_PCA_trimmed, type = "l", main="PCA of FARC and Govt Statements")
-
-statements_PC1_2_trimmed <- data.frame(statements_PCA_trimmed$x[1:length(statements_PCA_trimmed$x[,1]),1:2])
-statements_PC1_2_trimmed["date"] <- pca_dates[-94]
-statements_PC1_2_trimmed["side"] <- sides[-94]
-colnames(statements_PC1_2_trimmed) <- c("PC1", "PC2", "date", "side")
-
-# Plot PC1 time series
-PC1_gg_trimmed <- ggplot(filter(statements_PC1_2_trimmed, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "FARC")) +
-  geom_smooth(method = "loess", se = FALSE) +
-  geom_jitter() +
-  geom_point(data = filter(statements_PC1_2_trimmed, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
-  geom_smooth(method = "loess", se = FALSE, data = statements_PC1_2_trimmed, aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
-  ggtitle("Plot of First Principal Components over Time (Outlier Removed)") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
-  labs(
-    x = "Date",
-    y = "PC1",
-    color = "Legend")
-
-# Graph PC2
-# collect date and side metadata with PC1 values
-PC2_gg_trimmed <- ggplot(filter(statements_PC1_2_trimmed, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "FARC")) +
-  geom_smooth(method = "loess", se = FALSE) +
-  geom_jitter() +
-  geom_point(data = filter(statements_PC1_2_trimmed, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "Govt")) +
-  geom_smooth(method = "loess", se = FALSE, data = statements_PC1_2_trimmed, aes(x = as.Date(date, origin = "1970-01-01"), y = PC2, color = "Govt")) +
-  ggtitle("Plot of Second Principal Components over Time (Outlier Removed)") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
-  labs(
-    x = "Date",
-    y = "PC2",
-    color = "Legend")
-
-# what words are correlated with PC1 or PC2?
-PC_df <- fortify(statements_PCA$rotation)
-words <- row.names(PC_df)
-PC_df <- cbind(words, PC_df)
-
-# top words associated with PC1
-PC_df1 <- arrange(PC_df, PC1)
-View(PC_df1)
-
-# top words associated with PC2
-PC_df2 <- arrange(PC_df, PC2)
-View(PC_df2)
-
-#################################################################################
-#################################################################################
-# # Robust PCA
-# rob_pca <- PcaHubert(all_dfm)
-# # First 2 components account for 65% of variance
-# print(rob_pca)
-# summary(rob_pca)
-# 
-# # plot
-# screeplot(rob_pca, type = "lines", main = "Robust PCA with 10 Components")
-# 
-# # let's plot the time series of PC1
-# rob_pc1 <- data.frame(rob_pca@scores)
-# rob_pc1 <- dplyr::select(rob_pc1, PC1)
-# rob_pc1["side"] <- sides
-# rob_pc1["date"] <- pca_dates
-# 
-# # Robust PC1 graph
-# PC1_gg_robust <- ggplot(filter(rob_pc1, side == "FARC"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "FARC")) +
-#   geom_smooth(method = "loess", se = FALSE) +
-#   geom_jitter() +
-#   geom_point(data = filter(rob_pc1, side == "govt"), aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
-#   geom_smooth(method = "loess", se = FALSE, data = rob_pc1, aes(x = as.Date(date, origin = "1970-01-01"), y = PC1, color = "Govt")) +
-#   ggtitle("Plot of First Principal Components over Time (Robust PCA)") +
-#   scale_x_date(date_minor_breaks = "1 month",
-#                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) + 
-#   labs(
-#     x = "Date",
-#     y = "PC1",
-#     color = "Legend")
 
 #################################################################################
 #################################################################################
@@ -1089,3 +704,5 @@ mod1_rrr <- exp(coef(ml_mod1))
 mod1_fit <- fitted(ml_mod1)
 
 hmftest(ml_mod1, ml_mod2)
+
+
