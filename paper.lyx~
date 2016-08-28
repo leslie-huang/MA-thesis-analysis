@@ -504,7 +504,10 @@ talk,
 \end_inset
 
  not just the level of violence.
- 
+ Other research has used violence or attacks to gauge the status of talks,
+ but in fact we may better understand the effect of violence--or the motivation
+ for attacks--on peace talks if we understand the status of the talks prior
+ to the violence.
 \end_layout
 
 \begin_layout Standard
@@ -898,23 +901,25 @@ anxiety or fear
 )--are counted, and their percentage of total words in the document is calculate
 d.
  The Spanish LIWC was translated from the English-language LIWC and augmented
- with additional words (e.g.
- synonyms for included words in Spanish) by Ramírez-Esparza, Pennebaker,
- García, and Suriá Martínez.
- 
+ (e.g.
+ additional Spanish synonyms for words translated from the English) by Ramírez-E
+sparza, Pennebaker, García, and Suriá Martínez.
+ This paper uses the following categories: positive emotion, negative emotion,
+ and third-person plural pronouns, which research from psychology has found
+ to be used at higher rates by extremist groups.
+ (Pennebaker and Chung)
 \end_layout
 
 \begin_layout Standard
-The LIWC measures are admittedly crude word counts, the categories of words
+The LIWC measures are admittedly crude word counts; the categories of words
  are not tailored for political science purposes or for the conflict of
- interest, and the dictionaries are intended for the analysis of personality
+ interest; and the dictionaries are intended for the analysis of personality
  traits of individual people, not organizations.
- Nevertheless, they reveal insights into the nature of the documents under
- analysis.
- This paper focuses on the following categories: positive emotion, negative
- emotion, and third-person plural pronouns, which research from psychology
- has found to be used at higher rates by extremist groups.
- (Pennebaker and Chung)
+ Nevertheless, they may reveal insights into the nature of the documents
+ under analysis.
+ Moreover, demonstrating the success or limits of measurement using a general
+ rather than conflict-specific dictionary would make this paper's results
+ applicable to other contexts.
 \end_layout
 
 \begin_layout Subparagraph*
@@ -924,13 +929,13 @@ Modelling hidden states.
 
 \begin_layout Standard
 The first estimation task in this paper is to use the relative frequencies
- of word categories to model latent states that represent whether an actor
- is hardline or conciliatory.
- (For the purposes of this discussion, I assume two possible discrete states.)
- In other words, given a sequence of FARC documents, we are interested in
- the random variable that represents whether FARC is in a hardline state
- or a conciliatory state--a hidden state, as negotiants may bluff to get
- better terms.
+ of word categories in a Markov regime-switching model that represents whether
+ an actor is in a latent, or hidden, state of being hardline or conciliatory.
+ (For the purposes of simplifying this discussion, I assume two possible
+ discrete states.) In other words, given a sequence of FARC documents, we
+ are interested in the random variable that represents whether FARC is in
+ a hardline state or a conciliatory state--a hidden state, as negotiants
+ may bluff to get better terms.
  This model focuses on one actor at a time; we will look at how sentiment
  responds to sentiment subsequently.
  
@@ -1419,9 +1424,10 @@ government/high.
 \begin_inset Quotes erd
 \end_inset
 
- The analysis was performed using a multinomial logit with maximum likelihood
+ This analysis was performed using a multinomial logit with maximum likelihood
  estimation.
- 
+ The transition probabilities were calculated from the exponentiated coefficient
+s of the conditional odds ratios.
 \end_layout
 
 \begin_layout Subsection*
