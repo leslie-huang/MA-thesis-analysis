@@ -33,6 +33,8 @@ fitstat
 * get the conditional odds ratios' exponentiated coefficients (e^b) to calculate the Markov transition probabilities
 listcoef
 
+* for each value of x, calculate probability distribution of Y outcomes using e^b
+
 * Model # 2
 
 

@@ -1328,3 +1328,299 @@ r(198);
 factor variables and time-series operators not allowed
 r(101);
 
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD08866.000000"
+
+. mlogit state_y i.state_x 
+
+Iteration 0:   log likelihood = -451.86347  
+Iteration 1:   log likelihood = -392.14145  
+Iteration 2:   log likelihood = -388.73013  
+Iteration 3:   log likelihood = -388.57574  
+Iteration 4:   log likelihood = -388.57414  
+Iteration 5:   log likelihood = -388.57414  
+
+Multinomial logistic regression                 Number of obs     =        351
+                                                LR chi2(9)        =     126.58
+                                                Prob > chi2       =     0.0000
+Log likelihood = -388.57414                     Pseudo R2         =     0.1401
+
+------------------------------------------------------------------------------
+     state_y |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+1            |
+     state_x |
+          2  |  -.5500463   .5418392    -1.02   0.310    -1.612032     .511939
+          3  |   -3.52046   1.102444    -3.19   0.001    -5.681211   -1.359709
+          4  |  -2.145096   .5091377    -4.21   0.000    -3.142987   -1.147204
+             |
+       _cons |   .2623643   .4206222     0.62   0.533    -.5620402    1.086769
+-------------+----------------------------------------------------------------
+2            |
+     state_x |
+          2  |  -.2231436    .508265    -0.44   0.661    -1.219325    .7730376
+          3  |  -1.265666   .5440931    -2.33   0.020    -2.332069   -.1992635
+          4  |  -2.219203   .4941689    -4.49   0.000    -3.187757    -1.25065
+             |
+       _cons |   .4054651   .4082483     0.99   0.321    -.3946868    1.205617
+-------------+----------------------------------------------------------------
+3            |
+     state_x |
+          2  |  -.5108256   .7187953    -0.71   0.477    -1.919639    .8979873
+          3  |   1.478102   .5966619     2.48   0.013     .3086661    2.647538
+          4  |  -.5328045   .5898361    -0.90   0.366    -1.688862    .6232529
+             |
+       _cons |  -.6931472   .5477226    -1.27   0.206    -1.766664    .3803693
+-------------+----------------------------------------------------------------
+4            |  (base outcome)
+------------------------------------------------------------------------------
+
+. redict(outcome(1))
+command redict is unrecognized
+r(199);
+
+end of do-file
+
+r(199);
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD08866.000000"
+
+. margins state_x, atmeans predict(outcome(1))
+
+Adjusted predictions                            Number of obs     =        351
+Model VCE    : OIM
+
+Expression   : Pr(state_y==1), predict(outcome(1))
+at           : 1.state_x       =    .1225071 (mean)
+               2.state_x       =    .1851852 (mean)
+               3.state_x       =    .2706553 (mean)
+               4.state_x       =    .4216524 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .3023256   .0700373     4.32   0.000     .1650549    .4395962
+          2  |   .2307692   .0522589     4.42   0.000     .1283436    .3331949
+          3  |   .0105263   .0104708     1.01   0.315     -.009996    .0310487
+          4  |   .0945946    .024056     3.93   0.000     .0474457    .1417435
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD08866.000000"
+
+. marginsplot, name(state_x) 
+
+  Variables that uniquely identify margins: state_x
+graph state_x already exists
+r(110);
+
+end of do-file
+
+r(110);
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD08866.000000"
+
+. graph combine state_x state_x2 state_x3 state_x4, ycommon
+state_x2 is not a memory graph
+r(198);
+
+end of do-file
+
+r(198);
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD08866.000000"
+
+. margins state_x, atmeans predict(outcome(2))
+
+Adjusted predictions                            Number of obs     =        351
+Model VCE    : OIM
+
+Expression   : Pr(state_y==2), predict(outcome(2))
+at           : 1.state_x       =    .1225071 (mean)
+               2.state_x       =    .1851852 (mean)
+               3.state_x       =    .2706553 (mean)
+               4.state_x       =    .4216524 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .3488372   .0726812     4.80   0.000     .2063847    .4912897
+          2  |   .3692308   .0598587     6.17   0.000     .2519098    .4865517
+          3  |   .1157895   .0328285     3.53   0.000     .0514469    .1801321
+          4  |   .1013514   .0248073     4.09   0.000       .05273    .1499727
+------------------------------------------------------------------------------
+
+. marginsplot, name(state_x2) 
+
+  Variables that uniquely identify margins: state_x
+
+. margins state_x, atmeans predict(outcome(3))
+
+Adjusted predictions                            Number of obs     =        351
+Model VCE    : OIM
+
+Expression   : Pr(state_y==3), predict(outcome(3))
+at           : 1.state_x       =    .1225071 (mean)
+               2.state_x       =    .1851852 (mean)
+               3.state_x       =    .2706553 (mean)
+               4.state_x       =    .4216524 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .1162791   .0488848     2.38   0.017     .0204666    .2120916
+          2  |   .0923077   .0359031     2.57   0.010      .021939    .1626764
+          3  |         .6   .0502625    11.94   0.000     .5014874    .6985126
+          4  |   .1824324   .0317455     5.75   0.000     .1202124    .2446524
+------------------------------------------------------------------------------
+
+. marginsplot, name(state_x3) 
+
+  Variables that uniquely identify margins: state_x
+
+. margins state_x, atmeans predict(outcome(4))
+
+Adjusted predictions                            Number of obs     =        351
+Model VCE    : OIM
+
+Expression   : Pr(state_y==4), predict(outcome(4))
+at           : 1.state_x       =    .1225071 (mean)
+               2.state_x       =    .1851852 (mean)
+               3.state_x       =    .2706553 (mean)
+               4.state_x       =    .4216524 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .2325581    .064425     3.61   0.000     .1062875    .3588288
+          2  |   .3076923   .0572468     5.37   0.000     .1954906     .419894
+          3  |   .2736842   .0457431     5.98   0.000     .1840293    .3633391
+          4  |   .6216216   .0398653    15.59   0.000      .543487    .6997562
+------------------------------------------------------------------------------
+
+. marginsplot, name(state_x4) 
+
+  Variables that uniquely identify margins: state_x
+
+. graph combine state_x state_x2 state_x3 state_x4, ycommon
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD08866.000000"
+
+. margins state_x, atmeans predict(outcome(1))
+
+Adjusted predictions                            Number of obs     =        351
+Model VCE    : OIM
+
+Expression   : Pr(state_y==1), predict(outcome(1))
+at           : 1.state_x       =    .1225071 (mean)
+               2.state_x       =    .1851852 (mean)
+               3.state_x       =    .2706553 (mean)
+               4.state_x       =    .4216524 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .3023256   .0700373     4.32   0.000     .1650549    .4395962
+          2  |   .2307692   .0522589     4.42   0.000     .1283436    .3331949
+          3  |   .0105263   .0104708     1.01   0.315     -.009996    .0310487
+          4  |   .0945946    .024056     3.93   0.000     .0474457    .1417435
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD08866.000000"
+
+. margins state_x, atmeans predict(outcome(2))
+
+Adjusted predictions                            Number of obs     =        351
+Model VCE    : OIM
+
+Expression   : Pr(state_y==2), predict(outcome(2))
+at           : 1.state_x       =    .1225071 (mean)
+               2.state_x       =    .1851852 (mean)
+               3.state_x       =    .2706553 (mean)
+               4.state_x       =    .4216524 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .3488372   .0726812     4.80   0.000     .2063847    .4912897
+          2  |   .3692308   .0598587     6.17   0.000     .2519098    .4865517
+          3  |   .1157895   .0328285     3.53   0.000     .0514469    .1801321
+          4  |   .1013514   .0248073     4.09   0.000       .05273    .1499727
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD08866.000000"
+
+. margins state_x, atmeans predict(outcome(3))
+
+Adjusted predictions                            Number of obs     =        351
+Model VCE    : OIM
+
+Expression   : Pr(state_y==3), predict(outcome(3))
+at           : 1.state_x       =    .1225071 (mean)
+               2.state_x       =    .1851852 (mean)
+               3.state_x       =    .2706553 (mean)
+               4.state_x       =    .4216524 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .1162791   .0488848     2.38   0.017     .0204666    .2120916
+          2  |   .0923077   .0359031     2.57   0.010      .021939    .1626764
+          3  |         .6   .0502625    11.94   0.000     .5014874    .6985126
+          4  |   .1824324   .0317455     5.75   0.000     .1202124    .2446524
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD08866.000000"
+
+. margins state_x, atmeans predict(outcome(4))
+
+Adjusted predictions                            Number of obs     =        351
+Model VCE    : OIM
+
+Expression   : Pr(state_y==4), predict(outcome(4))
+at           : 1.state_x       =    .1225071 (mean)
+               2.state_x       =    .1851852 (mean)
+               3.state_x       =    .2706553 (mean)
+               4.state_x       =    .4216524 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .2325581    .064425     3.61   0.000     .1062875    .3588288
+          2  |   .3076923   .0572468     5.37   0.000     .1954906     .419894
+          3  |   .2736842   .0457431     5.98   0.000     .1840293    .3633391
+          4  |   .6216216   .0398653    15.59   0.000      .543487    .6997562
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
