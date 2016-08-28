@@ -20,18 +20,27 @@ format statadate %td
 * create an ID var
 gen ID = _n
 
-* get it together for femlogit
-xtset ID year
-xtset
-
 * need to make some factors
 describe year
 destring year, replace
 
 * MNL Model #1
-mlogit state_y i.state_x FARC_actions pres_approve i.year, robust
+mlogit state_y i.state_x 
+
+* get AIC and BIC
+fitstat
+
+* get the conditional odds ratios' exponentiated coefficients (e^b) to calculate the Markov transition probabilities
+listcoef
+
+* Model # 2
+
+
+mlogit state_y i.state_x FARC_actions pres_approve i.year
 
 mlogit, rrr
+
+fitstat
 
 test 2.state_x 3.state_x
 

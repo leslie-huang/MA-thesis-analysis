@@ -965,9 +965,9 @@ govt_results3["sentiment_level"] <- as.numeric(2 * govt_results3$EmoNeg <= govt_
 
 # combine them into one stream
 transition_chain <- rbind(FARC_results3, govt_results3)
-# and sort by date
+# sort by date
 transition_chain <- transition_chain[order(as.Date(transition_chain$date, format = "%Y-%m-%d")), ]
-# and filter to the peace process
+# filter dates to the peace process
 transition_chain <- filter(transition_chain, date > "2012-01-01")
 
 # pairwise comparison to gauge "responsiveness": how often are the parties giving statements at t and t-1 different?
@@ -992,7 +992,6 @@ pairwise_num <- sum(na.omit(as.numeric(pairwise_responsiveness)))
 pairwise_num
 
 
-
 #################################################################################
 #################################################################################
 # Multinomial logit fitted MLE
@@ -1001,7 +1000,6 @@ pairwise_num
 mnl_df <- dplyr::select(transition_chain, date, sentiment_level, side)
 
 # state_x = current state at t, state_y = next state at t+1
-
 # State1 = FARC-low, State 2 = FARC-high, State 3 = govt-low, State 4 = govt-high
 
 # Function takes 1 parameter: a df with "side" and "sentiment_level" variables
@@ -1046,9 +1044,10 @@ state_maker <- function(df) {
   return(df)
   }
 
+# Run function to create dataset
 mnl_df <- state_maker(mnl_df)
 
-# add the violence and public opinion stats to the dataset (for fixed effects) and then take their logs (+1 to deal with zeros)
+# add the violence and public opinion stats to the dataset (for fixed effects) and then take log(x+1) because of zeroes
 mnl_df <- add_monthlies(mnl_df)
 mnl_df[6:9] <- log(mnl_df[6:9] + 1)
 
@@ -1062,7 +1061,11 @@ mnl_df$state_y <- factor(mnl_df$state_y)
 mnl_df$state_x <- factor(mnl_df$state_x)
 mnl_df$state_y2 <- relevel(mnl_df$state_y, ref = "1")
 
-# can't use multinom because not MLE
+
+# Export to Stata.... sigh
+write.dta(mnl_df, "mnl_data.dta")
+
+# can't use multinom because fitting is not with MLE
 # mnl_mod <- multinom(state_y2 ~ state_x + FARC_actions + pres_approve + year, data = mnl_df, na.action = na.omit)
 # summary(mnl_mod)
 
@@ -1074,14 +1077,15 @@ ml_df <- mnl_df
 ml_df <- mlogit.data(ml_df, choice = "state_y2", shape = "wide")
 
 # Model #1 specification
-ml_mod1 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + pres_approve + year, data = ml_df, reflevel = "4")
+ml_mod1 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x, data = ml_df, reflevel = "4")
 summary(ml_mod1)
 
+ml_mod2 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + pres_approve + year, data = ml_df, reflevel = "4")
+
 # relative risk ratio
-exp(coef(ml_mod1))
+mod1_rrr <- exp(coef(ml_mod1))
 
 # predicted vals
 mod1_fit <- fitted(ml_mod1)
 
-# Export to Stata.... sigh
-write.dta(mnl_df, "mnl_data.dta")
+hmftest(ml_mod1, ml_mod2)
