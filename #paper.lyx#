@@ -580,7 +580,7 @@ Data
 This paper uses an original dataset of communiques and statements issued
  separately by FARC and the Colombian government, and joint communiques
  issued by the peace negotiators in Havana.
- The statements were scraped and cleaned in Python by the author.
+ The statements were scraped and parsed in Python by the author.
  All are in the original Spanish, thus avoiding the obvious pitfalls of
  inter-translator variance, loss of nuance through translation, etc.
  The time period being studied is September 1, 2012, through May 31, 2016,
@@ -612,7 +612,7 @@ Comunicados
 \begin_layout Standard
 Joint statements were scraped from the official Mesa de Conversaciones (Table
  for Dialogue) website of the negotiations.
- [CITE] This contributed 70 documents, and excludes reports also published
+ [CITE] This contributed 70 documents and excludes reports also published
  during the negotiations, which have a different purpose, format, and audience
  than the statements.
 \end_layout
@@ -648,9 +648,8 @@ Farc
 \begin_inset Quotes erd
 \end_inset
 
- (note: this is the typical usage in Spanish-language sources, with the
- exception of FARC's own publications, which usually refer to the organization
- as FARC-EP) and 
+ (NB: this is the typical usage in Spanish-language sources, as few publications
+ besides FARC's own refer to the group as FARC-EP) and 
 \begin_inset Quotes eld
 \end_inset
 
@@ -718,12 +717,12 @@ Quotes from Joe Biden
 \end_inset
 
  I removed those that were irrelevant on the basis of content (e.g.
- if the peace talks with FARC were mentioned only in passing), which reduced
+ if the peace talks with FARC were mentioned only in passing), reducing
  the number of government texts to 243.
 \end_layout
 
 \begin_layout Standard
-[Insert summary statistics table of docs]
+[Insert summary statistics table of docs: MAYBE]
 \end_layout
 
 \begin_layout Subparagraph*
@@ -823,11 +822,68 @@ Structural breaks.
 \begin_layout Standard
 The optimal structural breaks for each sentiment/actor, using loessed values,
  were identified using Zeileis et al.'s strucchange R package.
- [Zeileis]
+ [Zeileis] There were no structural breaks identified in positive government
+ emotion.
 \end_layout
 
 \begin_layout Standard
-[Summary statistics about where structural breaks occur]
+\begin_inset Graphics
+	filename neg_g.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename neg_f.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename neg_j.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pos_g.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pos_f.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pos_j.eps
+	width 100text%
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
@@ -1168,6 +1224,8 @@ Each entry
  is the probability of moving from a hardline to a concessions state, and
  so on.
  The transition probabilities must sum to 1.
+ These values were calculated using the depmixS4 package in R.
+ [Visser]
 \end_layout
 
 \begin_layout Standard
@@ -1436,16 +1494,419 @@ government/high.
 
  This analysis was performed using a multinomial logit with maximum likelihood
  estimation.
- The transition probabilities were calculated from the exponentiated coefficient
-s of the conditional odds ratios.
+ 
 \end_layout
 
 \begin_layout Subsection*
 Results and discussion
 \end_layout
 
+\begin_layout Subsubsection*
+Hidden Markov model
+\end_layout
+
 \begin_layout Subparagraph*
-HMM.
+Optimal number of latent states.
+\end_layout
+
+\begin_layout Standard
+I estimated the Markox transition matrix of a hidden Markov model for each
+ actor separately, using the sentiment measures for negative and positive
+ emotion.
+ First, however, the number of latent states needs to be optimized.
+ To keep interpretation across models comparable, the same number of latent
+ states should be specified.
+ The substantive interpretation of the model accommodates small numbers
+ of latent states: for instance, two latent states would correspond to a
+ dichotomy between 
+\begin_inset Quotes eld
+\end_inset
+
+hardline
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+conciliatory,
+\begin_inset Quotes erd
+\end_inset
+
+ while three latent states might represent 
+\begin_inset Quotes eld
+\end_inset
+
+hardline, 
+\begin_inset Quotes eld
+\end_inset
+
+on the fence,
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+conciliatory.
+\begin_inset Quotes erd
+\end_inset
+
+ However, with larger numbers the interpretation of transition probabilities
+ across these states becomes more challenging and transitions between any
+ two given states become rare.
+\end_layout
+
+\begin_layout Standard
+Table shows the BIC and AIC values for HMMs fitted separately for FARC and
+ the government with 
+\begin_inset Formula $n=1:6$
+\end_inset
+
+ latent states, and with/without covariates for level of violence and public
+ opinion.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{table}[!htbp] 
+\backslash
+centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+caption{Comparison of Hidden Markov Models} 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+label{} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{@{
+\backslash
+extracolsep{5pt}} ccccccccc} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex]
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+& 
+\backslash
+multicolumn{4}{c}{FARC} & 
+\backslash
+multicolumn{4}{c}{Government} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cmidrule{2-5} 
+\backslash
+cmidrule{6-9}
+\end_layout
+
+\begin_layout Plain Layout
+
+& & & 
+\backslash
+multicolumn{2}{c}{Covariates added} & & & 
+\backslash
+multicolumn{2}{c}{Covariates added} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+& 
+\backslash
+multicolumn{2}{c}{(1)} & 
+\backslash
+multicolumn{2}{c}{(2)} & 
+\backslash
+multicolumn{2}{c}{(3)} & 
+\backslash
+multicolumn{2}{c}{(4)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cmidrule{2-3} 
+\backslash
+cmidrule{4-5} 
+\backslash
+cmidrule{6-7} 
+\backslash
+cmidrule{8-9}
+\end_layout
+
+\begin_layout Plain Layout
+
+States & BIC & AIC & BIC & AIC & BIC & AIC & BIC & AIC 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+1 & $1059.57$ & $1049.11$ & $1059.57$ & $1049.11$ & $3299.92$ & $3285.95$ & $3299.92$
+ & $3285.95$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2 & $965.47$ & $936.70$ & $965.47$ & $802.63$ & $2691.42$ & $2653.00$ & $2691.42$
+ & $2653.00$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+3 & $
+\backslash
+mathbf{813.98}$ & $761.68$ & $
+\backslash
+mathbf{813.98}$ & $751.00$ & $2513.18$ & $2437.66$ & $2513.18$ & $2443.32$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+4 & $
+\backslash
+mathbf{811.60}$ & $734.16$ & $821.82$ & $734.16$ & $2525.07$ & $2324.21$ & $2525.25$
+ & $2293.36$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+5 & $864.56$ & $
+\backslash
+mathbf{721.69}$ & $864.15$ & $
+\backslash
+mathbf{718.35}$ & $
+\backslash
+mathbf{2417.87}$ & $2299.28$ & $
+\backslash
+mathbf{2424.76}$ & $2272.94$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+6 & $893.54$ & $729.27$ & $885.55$ & $739.97$ & $2463.40$ & $
+\backslash
+mathbf{2268.13}$ & $2476.53$ & $
+\backslash
+mathbf{2262.08}$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+multicolumn{9}{c} { Note: Models (1) and (2) are estimated with negative
+ and positive emotion.
+ } 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+multicolumn{9}{c} { Covariates for the log transformed number of FARC actions
+ and the log } 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+multicolumn{9}{c} { transformed presidential approval rating are added to
+ Models (3) and (4).
+ } 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{table} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Comparing 
+\begin_inset Formula $n=1$
+\end_inset
+
+ to the higher order states demonstrates that a mixture better fits the
+ data.
+ The BIC values for the FARC models, with and without covariates, suggests
+ that 
+\begin_inset Formula $n=3$
+\end_inset
+
+ is the optimal number of latent states.
+ Although 
+\begin_inset Formula $n=4$
+\end_inset
+
+ has a slightly better BIC value than 
+\begin_inset Formula $n=3$
+\end_inset
+
+ in both models, the improvement is marginal and is weighed against the
+ consideration that the fewest possible number of latent states should be
+ chosen.
+ Moreover, Comparing Model (1) with Model (2) and Model (3) with Model (4)
+ shows that the addition of covariates does little to improve fit.
+ The AIC values for the FARC models, and the BIC and AIC values for both
+ government models, prefer higher specifications of 5 or 6 states.
+ However, because the tradeoff in the interpretation of results in a model
+ with so many states (e.g.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+1/6 hardline
+\begin_inset Quotes erd
+\end_inset
+
+ to 
+\begin_inset Quotes eld
+\end_inset
+
+6/6 hardline
+\begin_inset Quotes erd
+\end_inset
+
+), the following analysis will use 3 latent states, which ca
+\end_layout
+
+\begin_layout Standard
+We may also be interested in mean shifts between regimes defined by the
+ structural breaks.
 \end_layout
 
 \begin_layout Standard
