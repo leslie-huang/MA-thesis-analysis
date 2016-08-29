@@ -409,8 +409,6 @@ calculate_viol_breakmeans <- function(df, loessed) {
 
 viol_means <- calculate_viol_breakmeans(viol_breaks_list, monthly_viol)
 
-viol_breaks_gg
-
 
 
 #################################################################################
@@ -490,78 +488,104 @@ add_monthlies <- function(df) {
 #################################################################################
 # Markov models
 
-
 # Hidden Markov model: FARC
-# let's limit it to just 3 sentiment measures and starting in 2012
-FARC_results1 <- FARC_results[, -4]
-FARC_results1 <- filter(FARC_results1, date >= "2012-01-01")
+# let's limit it to just 2 sentiment measures
+FARC_results1 <- FARC_results[, -(3:4)]
 
-# formulas for the model
-forms1 <- list(FARC_results1$EmoNeg ~ 1, FARC_results1$EmoPos ~ 1, FARC_results1$Ellos ~ 1)
+# number of states
+num_states <- seq(1, 6, by = 1)
 
 #################################################################################
 #################################################################################
 # What is the optimal number of states? We will optimize for
-# (1) BIC, not fitted model
-# (2) BIC, fitted model with covariates added
-# (3) AIC, fitted model with covariates added
+# (1) BIC, fitted model
+# (2) AIC, fitted model
+# (3) BIC, fitted model w/ covars
+# (4) AIC, fitted model w/ covars
 
 #################################################################################
-# Find the optimal number of states based on BIC -- not fitted model
-num_states <- seq(2, 10, by = 1)
 
-BIC_vals <- sapply(num_states, function(x) {BIC(depmix(forms1, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results1))})
+# formulas for the model
+forms1 <- list(FARC_results1$EmoNeg ~ 1, FARC_results1$EmoPos ~ 1)
 
-BIC_df <- data.frame(cbind(num_states, BIC_vals))
+# Optimize BIC vals for fitted model, no covars
+BIC_vals1 <- sapply(num_states, function(x) {BIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, data = FARC_results1)))})
+
+BIC_df1 <- data.frame(cbind(num_states, BIC_vals1))
 
 # plot the BIC values to select the optimal number of states
-BIC_plot <- ggplot(BIC_df, aes(x = num_states, y = BIC_vals)) +
-  geom_point() +
-  ggtitle("BIC Values for n = 2:10 Latent States HMM")
-
-#################################################################################
-# # Run it again after adding the covariates: monthly violence and public opinion
-
-
-#################################################################################
-# Run function to add violence/public opinion levels to FARC df
-FARC_results2 <- add_monthlies(FARC_results1)
-govt_results1 <- add_monthlies(govt_results)
-
-forms2 <- list(FARC_results2$EmoNeg ~ 1, FARC_results2$EmoPos ~ 1, FARC_results2$Ellos ~ 1)
-
-# Optimize BIC vals for fitted model
-BIC_vals2 <- sapply(num_states, function(x) {BIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)])))})
-
-BIC_df2 <- data.frame(cbind(num_states, BIC_vals2))
-
-# plot the BIC values to select the optimal number of states
-BIC_plot2 <- ggplot(BIC_df2, aes(x = num_states, y = BIC_vals2)) +
+BIC_plot1 <- ggplot(BIC_df1, aes(x = num_states, y = BIC_vals1)) +
   geom_point() +
   ggtitle("BIC Values for n = 2:10 Latent States Fitted HMM")
 
-#################################################################################
-# what are AIC values of the fitted models?
-AIC_vals <- sapply(num_states, function(x) {AIC(fit(depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = x, data = FARC_results2[,-(6:9)])))})
+BIC_plot1
 
-AIC_df <- data.frame(cbind(num_states, AIC_vals))
+# Optimize AIC vals for same fitted model
+AIC_vals1 <- sapply(num_states, function(x) {AIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, data = FARC_results1)))})
+
+AIC_df1 <- data.frame(cbind(num_states, AIC_vals1))
 
 # plot the AIC values to select the optimal number of states
-AIC_plot <- ggplot(AIC_df, aes(x = num_states, y = AIC_vals)) +
+AIC_plot1 <- ggplot(AIC_df1, aes(x = num_states, y = AIC_vals1)) +
   geom_point() +
   ggtitle("AIC Values for n = 2:10 Latent States Fitted HMM")
+
+AIC_plot1
+
+
+#################################################################################
+#################################################################################
+# now optimize for the government
+
+govt_results1 <- govt_results[, -(3:4)]
+forms1_govt <- list(govt_results1$EmoNeg ~ 1, govt_results1$EmoPos ~ 1)
+
+BIC_vals1_govt <- sapply(num_states, function(x) {BIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, data = govt_results1)))})
+AIC_vals1_govt <- sapply(num_states, function(x) {AIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, data = govt_results1)))})
+
+
+#################################################################################
+#################################################################################
+# do the results differ when covariates are added?
+
+# Run function to add violence/public opinion levels to FARC df
+FARC_results2 <- add_monthlies(FARC_results1)
+govt_results2 <- add_monthlies(govt_results)
+
+# take the log of the monthly stats
+FARC_results2[, 4:7] <- log(FARC_results2[, 4:7])
+govt_results2[, 4:7] <- log(govt_results2[, 4:7])
+
+BIC_vals_fitted <- sapply(num_states, function(x) {BIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = FARC_results2)))})
+AIC_vals_fitted <- sapply(num_states, function(x) {AIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = FARC_results2)))})
+
+BIC_vals_fitted_govt <- sapply(num_states, function(x) {BIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = govt_results2)))})
+AIC_vals_fitted_govt <- sapply(num_states, function(x) {AIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = govt_results2)))})
+
+
+## make a table for the paper
+hmm_comparison <- data.frame(BIC_vals1, AIC_vals1, BIC_vals_fitted, AIC_vals_fitted, BIC_vals1_govt, AIC_vals1_govt, BIC_vals_fitted_govt, AIC_vals_fitted_govt)
+colnames(hmm_comparison) <- c("BIC", "AIC", "BIC", "AIC", "BIC", "AIC", "BIC", "AIC")
+stargazer(hmm_comparison, title="Comparison of Hidden Markov Models", column.labels=c("BIC", "AIC", "BIC", "AIC", "BIC", "AIC", "BIC", "AIC"), summary = FALSE, digits = 2, digit.separator = "")
+
 
 #################################################################################
 #################################################################################
 # HMM wih 3 states
 
-mod <- depmix(forms2, family = list(gaussian(), gaussian(), gaussian()), nstates = 3, data = FARC_results2[,-(6:9)])
-hmm_mod <- fit(mod)
-summary(hmm_mod)
+# for FARC: model w/o covars
+hmm_F <- fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = 3, data = FARC_results1))
+summary(hmm_F)
 
-# what state are we in at a given time t?
-head(posterior(hmm_mod)) 
-# graph this later
+# what is the probability of being in a given state over time?
+prob_HMM_F <- posterior(hmm_F)
+
+# check that the rows sum to 1
+rowSums(head(prob_HMM_F)[,2:4])
+
+# plot probability of being in a state over time against the sentiment measures
+
+## then get the transition matrices over regimes
 
 
 
@@ -704,5 +728,3 @@ mod1_rrr <- exp(coef(ml_mod1))
 mod1_fit <- fitted(ml_mod1)
 
 hmftest(ml_mod1, ml_mod2)
-
-
