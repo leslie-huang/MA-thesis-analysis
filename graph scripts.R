@@ -267,8 +267,8 @@ paper_F_n = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y
     y = "Percent Neg Emotion",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  coord_cartesian(ylim = c(0, 20))
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  coord_cartesian(ylim = c(0, 15))
 
 paper_g_n = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Government")) +
   ggtitle("Loessed Government Negative Emotion with Optimal Breakpoints") +
@@ -279,8 +279,8 @@ paper_g_n = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y
     y = "Percent Neg Emotion",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  coord_cartesian(ylim = c(0, 20))
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  coord_cartesian(ylim = c(0, 15))
 
 paper_j_n = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Joint")) +
   ggtitle("Loessed Joint Negative Emotion with Optimal Breakpoints") +
@@ -291,8 +291,8 @@ paper_j_n = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y
     y = "Percent Neg Emotion",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  coord_cartesian(ylim = c(0, 20))
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  coord_cartesian(ylim = c(0, 15))
 
 paper_j_n
 paper_g_n
@@ -310,8 +310,8 @@ paper_F_p = ggplot(FARC_results, aes(x = as.Date(date, origin = "1970-01-01"), y
     y = "Percent Positive Emotion",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  coord_cartesian(ylim = c(0, 20))
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  coord_cartesian(ylim = c(0, 15))
 
 paper_g_p = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Government")) +
   ggtitle("Loessed Government Positive Emotion with Optimal Breakpoints") +
@@ -322,8 +322,8 @@ paper_g_p = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y
     y = "Percent Positive Emotion",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  coord_cartesian(ylim = c(0, 20))
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  coord_cartesian(ylim = c(0, 15))
 
 paper_j_p = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Joint")) +
   ggtitle("Loessed Joint Positive Emotion with Optimal Breakpoints") +
@@ -334,8 +334,8 @@ paper_j_p = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y
     y = "Percent Positive Emotion",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  coord_cartesian(ylim = c(0, 20))
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  coord_cartesian(ylim = c(0, 15))
 
 paper_j_p
 paper_g_p
