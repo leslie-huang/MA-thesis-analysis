@@ -610,9 +610,11 @@ mean_of_states <- function(df) {
   sdn3 <- sd(filter(df, est_state == 3)$EmoNeg)
   sdp3 <- sd(filter(df, est_state == 3)$EmoPos)
   
-  results <- c(n1, p1, n2, p2, n3, p3)
-  results_sd <- c(sdn1, sdp1, sdn2, sdp2, sdn3, sdp3)
-  return(cbind(results, results_sd))
+  results1 <- c(n1, sdn1, p1, sdp1)
+  results2 <- c(n2, sdn2, p2, sdp2)
+  results3 <- c(n3, sdn3, p3, sdp3)
+  
+  return(rbind(results1, results2, results3))
   
 }
 
@@ -630,9 +632,6 @@ HMM_F_est_state_gg = ggplot(prob_HMM_F, aes(x = as.Date(date, origin = "1970-01-
                limits = c(as.Date("2012-09-01", "%Y-%m-%d"), NA)) +
   scale_y_continuous(breaks = c(1, 2, 3)) +
   ggtitle("Estimated Hardline/Moderate/Conciliatory States of FARC")
-
-  
-## then get the transition matrices over regimes
 
 
 
@@ -658,7 +657,7 @@ govt_hmm_means <- mean_of_states(prob_HMM_g)
 # cbind it into a table for stargazer
 hmm_all_means <- cbind(FARC_hmm_means, govt_hmm_means)
 
-stargazer(hmm_all_means, summary = FALSE, title = "Mean Sentiment Scores for Latent States")
+stargazer(hmm_all_means, summary = FALSE, title = "Mean Sentiment Scores for Latent States", digits = 2)
 
 # what state are we in at a given time?
 
