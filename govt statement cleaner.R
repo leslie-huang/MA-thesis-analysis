@@ -28,6 +28,7 @@ s2015 <- read.csv("../MA-datasets/govtstatements2015_1.csv", stringsAsFactors = 
 s2016 <- read.csv("../MA-datasets/govtstatements2016.csv", stringsAsFactors = FALSE)
 s2016$URL <- NA
 s2014_2 <- read.csv("../MA-datasets/govtstatements2014_2.csv", stringsAsFactors = FALSE)
+s2015_2 <- read.csv("../MA-datasets/govtstatements2015_2.csv", stringsAsFactors = FALSE)
 
 # deleting non topical statements manually
 s2012 <- slice(s2012, -c(5, 6, 10, 15, 16, 17))
@@ -36,8 +37,9 @@ s2014 <- slice(s2014, -c(6,8,9,10,11,13,17,28,39,41,42))
 s2014_2 <- slice(s2014_2, -c(3,4,8,16,21,25,26,32,33,37,39))
 s2015 <- slice(s2015, -c(2,4,5,6,15,20,21,23,25))
 s2016 <- slice(s2016, -c(5,6,9,11,14,17,20,29,39,42,44,49))
+s2015_2 <- slice(s2015, -c())
 
 # save the file
-statements <- rbind(s2012, s2013, s2014, s2014_2, s2015, s2016)
+statements <- rbind(s2012, s2013, s2014, s2014_2, s2015, s2015_2, s2016)
 
 write.csv(statements, file = "govtstatements.csv")

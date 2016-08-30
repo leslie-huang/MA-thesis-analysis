@@ -7,7 +7,7 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "mlogit")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "mlogit", "reshape2")
 lapply(libraries, require, character.only=TRUE)
 
 devtools::install_github("ggbiplot", "vqv")
@@ -38,6 +38,9 @@ ceasefires <- data.frame(start = as.Date(c("11/20/12", "12/15/13", "5/16/14", "1
 # df of all dates
 dates <- rbind(data.frame(date = major_violence, group = "major_viol"), data.frame(date = major_agree, group = "major_agree"), data.frame(date = cf_start, group = "ceasefire_start"), data.frame(date = cf_end, group = "ceasefire_end"))
 dates <- arrange(dates, date)
+
+stargazer(dates, title="Labeling states using major events", digits = 2, digit.separator = "", summary = FALSE)
+
 
 ################################################################################## 
 # Some functions to extract sentiment, loess it, and return results
@@ -562,7 +565,6 @@ AIC_vals_fitted <- sapply(num_states, function(x) {AIC(fit(depmix(forms1, family
 BIC_vals_fitted_govt <- sapply(num_states, function(x) {BIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = govt_results2)))})
 AIC_vals_fitted_govt <- sapply(num_states, function(x) {AIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = govt_results2)))})
 
-
 ## make a table for the paper
 hmm_comparison <- data.frame(BIC_vals1, AIC_vals1, BIC_vals_fitted, AIC_vals_fitted, BIC_vals1_govt, AIC_vals1_govt, BIC_vals_fitted_govt, AIC_vals_fitted_govt)
 colnames(hmm_comparison) <- c("BIC", "AIC", "BIC", "AIC", "BIC", "AIC", "BIC", "AIC")
@@ -583,12 +585,93 @@ prob_HMM_F <- posterior(hmm_F)
 # check that the rows sum to 1
 rowSums(head(prob_HMM_F)[,2:4])
 
-# plot probability of being in a state over time against the sentiment measures
 
+# plot probability of being in a state over time against the sentiment measures
+colnames(prob_HMM_F) <- c("est_state", paste("P",1:3, sep="_state"))
+prob_HMM_F <- cbind(FARC_results1, prob_HMM_F)
+
+# label the states with substantive labels based on mean sentiment
+mean_of_states <- function(df) {
+  n1 <- mean(filter(df, est_state == 1)$EmoNeg)
+  p1 <- mean(filter(df, est_state == 1)$EmoPos)
+  
+  n2 <- mean(filter(df, est_state == 2)$EmoNeg)
+  p2 <- mean(filter(df, est_state == 2)$EmoPos)
+  
+  n3 <- mean(filter(df, est_state == 3)$EmoNeg)
+  p3 <- mean(filter(df, est_state == 3)$EmoPos)
+  
+  sdn1 <- sd(filter(df, est_state == 1)$EmoNeg)
+  sdp1 <- sd(filter(df, est_state == 1)$EmoPos)
+  
+  sdn2 <- sd(filter(df, est_state == 2)$EmoNeg)
+  sdp2 <- sd(filter(df, est_state == 2)$EmoPos)
+  
+  sdn3 <- sd(filter(df, est_state == 3)$EmoNeg)
+  sdp3 <- sd(filter(df, est_state == 3)$EmoPos)
+  
+  results <- c(n1, p1, n2, p2, n3, p3)
+  results_sd <- c(sdn1, sdp1, sdn2, sdp2, sdn3, sdp3)
+  return(cbind(results, results_sd))
+  
+}
+
+FARC_hmm_means <- mean_of_states(prob_HMM_F)
+
+# what state are we in at a given time?
+
+HMM_F_est_state_gg = ggplot(prob_HMM_F, aes(x = as.Date(date, origin = "1970-01-01"), y = est_state)) +
+  geom_step(color = "#000000") +
+  labs(
+    x = "",
+    y = "State",
+    color = "Legend") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-09-01", "%Y-%m-%d"), NA)) +
+  scale_y_continuous(breaks = c(1, 2, 3)) +
+  ggtitle("Estimated Hardline/Moderate/Conciliatory States of FARC")
+
+  
 ## then get the transition matrices over regimes
 
 
 
+#################################################################################
+## now do the same for the government
+
+hmm_g <- fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = 3, data = govt_results1))
+summary(hmm_g)
+
+# what is the probability of being in a given state over time?
+prob_HMM_g <- posterior(hmm_g)
+
+# check that the rows sum to 1
+rowSums(head(prob_HMM_g)[,2:4])
+
+# plot probability of being in a state over time against the sentiment measures
+colnames(prob_HMM_g) <- c("est_state", paste("P",1:3, sep="_state"))
+prob_HMM_g <- cbind(govt_results1, prob_HMM_g)
+
+# get means
+govt_hmm_means <- mean_of_states(prob_HMM_g)
+
+# cbind it into a table for stargazer
+hmm_all_means <- cbind(FARC_hmm_means, govt_hmm_means)
+
+stargazer(hmm_all_means, summary = FALSE, title = "Mean Sentiment Scores for Latent States")
+
+# what state are we in at a given time?
+
+HMM_g_est_state_gg = ggplot(prob_HMM_g, aes(x = as.Date(date, origin = "1970-01-01"), y = est_state)) +
+  geom_step(color = "#000000") +
+  labs(
+    x = "",
+    y = "State",
+    color = "Legend") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-09-01", "%Y-%m-%d"), NA)) +
+  scale_y_continuous(breaks = c(1, 2, 3)) +
+  ggtitle("Estimated Hardline/Moderate/Conciliatory States of Government")
 
 #################################################################################
 #################################################################################

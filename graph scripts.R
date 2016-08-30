@@ -343,3 +343,38 @@ paper_F_p
 
 
 ####
+
+# summary stats for paper
+
+# Function to generate vector of summary stats for a given LIWC output df
+liwc_summarizer <- function(df) {
+  liwc_results <- liwcalike(df$text, spanish_dict)
+  num_docs <- length(liwc_results[, 1])
+  
+  wc_mean <- mean(as.numeric(liwc_results$WC))
+  wc_sd <- sd(as.numeric(liwc_results$WC))
+  neg_mean <- mean(as.numeric(liwc_results$EmoNeg))
+  neg_sd <- sd(as.numeric(liwc_results$EmoNeg))
+  pos_mean <- mean(as.numeric(liwc_results$EmoPos))
+  pos_sd <- sd(as.numeric(liwc_results$EmoPos))
+  ellos_mean <- mean(as.numeric(liwc_results$Ellos))
+  ellos_sd <- sd(as.numeric(liwc_results$Ellos))
+  
+  results <- c(num_docs,
+               wc_mean,
+               wc_sd,
+               neg_mean, neg_sd,
+               pos_mean, pos_sd,
+               ellos_mean, ellos_sd
+  )
+  return(results)
+}
+
+FARC_summary <- liwc_summarizer(FARC)
+govt_summary <- liwc_summarizer(govt)
+joint_summary <- liwc_summarizer(joint)
+
+summary_stats <- cbind(FARC_summary, govt_summary, joint_summary)
+row.names(summary_stats) <- c("Num docs", "WC", "WC sd", "Neg mean", "Neg sd", "Pos mean", "Pos sd", "Ellos mean", "ellos sd")
+stargazer(summary_stats, title="Summary Statistics of Documents", digits = 2, digit.separator = "")
+
