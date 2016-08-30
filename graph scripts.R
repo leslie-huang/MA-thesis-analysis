@@ -1,4 +1,4 @@
-#################################################################################
+q#################################################################################
 #################################################################################
 # Graph sentiment -- run other script first
 
@@ -282,7 +282,7 @@ paper_g_n = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y
                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
   coord_cartesian(ylim = c(0, 15))
 
-paper_j_n = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Joint")) +
+paper_j_n = ggplot(joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoNeg, color = "Joint")) +
   ggtitle("Loessed Joint Negative Emotion with Optimal Breakpoints") +
   geom_smooth(method = "loess", se = FALSE, color = "#000000") +
   geom_vline(data = filter(neg_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date)), linetype = 2) +
@@ -325,7 +325,7 @@ paper_g_p = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y
                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
   coord_cartesian(ylim = c(0, 15))
 
-paper_j_p = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Joint")) +
+paper_j_p = ggplot(joint_results, aes(x = as.Date(date, origin = "1970-01-01"), y = EmoPos, color = "Joint")) +
   ggtitle("Loessed Joint Positive Emotion with Optimal Breakpoints") +
   geom_smooth(method = "loess", se = FALSE, color = "#000000") +
   geom_vline(data = filter(pos_breaks, group == "joint"), mapping = aes(xintercept = as.numeric(date)), linetype = 2) +
@@ -335,7 +335,7 @@ paper_j_p = ggplot(govt_results, aes(x = as.Date(date, origin = "1970-01-01"), y
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
-  coord_cartesian(ylim = c(0, 15))
+  coord_cartesian(ylim = c(0, 30))
 
 paper_j_p
 paper_g_p

@@ -694,7 +694,7 @@ paz
 
 \end_inset
 
- Altogether, the preliminary government dataset consisted of ### documents
+ Altogether, the preliminary government dataset consisted of 509 documents
  published between September 1, 2012, and May 31, 2016.
  However, additional human screening of the statements was necessary to
  remove statements that contained the keywords but were (a) not relevant
@@ -728,8 +728,9 @@ Quotes from Joe Biden
 \end_inset
 
  I removed those that were irrelevant on the basis of content (e.g.
- if the peace talks with FARC were mentioned only in passing), reducing
- the number of government texts to ###.
+ if the peace talks with FARC were mentioned only in passing and/or a minor
+ proportion of the document was spent discussing it), reducing the number
+ of government texts to 318.
 \end_layout
 
 \begin_layout Standard
@@ -815,7 +816,7 @@ hline
 
 \backslash
 multicolumn{1}{l}{No.
- documents} & $101$ & $243$ & $70$ 
+ documents} & $101$ & $318$ & $70$ 
 \backslash
 
 \backslash
@@ -844,7 +845,7 @@ multicolumn{1}{l}{Word count} & & &
 
 \begin_layout Plain Layout
 
-Mean & $696.05$ & $1080.01$ & $391.17$ 
+Mean & $696.05$ & $1116.97$ & $391.17$ 
 \backslash
 
 \backslash
@@ -853,7 +854,7 @@ Mean & $696.05$ & $1080.01$ & $391.17$
 
 \begin_layout Plain Layout
 
-SD & $620.86$ & $1228.22$ & $501.85$ 
+SD & $620.86$ & $1269.80$ & $501.85$ 
 \backslash
 
 \backslash
@@ -883,7 +884,7 @@ multicolumn{1}{l}{Percent neg.
 
 \begin_layout Plain Layout
 
-Mean & $1.37$ & $3.46$ & $1.97$ 
+Mean & $1.37$ & $5.37$ & $1.97$ 
 \backslash
 
 \backslash
@@ -892,7 +893,7 @@ Mean & $1.37$ & $3.46$ & $1.97$
 
 \begin_layout Plain Layout
 
-SD & $1.92$ & $5.41$ & $3.68$ 
+SD & $1.92$ & $6.34$ & $3.68$ 
 \backslash
 
 \backslash
@@ -922,7 +923,7 @@ multicolumn{1}{l}{Percent pos.
 
 \begin_layout Plain Layout
 
-Mean & $5.21$ & $8.52$ & $14.61$ 
+Mean & $5.21$ & $6.25$ & $14.61$ 
 \backslash
 
 \backslash
@@ -931,7 +932,7 @@ Mean & $5.21$ & $8.52$ & $14.61$
 
 \begin_layout Plain Layout
 
-SD & $5.33$ & $9.24$ & $20.40$ 
+SD & $5.33$ & $8.23$ & $20.40$ 
 \backslash
 
 \backslash
@@ -961,7 +962,7 @@ multicolumn{1}{l}{Percent 3rd-person pl.
 
 \begin_layout Plain Layout
 
-Mean & $4.06$ & $4.95$ & $1.56$ 
+Mean & $4.06$ & $7.43$ & $1.56$ 
 \backslash
 
 \backslash
@@ -970,7 +971,7 @@ Mean & $4.06$ & $4.95$ & $1.56$
 
 \begin_layout Plain Layout
 
-SD & $4.50$ & $6.85$ & $1.96$ 
+SD & $4.50$ & $11.74$ & $1.96$ 
 \backslash
 
 \backslash
@@ -1996,8 +1997,8 @@ hline
 
 \begin_layout Plain Layout
 
-1 & $1059.57$ & $1049.11$ & $1059.57$ & $1049.11$ & $3299.92$ & $3285.95$ & $3299.92$
- & $3285.95$ 
+1 & $1059.57$ & $1049.11$ & $1059.57$ & $1049.11$ & $4341.76$ & $4326.72$ & $4341.76$
+ & $4326.72$ 
 \backslash
 
 \backslash
@@ -2006,8 +2007,8 @@ hline
 
 \begin_layout Plain Layout
 
-2 & $965.47$ & $936.70$ & $965.47$ & $802.63$ & $2691.42$ & $2653.00$ & $2691.42$
- & $2653.00$ 
+2 & $831.40$ & $802.63$ & $965.47$ & $936.70$ & $3565.09$ & $3523.70$ & $3565.09$
+ & $3523.70$ 
 \backslash
 
 \backslash
@@ -2016,11 +2017,9 @@ hline
 
 \begin_layout Plain Layout
 
-3 & $
+3 & $813.98$ & $761.68$ & $
 \backslash
-mathbf{813.98}$ & $761.68$ & $
-\backslash
-mathbf{813.98}$ & $751.00$ & $2513.18$ & $2437.66$ & $2513.18$ & $2443.32$ 
+mathbf{813.98}$ & $751.00$ & $3531.60$ & $3456.36$ & $3531.60$ & $3456.36$ 
 \backslash
 
 \backslash
@@ -2031,8 +2030,11 @@ mathbf{813.98}$ & $751.00$ & $2513.18$ & $2437.66$ & $2513.18$ & $2443.32$
 
 4 & $
 \backslash
-mathbf{811.60}$ & $734.16$ & $821.82$ & $734.16$ & $2525.07$ & $2324.21$ & $2525.25$
- & $2293.36$ 
+mathbf{811.60}$ & $730.53$ & $852.53$ & $730.53$ & $
+\backslash
+mathbf{3491.80}$ & $3375.17$ & $
+\backslash
+mathbf{3478.84}$ & $3354.07$ 
 \backslash
 
 \backslash
@@ -2041,23 +2043,19 @@ mathbf{811.60}$ & $734.16$ & $821.82$ & $734.16$ & $2525.07$ & $2324.21$ & $2525
 
 \begin_layout Plain Layout
 
-5 & $864.56$ & $
+5 & $833.41$ & $
 \backslash
-mathbf{721.69}$ & $864.15$ & $
+mathbf{721.69}$ & $836.76$ & $
 \backslash
-mathbf{718.35}$ & $
+mathbf{721.69}$ & $3524.74$ & $
 \backslash
-mathbf{2417.87}$ & $
+mathbf{3357.95}$ & $3481.55$ & $
 \backslash
-mathbf{2299.28}$ & $
-\backslash
-mathbf{2424.76}$ & $
-\backslash
-mathbf{2272.94}$ 
+mathbf{3248.78}$ 
 \backslash
 
 \backslash
- 
+  
 \end_layout
 
 \begin_layout Plain Layout
@@ -2366,7 +2364,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-1 & $1.48$ $(0.54)$ & Moderate & $8.74$ $(1.95)$ & Moderate  
+1 & $0.50$ $(0.30)$ & High & $2.86$ $(1.75)$ & Low  
 \backslash
 
 \backslash
@@ -2375,7 +2373,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-2 & $5.12$ $(2.61)$ & Low & $11.80$ $(9.57)$ & High  
+2 & $2.01$ $(1.08)$ & Moderate & $12.10$ $(6.39)$ & High  
 \backslash
 
 \backslash
@@ -2384,7 +2382,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-3 & $0.50$ $(0.31)$ & High & $2.73$ $(1.69)$ & Low  
+3 & $5.50$ $(3.42)$ & Low & $3.46$ $(2.94)$ & Moderate  
 \backslash
 
 \backslash
@@ -2521,7 +2519,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-1 & $0.24$ $(0.13)$ & High & $5.16$ $(3.52)$ & Moderate   
+1 & $12.05$ $(8.06)$ & Low & $16.32$ $(10.10)$ & High   
 \backslash
 
 \backslash
@@ -2530,7 +2528,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-2  & $9.02$ $(7.97)$ & Low & $20.88$ $(9.84)$ & High 
+2  & $4.64$ $(3.68)$ & Moderate & $1.88$ $(1.25)$ & Low 
 \backslash
 
 \backslash
@@ -2539,7 +2537,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-3  & $2.20$ $(1.44)$ & Moderate & $3.48$ $(1.78)$ & Low 
+3  & $1.84$ $(1.40)$ & High & $3.00$ $(1.47)$ & Moderatehmm 
 \backslash
 
 \backslash
