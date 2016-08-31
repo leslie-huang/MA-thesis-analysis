@@ -2157,7 +2157,7 @@ Comparing Model (1) vs.
 \begin_inset Quotes eld
 \end_inset
 
-1/5 willingness to negotiation
+1/5 willingness to negotiate
 \begin_inset Quotes erd
 \end_inset
 
@@ -2292,7 +2292,7 @@ label{}
 \backslash
 begin{tabular}{@{
 \backslash
-extracolsep{5pt}} ccccc} 
+extracolsep{5pt}} ccccccc} 
 \end_layout
 
 \begin_layout Plain Layout
@@ -2321,10 +2321,10 @@ hline
 
  & 
 \backslash
-multicolumn{2}{c}{Neg.
+multicolumn{3}{c}{Neg.
  emotion} & 
 \backslash
-multicolumn{2}{c}{Pos.
+multicolumn{3}{c}{Pos.
  emotion} 
 \backslash
 
@@ -2336,15 +2336,23 @@ multicolumn{2}{c}{Pos.
 
 
 \backslash
-cmidrule{2-3} 
+cmidrule{2-4} 
 \backslash
-cmidrule{4-5}
+cmidrule{5-7}
 \end_layout
 
 \begin_layout Plain Layout
 
-State No.
- & Mean (SD) & Predicted label & Mean (SD) & Predicted label 
+ & & & Predicted & & & Predicted 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+State & Mean (SD) & Median & label & Mean (SD) & Median & label 
 \backslash
 
 \backslash
@@ -2357,14 +2365,14 @@ State No.
 \backslash
 cmidrule{1-1} 
 \backslash
-cmidrule{2-3} 
+cmidrule{2-4} 
 \backslash
-cmidrule{4-5}
+cmidrule{5-7}
 \end_layout
 
 \begin_layout Plain Layout
 
-1 & $0.50$ $(0.30)$ & High & $2.86$ $(1.75)$ & Low  
+1 & $0.50$ $(0.30)$ & $0.49$ & High & $2.86$ $(1.75)$ & $2.54$ & Low  
 \backslash
 
 \backslash
@@ -2373,7 +2381,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-2 & $2.01$ $(1.08)$ & Moderate & $12.10$ $(6.39)$ & High  
+2 & $2.01$ $(1.08)$ & $1.73$ & Moderate & $12.10$ $(6.39)$ & 9.92 & High  
 \backslash
 
 \backslash
@@ -2382,7 +2390,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-3 & $5.50$ $(3.42)$ & Low & $3.46$ $(2.94)$ & Moderate  
+3 & $5.50$ $(3.42)$ & $6.74$ & Low & $3.46$ $(2.94)$ & $3.02$ & Moderate  
 \backslash
 
 \backslash
@@ -2447,7 +2455,7 @@ label{}
 \backslash
 begin{tabular}{@{
 \backslash
-extracolsep{5pt}} ccccc} 
+extracolsep{5pt}} ccccccc} 
 \end_layout
 
 \begin_layout Plain Layout
@@ -2474,12 +2482,12 @@ hline
 
 \begin_layout Plain Layout
 
- & 
+& 
 \backslash
-multicolumn{2}{c}{Neg.
+multicolumn{3}{c}{Neg.
  emotion} & 
 \backslash
-multicolumn{2}{c}{Pos.
+multicolumn{3}{c}{Pos.
  emotion} 
 \backslash
 
@@ -2491,15 +2499,23 @@ multicolumn{2}{c}{Pos.
 
 
 \backslash
-cmidrule{2-3} 
+cmidrule{2-4} 
 \backslash
-cmidrule{4-5}
+cmidrule{5-7}
 \end_layout
 
 \begin_layout Plain Layout
 
-State No.
- & Mean (SD) & Predicted label & Mean (SD) & Predicted label 
+ & & & Predicted & & & Predicted 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+State & Mean (SD) & Median & label & Mean (SD) & Median & label 
 \backslash
 
 \backslash
@@ -2512,14 +2528,14 @@ State No.
 \backslash
 cmidrule{1-1} 
 \backslash
-cmidrule{2-3} 
+cmidrule{2-4} 
 \backslash
-cmidrule{4-5}
+cmidrule{5-7}
 \end_layout
 
 \begin_layout Plain Layout
 
-1 & $12.05$ $(8.06)$ & Low & $16.32$ $(10.10)$ & High   
+1 & $12.05$ $(8.06)$ & $9.44$ & Low & $16.32$ $(10.10)$ & $12.73$ & High   
 \backslash
 
 \backslash
@@ -2528,7 +2544,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-2  & $4.64$ $(3.68)$ & Moderate & $1.88$ $(1.25)$ & Low 
+2  & $4.64$ $(3.68)$ & $4.03$ & Moderate & $1.48$ $(1.25)$ & $0.94$ & Low 
 \backslash
 
 \backslash
@@ -2537,7 +2553,7 @@ cmidrule{4-5}
 
 \begin_layout Plain Layout
 
-3  & $1.84$ $(1.40)$ & High & $3.00$ $(1.47)$ & Moderatehmm 
+3  & $1.84$ $(1.40)$ & $1.52$ & High & $3.00$ $(1.47)$ & $2.67$ & Moderate 
 \backslash
 
 \backslash
@@ -2575,18 +2591,17 @@ end{table}
 \end_layout
 
 \begin_layout Standard
-Although mean emotion does not generate the same rankings for either actor,
- positive emotion predicts the same state labels for both FARC and the governmen
-t.
- Across the board, the standard deviations relative to the means are high,
+Across the board, the standard deviations relative to the means are high,
  due to the spread of the data and the fact that some states rarely occur,
  i.e.
  have few data points (shown on plots below).
- Negative emotion words are used less frequently than positive emotion words
- in general, which may also explain why the negative rankings disagree with
- each other and with the positive rankings and are sensitive to noisy data
- more generally.
- We can also confirm
+ The mean and median agree on their predictions, although they produce a
+ different ranking for each actor/sentiment type.
+ Because a simple ranking based on these measures of central tendency produces
+ contradictory results, I use the Hungarian algorithm implemented in the
+ clue R package to reassign the states based on the median values for positive
+ and negative emotion separately (because the opposite extrema of positive
+ and negative are ideally attained in the each of the high and low states).
 \end_layout
 
 \begin_layout Standard

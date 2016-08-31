@@ -553,11 +553,11 @@ AIC_vals1_govt <- sapply(num_states, function(x) {AIC(fit(depmix(forms1_govt, fa
 
 # Run function to add violence/public opinion levels to FARC df
 FARC_results2 <- add_monthlies(FARC_results1)
-govt_results2 <- add_monthlies(govt_results)
+govt_results2 <- add_monthlies(govt_results1)
 
 # take the log of the monthly stats
 FARC_results2[, 4:7] <- log(FARC_results2[, 4:7])
-govt_results2[, 4:7] <- log(govt_results2[, 4:7])
+govt_results2[, 6:9] <- log(govt_results2[, 4:7])
 
 BIC_vals_fitted <- sapply(num_states, function(x) {BIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = FARC_results2)))})
 AIC_vals_fitted <- sapply(num_states, function(x) {AIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = FARC_results2)))})
@@ -591,6 +591,7 @@ colnames(prob_HMM_F) <- c("est_state", paste("P",1:3, sep="_state"))
 prob_HMM_F <- cbind(FARC_results1, prob_HMM_F)
 
 # label the states with substantive labels based on mean sentiment
+# function to calculate measures of central tendency
 mean_of_states <- function(df) {
   n1 <- mean(filter(df, est_state == 1)$EmoNeg)
   p1 <- mean(filter(df, est_state == 1)$EmoPos)
@@ -610,9 +611,17 @@ mean_of_states <- function(df) {
   sdn3 <- sd(filter(df, est_state == 3)$EmoNeg)
   sdp3 <- sd(filter(df, est_state == 3)$EmoPos)
   
-  results1 <- c(n1, sdn1, p1, sdp1)
-  results2 <- c(n2, sdn2, p2, sdp2)
-  results3 <- c(n3, sdn3, p3, sdp3)
+  mdn1 <- median(filter(df, est_state == 1)$EmoNeg)
+  mdn2 <- median(filter(df, est_state == 2)$EmoNeg)
+  mdn3 <- median(filter(df, est_state == 3)$EmoNeg)
+  
+  mdp1 <- median(filter(df, est_state == 1)$EmoPos)
+  mdp2 <- median(filter(df, est_state == 2)$EmoPos)
+  mdp3 <- median(filter(df, est_state == 3)$EmoPos)
+  
+  results1 <- c(n1, sdn1, mdn1, p1, sdp1, mdp1)
+  results2 <- c(n2, sdn2, mdn2, p2, sdp2, mdp2)
+  results3 <- c(n3, sdn3, mdn3, p3, sdp3, mdp3)
   
   return(rbind(results1, results2, results3))
   
@@ -658,6 +667,11 @@ govt_hmm_means <- mean_of_states(prob_HMM_g)
 hmm_all_means <- cbind(FARC_hmm_means, govt_hmm_means)
 
 stargazer(hmm_all_means, summary = FALSE, title = "Mean Sentiment Scores for Latent States", digits = 2)
+
+# use hungarian algorithm to optimize labels
+beta1 <- FARC_hmm_means[, 3]
+beta2 <- govt_hmm_means[, 3]
+align <- clue::solve_LSAP(beta1%*%t(beta2), maximum=TRUE)
 
 # what state are we in at a given time?
 

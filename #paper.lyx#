@@ -2595,13 +2595,11 @@ Across the board, the standard deviations relative to the means are high,
  due to the spread of the data and the fact that some states rarely occur,
  i.e.
  have few data points (shown on plots below).
- However, the mean and median predict the same labels for all of the states
- for both FARC and the government.
- Because a simple ranking based on these measures of central tendency produces
- contradictory results, I use the Hungarian algorithm implemented in the
- clue R package to reassign the states based on the median values for positive
- and negative emotion separately (because the opposite extrema of positive
- and negative are ideally attained in the each of the high and low states).
+ However, The mean and median predict the same labels for  Negative emotion
+ words are used less frequently than positive emotion words in general,
+ which may also explain why the negative rankings disagree with each other
+ and with the positive rankings and are sensitive to noisy data more generally.
+ We can also confirm
 \end_layout
 
 \begin_layout Standard
