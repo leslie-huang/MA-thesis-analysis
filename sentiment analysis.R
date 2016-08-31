@@ -7,7 +7,8 @@ setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
 
 set.seed(1234)
 
-libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "mlogit", "reshape2")
+libraries <- c("foreign", "utils", "stargazer", "dplyr", "devtools", "quanteda", "ggplot2", "stringr", "LIWCalike", "austin", "forecast", "lmtest", "strucchange", "vars", "tseries", "urca", "depmixS4", "rrcov", "mlogit", "reshape2", "MCDM", "car")
+
 lapply(libraries, require, character.only=TRUE)
 
 devtools::install_github("ggbiplot", "vqv")
@@ -629,21 +630,6 @@ mean_of_states <- function(df) {
 
 FARC_hmm_means <- mean_of_states(prob_HMM_F)
 
-# what state are we in at a given time?
-
-HMM_F_est_state_gg = ggplot(prob_HMM_F, aes(x = as.Date(date, origin = "1970-01-01"), y = est_state)) +
-  geom_step(color = "#000000") +
-  labs(
-    x = "",
-    y = "State",
-    color = "Legend") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-09-01", "%Y-%m-%d"), NA)) +
-  scale_y_continuous(breaks = c(1, 2, 3)) +
-  ggtitle("Estimated Hardline/Moderate/Conciliatory States of FARC")
-
-
-
 #################################################################################
 ## now do the same for the government
 
@@ -669,22 +655,41 @@ hmm_all_means <- cbind(FARC_hmm_means, govt_hmm_means)
 stargazer(hmm_all_means, summary = FALSE, title = "Mean Sentiment Scores for Latent States", digits = 2)
 
 # use hungarian algorithm to optimize labels
-beta1 <- FARC_hmm_means[, 3]
-beta2 <- govt_hmm_means[, 3]
-align <- clue::solve_LSAP(beta1%*%t(beta2), maximum=TRUE)
+hmm_medians_df <- cbind(FARC_hmm_means[, c(3,6)], govt_hmm_means[, c(3,6)])
+row.names(hmm_medians_df) <- c("state1", "state2", "state3")
+colnames(hmm_medians_df) <- c("F_neg", "F_pos", "G_neg", "G_pos")
+dec_mat <- as.matrix(hmm_medians_df)
 
-# what state are we in at a given time?
+MetaRanking(dec_mat, weights = c(.25, .25, .25, .25), cb = c("min", "max", "min", "max"), lambda = .5, v = .5)
+
+# relabel the states on a spectrum of willingness to negotiate
+prob_HMM_F$est_state <- recode(prob_HMM_F$est_state, "3=1; 1=3")
+prob_HMM_g$est_state <- recode(prob_HMM_g$est_state, "3=1; 1=3")
+
+# what state are we in at a given time? graphs
+
+HMM_F_est_state_gg = ggplot(prob_HMM_F, aes(x = as.Date(date, origin = "1970-01-01"), y = est_state)) +
+  geom_step(color = "#000000") +
+  labs(
+    x = "",
+    y = "Willingness to Negotiate",
+    color = "Legend") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-09-01", "%Y-%m-%d"), NA)) +
+  scale_y_continuous(breaks = 1:3, labels = c("Low", "Moderate", "High")) +
+  ggtitle("Estimation of States of Willingness to Negotiate: FARC")
+
 
 HMM_g_est_state_gg = ggplot(prob_HMM_g, aes(x = as.Date(date, origin = "1970-01-01"), y = est_state)) +
   geom_step(color = "#000000") +
   labs(
     x = "",
-    y = "State",
+    y = "Willingness to Negotiate",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
                limits = c(as.Date("2012-09-01", "%Y-%m-%d"), NA)) +
-  scale_y_continuous(breaks = c(1, 2, 3)) +
-  ggtitle("Estimated Hardline/Moderate/Conciliatory States of Government")
+  scale_y_continuous(breaks = 1:3, labels = c("Low", "Moderate", "High")) +
+  ggtitle("Estimation of States of Willingness to Negotiate: Government")
 
 #################################################################################
 #################################################################################

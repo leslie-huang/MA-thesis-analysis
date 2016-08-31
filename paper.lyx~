@@ -2595,84 +2595,65 @@ Across the board, the standard deviations relative to the means are high,
  due to the spread of the data and the fact that some states rarely occur,
  i.e.
  have few data points (shown on plots below).
- However, the mean and median predict the same labels for all of the states
- for both FARC and the government.
- Because a simple ranking based on these measures of central tendency produces
- contradictory results, I use the Hungarian algorithm implemented in the
- clue R package to reassign the states based on the median values for positive
- and negative emotion separately (because the opposite extrema of positive
- and negative are ideally attained in the each of the high and low states).
-\end_layout
-
-\begin_layout Standard
-The figures below shows the hidden Markov estimated states of FARC and the
- government, respectively, at any given date during the negotiations, based
- on the negative and positive emotion measures.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename hmm_farc.eps
-	width 100text%
-
+ The mean and median agree on their predictions, although they produce a
+ different ranking (labeling) for each actor/sentiment type, as seen in
+ the table.
+ Because those labels are not conclusive, I use the MCDM R package to identify
+ the optimal ranking based on several different methods for computing multi-crit
+eria decisions [Ceballos Martin].
+ This ranking is based on maximizing positive emotion percent and minimizing
+ negative emotion percent (i.e.
+ the choice ranked first is the 
+\begin_inset Quotes eld
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename hmm_govt.eps
-	width 100text%
-
+high
+\begin_inset Quotes erd
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-These graphs indicate a high level of regime-switching and volatility in
- the first and last years of the peace process for the government.
- As shown, the government switches between regimes frequently, though it
- appears to spend the fewest days in state 2.
- FARC, on the other hand, shows less frequent switching: perhaps a surprising
- result.
- The irregularity of data (statements may be issued days, weeks, or months
- apart) 
-\end_layout
-
-\begin_layout Standard
-One likely cause of the government's volatile transitions is that its statements
- must address many different audiences and groups: toward FARC, the government
- must be a tough negotiator; for domestic critics, the government must appease
- hawks' concerns about specific provisions such as seats in the legislature
- for ex-guerrillas or amnesty from prosecution; for the military, the government
- must reassure them of their place in the conflict and about concerns regarding
- potential prosecution of military personnel for acts committed during the
- war; and for the public, the government must convince them that an agreement
- will actually bring about peace, that the voices of victims of the conflict
- have been heard, and that they should vote in favor of the agreement in
- the referendum.
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-The provision that any deal from Havana must survive a referendum was passed
- by the House of Representatives.
- [El Tiempo] 
-\end_layout
-
+ willing to negotiate state).
+ As it turns out, all of the methods rank the latent states in the same
+ way: states 
+\begin_inset Formula $1,2,3$
 \end_inset
 
+ map to 
+\begin_inset Quotes eld
+\end_inset
 
+high
+\begin_inset Quotes erd
+\end_inset
+
+ (conciliatory), 
+\begin_inset Quotes eld
+\end_inset
+
+moderate,
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+low
+\begin_inset Quotes erd
+\end_inset
+
+ (hardline).
+ This result is robust to changing the measure of central tendency (i.e.
+ median or mean) used in the decision matrix.
 \end_layout
 
 \begin_layout Standard
-The Markov transition matrices are shown below.
- The diagonal reflects the persistence of some states: once an actor is
- in State 2, for instance, there is a probability of 0.762 and 0.713, respectively
-, that they will remain in that state.
+The Markov transition matrices shown below, respectively, represent the
+ probabilities of regime switching for FARC and the government, estimated
+ using the negative and positive emotion measures and labeled according
+ to the results of the decision matrix.
+ The values in the diagonals reflect the persistence of some states.
+ For instance, when FARC is hardline, there is a high probability that it
+ will continue to be hardline.
 \end_layout
 
 \begin_layout Standard
@@ -2710,7 +2691,7 @@ label{}
 
 
 \backslash
-begin{subtable}{.5
+begin{subtable}{.65
 \backslash
 linewidth}
 \end_layout
@@ -2742,22 +2723,9 @@ extracolsep{5pt}} rccc}
 
 
 \backslash
-
+cmidrule{1-1} 
 \backslash
-[-1.8ex]
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
+cmidrule(r){2-4}
 \end_layout
 
 \begin_layout Plain Layout
@@ -2773,7 +2741,7 @@ multicolumn{3}{c}{$to$}
 
 \begin_layout Plain Layout
 
- & State 1 & State 2 & State 3 
+ & Hardline & Moderate & Conciliatory 
 \backslash
 
 \backslash
@@ -2784,11 +2752,9 @@ multicolumn{3}{c}{$to$}
 
 
 \backslash
-hline 
+cmidrule{1-1} 
 \backslash
-
-\backslash
-[-1.8ex] 
+cmidrule(r){2-4}
 \end_layout
 
 \begin_layout Plain Layout
@@ -2802,7 +2768,16 @@ $from$ & & &
 
 \begin_layout Plain Layout
 
-State 1 & $0.596$ & $0.404$ & $0.000$ 
+Hardline & $0.90$ & $0.00$ & $0.10$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Moderate & $0.00$ & $0.48$ & $0.52$ 
 \backslash
 
 \backslash
@@ -2811,7 +2786,7 @@ State 1 & $0.596$ & $0.404$ & $0.000$
 
 \begin_layout Plain Layout
 
-State 2 & $0.070$ & $0.762$ & $0.168$ 
+Conciliatory & $0.00$ & $0.21$ & $0.79$ 
 \backslash
 
 \backslash
@@ -2820,22 +2795,11 @@ State 2 & $0.070$ & $0.762$ & $0.168$
 
 \begin_layout Plain Layout
 
-State 3 & $0.042$ & $0.502$ & $0.456$ 
-\backslash
 
 \backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
+cmidrule{1-1} 
 \backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
+cmidrule(r){2-4}
 \end_layout
 
 \begin_layout Plain Layout
@@ -2856,7 +2820,7 @@ end{subtable}%
 
 
 \backslash
-begin{subtable}{.5
+begin{subtable}{.35
 \backslash
 linewidth}
 \end_layout
@@ -2881,34 +2845,19 @@ caption{Government}
 \backslash
 begin{tabular}{@{
 \backslash
-extracolsep{5pt}} rccc} 
+extracolsep{5pt}} ccc} 
 \end_layout
 
 \begin_layout Plain Layout
 
 
 \backslash
-
-\backslash
-[-1.8ex]
-\backslash
-hline 
+cmidrule(r){1-3}
 \end_layout
 
 \begin_layout Plain Layout
 
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
- & 
+ 
 \backslash
 multicolumn{3}{c}{$to$} 
 \backslash
@@ -2919,7 +2868,7 @@ multicolumn{3}{c}{$to$}
 
 \begin_layout Plain Layout
 
- & State 1 & State 2 & State 3 
+ Hardline & Moderate & Conciliatory 
 \backslash
 
 \backslash
@@ -2930,16 +2879,12 @@ multicolumn{3}{c}{$to$}
 
 
 \backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
+cmidrule(r){1-3}
 \end_layout
 
 \begin_layout Plain Layout
 
-$from$ & & & 
+ & & 
 \backslash
 
 \backslash
@@ -2948,7 +2893,16 @@ $from$ & & &
 
 \begin_layout Plain Layout
 
-State 1 & $0.654$ & $0.023$ & $0.324$ 
+ $0.59$ & $0.00$ & $0.41$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ $0.02$ & $0.90$ & $0.08$ 
 \backslash
 
 \backslash
@@ -2957,7 +2911,7 @@ State 1 & $0.654$ & $0.023$ & $0.324$
 
 \begin_layout Plain Layout
 
-State 2 & $0.023$ & $0.713$ & $0.264$ 
+ $0.68$ & $0.08$ & $0.24$ 
 \backslash
 
 \backslash
@@ -2966,22 +2920,9 @@ State 2 & $0.023$ & $0.713$ & $0.264$
 
 \begin_layout Plain Layout
 
-State 3 & $0.572$ & $0.262$ & $0.165$ 
-\backslash
 
 \backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
+cmidrule(r){1-3}
 \end_layout
 
 \begin_layout Plain Layout
@@ -3012,6 +2953,158 @@ end{table}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The graphs below shows the estimated state of FARC and the government, respectiv
+ely, over the time period of the negotiations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename hmm_farc.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename hmm_govt.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These graphs indicate a number of surprising results: First and foremost,
+ it appears that FARC's willingness to negotiate has usually been medium
+ to high.
+ The government's willingness, however, seems more volatile, with a high
+ level of regime switching especially during 2013 and 2015.
+ Interestingly, the government tends to shift from low to high and rarely
+ was in the moderate state, with the exception of a period from mid-2014
+ to mid-2015, during which FARC was also in a moderate state.
+ 
+\end_layout
+
+\begin_layout Standard
+The irregularity and frequency of data (statements may be issued days, weeks,
+ or months apart) explains some of this volatility.
+ There are three times as many government documents than FARC documents,
+ and government statements are issued more frequently.
+\end_layout
+
+\begin_layout Standard
+One likely cause of the government's volatile transitions is that its statements
+ must address many different audiences and groups: toward FARC, the government
+ must be a tough negotiator; for domestic critics, the government must appease
+ hawks' concerns about specific provisions such as seats in the legislature
+ for ex-guerrillas or amnesty from prosecution; for the military, the government
+ must reassure them of their place in the conflict and about concerns regarding
+ potential prosecution of military personnel for acts committed during the
+ war; for the international community, the government must pledge its commitment
+ to peace as it possibly seeks regional or United Nations assistance with
+ the implementation of any deal; and for the public, the government must
+ convince them that an agreement will actually bring about peace, that the
+ voices of victims of the conflict have been heard, and that they should
+ vote in favor of the agreement if it is on a referendum.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The House of Representatives passed a bill in 2013 requiring that any deal
+ from Havana must survive a referendum, but this was followed by wrangling
+ in the constitutional court and various statements by the president suggesting
+ that a popular vote would happen if an agreement was made but that this
+ was not legally required.[El Tiempo] 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Finally, anecdotally we may consider some events in the peace timeline that
+ are objectively likely to have affected whether the government was in a
+ hardline or conciliatory state.
+ In June 2015, FARC launched a series of attacks including attacking police
+ stations and bombing infrastructure such as oil pipelines in Norte de Santander
+, Putumayo, and Nariño, resulting in an oil spill that caused severe environment
+al damage and contaminated the water supply of thousands; and bombing power
+ stations that supplied electricity to the cities of Buenaventura and Tumaco.
+ [Guardian] [Colombia Peace Timeline] [Colombia Reports] This time period
+ coincides with the high level of regime-switching observed in the government
+ graph.
+ Also interesting, however, is the lack of regime switching in November
+ 2014 following FARC's kidnapping of a general.
+ The government suspended peace talks from November 16 and talks resumed
+ on December 9
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Although threatening to suspend or suspending talks (
+\begin_inset Quotes eld
+\end_inset
+
+walking away from the table
+\begin_inset Quotes erd
+\end_inset
+
+) may seem like a common bluffing maneuver, it occurred very rarely during
+ these negotiations.
+\end_layout
+
+\end_inset
+
+ after the general was returned; however, this entire episode falls within
+ the government's long spell in the 
+\begin_inset Quotes eld
+\end_inset
+
+moderate
+\begin_inset Quotes erd
+\end_inset
+
+ willingness to negotiate state.
+ [Colombia Peace Timeline]
+\end_layout
+
+\begin_layout Standard
+Clearly, with noisy and irregular data, matching events to states is imperfect
+ and in any event assumes certain associations between events and sentiment
+ measures (e.g.
+ in the paragraph above, I assume that devastating FARC attacks are associated
+ with more negative sentiment and a less conciliatory stance from the government
+).
+ More generally, although sentiment and regime changes may be very sensitive
+ to events, the broader implication of this model is that neither side spends
+ much time of the negotiations in the state of 
+\begin_inset Quotes eld
+\end_inset
+
+low
+\begin_inset Quotes erd
+\end_inset
+
+ willingness.
+ Moreover, although skepticism has been a common response to FARC's claim
+ that it is committed to negotiating (rather than the violent means the
+ organization has avowed) and its apparent willingness to accede (in provisional
+ topic-specific agreements) to terms that fall short of its Marxist ideology,
+ this model shows that FARC in fact was usually moderately to highly willing
+ to negotiate over this time period.
+ This conclusion is borne out by the (out-of-sample) peace agreement reached
+ just three months after documents were scraped for this project.
+ Using sentiment as a rough metric of FARC's true level of engagement in
+ the talks is a new measure for use in war and peace studies.
+ 
 \end_layout
 
 \begin_layout Standard
