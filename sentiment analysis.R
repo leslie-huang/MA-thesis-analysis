@@ -691,8 +691,13 @@ HMM_g_est_state_gg = ggplot(prob_HMM_g, aes(x = as.Date(date, origin = "1970-01-
   scale_y_continuous(breaks = 1:3, labels = c("Low", "Moderate", "High")) +
   ggtitle("Estimation of States of Willingness to Negotiate: Government")
 
+
+
 #################################################################################
 #################################################################################
+#################################################################################
+#################################################################################
+
 # Transition model: sentiment-responds-to-sentiment
 
 # Classify overall sentiment as "high" or "low": Compare negative and positive emotion proportions within a given document. 1 = high, 0 = low
@@ -816,11 +821,20 @@ write.dta(mnl_df, "mnl_data.dta")
 ml_df <- mnl_df
 ml_df <- mlogit.data(ml_df, choice = "state_y2", shape = "wide")
 
-# Model #1 specification
-ml_mod1 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x, data = ml_df, reflevel = "4")
+# Model #1 specification: base
+ml_mod1 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x, data = ml_df, reflevel = "3")
 summary(ml_mod1)
 
-ml_mod2 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + pres_approve + year, data = ml_df, reflevel = "4")
+# Model #2 specification: base + year
+ml_mod2 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + year, data = ml_df, reflevel = "3")
+
+# Model #3: base + covars
+ml_mod3 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + pres_approve, data = ml_df, reflevel = "3")
+
+# Model #4: base + year + covars
+ml_mod4 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + pres_approve + year, data = ml_df, reflevel = "3")
+
+stargazer(ml_mod1, ml_mod2, ml_mod3, ml_mod4, digits = 2, digit.separator = "", title = "Comparison of Multinomial Logit Models", single.row = TRUE)
 
 # relative risk ratio
 mod1_rrr <- exp(coef(ml_mod1))

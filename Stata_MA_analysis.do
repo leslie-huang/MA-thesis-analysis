@@ -91,20 +91,22 @@ mlogtest , hausman smhsiao base
 * graphs graphs graphs
 * We're going with Model # 4
 
-quietly {
 mlogit state_y i.state_x
 
-
 margins state_x, atmeans predict(outcome(1))
-marginsplot, name(state_x) 
+marginsplot, name(state_x)  xlabel(`=1' "FARC/low" `=2' "FARC/high" `=3' "Govt/low" `=4' "Govt/high", labsize(small) )  title("Pr(State at t+1 = FARC/low)") xtitle("State at t", margin(0 4 0 0)) ytitle("Pr(State at t+1 = FARC-low)") ytitle( , size(small) margin(0 2 0 0)) ytick(0(.2)1) ylabel(`=.2' "0.2" `=.4' "0.4" `=.6' "0.6" `=.8' "0.8" , labsize(small))
+
 margins state_x, atmeans predict(outcome(2))
-marginsplot, name(state_x2) 
-margins state_x, atmeans predict(outcome(3))
-marginsplot, name(state_x3) 
+marginsplot, name(state_x2) xlabel(`=1' "FARC/low" `=2' "FARC/high" `=3' "Govt/low" `=4' "Govt/high", labsize(small) )  title("Pr(State at t+1 = FARC/high)") xtitle("State at t", margin(0 4 0 0)) ytitle("Pr(State at t+1 = FARC/high)") ytitle( , size(small) margin(0 2 0 0)) ytick(0(.2)1) ylabel(`=.2' "0.2" `=.4' "0.4" `=.6' "0.6" `=.8' "0.8" , labsize(small))
+
+margins state_x, atmeans predict(outcome(3)) 
+marginsplot, name(state_x3) xlabel(`=1' "FARC-low" `=2' "FARC/high" `=3' "Govt/low" `=4' "Govt/high", labsize(small) )  title("Pr(State at t+1 = Govt/low)") xtitle("State at t", margin(0 4 0 0)) ytitle("Pr(State at t+1 = Govt/low)") ytitle( , size(small) margin(0 2 0 0)) ytick(0(.2)1) ylabel(`=.2' "0.2" `=.4' "0.4" `=.6' "0.6" `=.8' "0.8" , labsize(small))
+
 margins state_x, atmeans predict(outcome(4))
-marginsplot, name(state_x4) 
-}
-graph combine state_x state_x2 state_x3 state_x4, ycommon
+marginsplot, name(state_x4) xlabel(`=1' "FARC-low" `=2' "FARC/high" `=3' "Govt/low" `=4' "Govt-high", labsize(small) ) title("Pr(State at t+1 = Govt/high)") xtitle("State at t", margin(0 4 0 0)) ytitle("Pr(State at t+1 = Govt/high)") ytitle( , size(small) margin(0 2 0 0)) ytick(0(.2)1) ylabel(`=.2' "0.2" `=.4' "0.4" `=.6' "0.6" `=.8' "0.8" , labsize(small))
+
+graph combine state_x state_x2 state_x3 state_x4, ycommon title("Adjusted Predictions of State at t+1 with 95% CIs")
+graph export mnl_margins.eps, replace
 
 * get transition probabilities (each line is a column vector)
 margins, at (state_x = (1(1) 4)) predict(outcome(1))

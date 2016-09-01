@@ -5,27 +5,6 @@ end of do-file
 . do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD03784.000000"
 
 . 
-. quietly {
-
-. graph combine state_x state_x2 state_x3 state_x4, ycommon
-
-. 
-end of do-file
-
-. margins , predict(outcome(1))
-
-Predictive margins                              Number of obs     =        418
-Model VCE    : OIM
-
-Expression   : Pr(state_y==1), predict(outcome(1))
-
-------------------------------------------------------------------------------
-             |            Delta-method
-             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       _cons |   .0287081    .007698     3.73   0.000     .0136203     .043796
-------------------------------------------------------------------------------
-
 . mlogit state_y i.state_x
 
 Iteration 0:   log likelihood = -459.72829  
@@ -72,43 +51,137 @@ Log likelihood = -400.96835                     Pseudo R2         =     0.1278
        _cons |   3.06e-09   1.414214     0.00   1.000    -2.771808    2.771808
 ------------------------------------------------------------------------------
 
-. margins , predict(outcome(1))
-
-Predictive margins                              Number of obs     =        418
-Model VCE    : OIM
-
-Expression   : Pr(state_y==1), predict(outcome(1))
-
-------------------------------------------------------------------------------
-             |            Delta-method
-             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       _cons |   .0287081    .007698     3.73   0.000     .0136203     .043796
-------------------------------------------------------------------------------
-
-. margins at (state_x = (1 4)), predict(outcome(1))
-variable at not found
-r(111);
-
-. margins, at (state_x = (1 4)) predict(outcome(1))
+. 
+. margins state_x, atmeans predict(outcome(1))
 
 Adjusted predictions                            Number of obs     =        418
 Model VCE    : OIM
 
 Expression   : Pr(state_y==1), predict(outcome(1))
-
-1._at        : state_x         =           1
-
-2._at        : state_x         =           4
+at           : 1.state_x       =    .0287081 (mean)
+               2.state_x       =    .2105263 (mean)
+               3.state_x       =    .5358852 (mean)
+               4.state_x       =    .2248804 (mean)
 
 ------------------------------------------------------------------------------
              |            Delta-method
              |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         _at |
+     state_x |
           1  |   .3333333   .1360828     2.45   0.014      .066616    .6000506
-          2  |   .0106383   .0105816     1.01   0.315    -.0101012    .0313778
+          2  |   .0568182   .0246774     2.30   0.021     .0084513    .1051851
+          3  |   .0089286   .0062852     1.42   0.155    -.0033902    .0212473
+          4  |   .0106383   .0105816     1.01   0.315    -.0101012    .0313778
 ------------------------------------------------------------------------------
+
+. marginsplot, name(state_x)  xlabel(`=1' "FARC/low" `=2' "FARC/high" `=3' "Govt/low" `=4' "Govt/high", la
+> bsize(small) )  title("Pr(State at t+1 = FARC/low)") xtitle("State at t", margin(0 4 0 0)) ytitle("Pr(St
+> ate at t+1 = FARC-low)") ytitle( , size(small) margin(0 2 0 0)) ytick(0(.2)1) ylabel(`=.2' "0.2" `=.4' "
+> 0.4" `=.6' "0.6" `=.8' "0.8" , labsize(small))
+
+  Variables that uniquely identify margins: state_x
+
+. 
+. margins state_x, atmeans predict(outcome(2))
+
+Adjusted predictions                            Number of obs     =        418
+Model VCE    : OIM
+
+Expression   : Pr(state_y==2), predict(outcome(2))
+at           : 1.state_x       =    .0287081 (mean)
+               2.state_x       =    .2105263 (mean)
+               3.state_x       =    .5358852 (mean)
+               4.state_x       =    .2248804 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |         .5   .1443376     3.46   0.001     .2171036    .7828964
+          2  |   .3977273   .0521733     7.62   0.000     .2954696     .499985
+          3  |   .1383929   .0230721     6.00   0.000     .0931723    .1836134
+          4  |   .1702128   .0387628     4.39   0.000      .094239    .2461865
+------------------------------------------------------------------------------
+
+. marginsplot, name(state_x2) xlabel(`=1' "FARC/low" `=2' "FARC/high" `=3' "Govt/low" `=4' "Govt/high", la
+> bsize(small) )  title("Pr(State at t+1 = FARC/high)") xtitle("State at t", margin(0 4 0 0)) ytitle("Pr(S
+> tate at t+1 = FARC/high)") ytitle( , size(small) margin(0 2 0 0)) ytick(0(.2)1) ylabel(`=.2' "0.2" `=.4'
+>  "0.4" `=.6' "0.6" `=.8' "0.8" , labsize(small))
+
+  Variables that uniquely identify margins: state_x
+
+. 
+. margins state_x, atmeans predict(outcome(3)) 
+
+Adjusted predictions                            Number of obs     =        418
+Model VCE    : OIM
+
+Expression   : Pr(state_y==3), predict(outcome(3))
+at           : 1.state_x       =    .0287081 (mean)
+               2.state_x       =    .2105263 (mean)
+               3.state_x       =    .5358852 (mean)
+               4.state_x       =    .2248804 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .0833333   .0797856     1.04   0.296    -.0730436    .2397102
+          2  |   .3181818   .0496513     6.41   0.000     .2208671    .4154966
+          3  |   .7321429   .0295887    24.74   0.000     .6741501    .7901356
+          4  |   .3297872   .0484908     6.80   0.000      .234747    .4248275
+------------------------------------------------------------------------------
+
+. marginsplot, name(state_x3) xlabel(`=1' "FARC-low" `=2' "FARC/high" `=3' "Govt/low" `=4' "Govt/high", la
+> bsize(small) )  title("Pr(State at t+1 = Govt/low)") xtitle("State at t", margin(0 4 0 0)) ytitle("Pr(St
+> ate at t+1 = Govt/low)") ytitle( , size(small) margin(0 2 0 0)) ytick(0(.2)1) ylabel(`=.2' "0.2" `=.4' "
+> 0.4" `=.6' "0.6" `=.8' "0.8" , labsize(small))
+
+  Variables that uniquely identify margins: state_x
+
+. 
+. margins state_x, atmeans predict(outcome(4))
+
+Adjusted predictions                            Number of obs     =        418
+Model VCE    : OIM
+
+Expression   : Pr(state_y==4), predict(outcome(4))
+at           : 1.state_x       =    .0287081 (mean)
+               2.state_x       =    .2105263 (mean)
+               3.state_x       =    .5358852 (mean)
+               4.state_x       =    .2248804 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     state_x |
+          1  |   .0833333   .0797856     1.04   0.296    -.0730436    .2397102
+          2  |   .2272727    .044673     5.09   0.000     .1397152    .3148303
+          3  |   .1205357   .0217542     5.54   0.000     .0778983    .1631731
+          4  |   .4893617   .0515594     9.49   0.000     .3883072    .5904162
+------------------------------------------------------------------------------
+
+. marginsplot, name(state_x4) xlabel(`=1' "FARC-low" `=2' "FARC/high" `=3' "Govt/low" `=4' "Govt-high", la
+> bsize(small) ) title("Pr(State at t+1 = Govt/high)") xtitle("State at t", margin(0 4 0 0)) ytitle("Pr(St
+> ate at t+1 = Govt/high)") ytitle( , size(small) margin(0 2 0 0)) ytick(0(.2)1) ylabel(`=.2' "0.2" `=.4' 
+> "0.4" `=.6' "0.6" `=.8' "0.8" , labsize(small))
+
+  Variables that uniquely identify margins: state_x
+
+. 
+. graph combine state_x state_x2 state_x3 state_x4, ycommon title("Adjusted Predictions of State at t+1 wi
+> th 95% CIs")
+
+. graph export mnl_margins.eps, replace
+(file mnl_margins.eps written in EPS format)
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD03784.000000"
 
 . margins, at (state_x = (1(1) 4)) predict(outcome(1))
 
@@ -213,4 +286,131 @@ Expression   : Pr(state_y==4), predict(outcome(4))
           3  |   .1205357   .0217542     5.54   0.000     .0778983    .1631731
           4  |   .4893617   .0515594     9.49   0.000     .3883072    .5904162
 ------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD03784.000000"
+
+. margins, at (state_x = (1(1) 4)) predict(outcome(1))
+
+Adjusted predictions                            Number of obs     =        418
+Model VCE    : OIM
+
+Expression   : Pr(state_y==1), predict(outcome(1))
+
+1._at        : state_x         =           1
+
+2._at        : state_x         =           2
+
+3._at        : state_x         =           3
+
+4._at        : state_x         =           4
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         _at |
+          1  |   .3333333   .1360828     2.45   0.014      .066616    .6000506
+          2  |   .0568182   .0246774     2.30   0.021     .0084513    .1051851
+          3  |   .0089286   .0062852     1.42   0.155    -.0033902    .0212473
+          4  |   .0106383   .0105816     1.01   0.315    -.0101012    .0313778
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD03784.000000"
+
+. margins, at (state_x = (1(1) 4)) predict(outcome(2))
+
+Adjusted predictions                            Number of obs     =        418
+Model VCE    : OIM
+
+Expression   : Pr(state_y==2), predict(outcome(2))
+
+1._at        : state_x         =           1
+
+2._at        : state_x         =           2
+
+3._at        : state_x         =           3
+
+4._at        : state_x         =           4
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         _at |
+          1  |         .5   .1443376     3.46   0.001     .2171036    .7828964
+          2  |   .3977273   .0521733     7.62   0.000     .2954696     .499985
+          3  |   .1383929   .0230721     6.00   0.000     .0931723    .1836134
+          4  |   .1702128   .0387628     4.39   0.000      .094239    .2461865
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD03784.000000"
+
+. margins, at (state_x = (1(1) 4)) predict(outcome(3))
+
+Adjusted predictions                            Number of obs     =        418
+Model VCE    : OIM
+
+Expression   : Pr(state_y==3), predict(outcome(3))
+
+1._at        : state_x         =           1
+
+2._at        : state_x         =           2
+
+3._at        : state_x         =           3
+
+4._at        : state_x         =           4
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         _at |
+          1  |   .0833333   .0797856     1.04   0.296    -.0730436    .2397102
+          2  |   .3181818   .0496513     6.41   0.000     .2208671    .4154966
+          3  |   .7321429   .0295887    24.74   0.000     .6741501    .7901356
+          4  |   .3297872   .0484908     6.80   0.000      .234747    .4248275
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD03784.000000"
+
+. margins, at (state_x = (1(1) 4)) predict(outcome(4))
+
+Adjusted predictions                            Number of obs     =        418
+Model VCE    : OIM
+
+Expression   : Pr(state_y==4), predict(outcome(4))
+
+1._at        : state_x         =           1
+
+2._at        : state_x         =           2
+
+3._at        : state_x         =           3
+
+4._at        : state_x         =           4
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         _at |
+          1  |   .0833333   .0797856     1.04   0.296    -.0730436    .2397102
+          2  |   .2272727    .044673     5.09   0.000     .1397152    .3148303
+          3  |   .1205357   .0217542     5.54   0.000     .0778983    .1631731
+          4  |   .4893617   .0515594     9.49   0.000     .3883072    .5904162
+------------------------------------------------------------------------------
+
+. 
+end of do-file
 
