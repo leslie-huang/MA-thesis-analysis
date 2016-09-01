@@ -1278,14 +1278,16 @@ Modelling hidden states.
 \begin_layout Standard
 The first estimation task in this paper is to use the relative frequencies
  of word categories in a Markov regime-switching model that represents whether
- an actor is in a latent, or hidden, state of being hardline or conciliatory.
- (For the purposes of simplifying this discussion, I assume two possible
- discrete states.) In other words, given a sequence of FARC documents, we
- are interested in the random variable that represents whether FARC is in
- a hardline state or a conciliatory state--a hidden state, as negotiants
- may bluff to get better terms.
- This model focuses on one actor at a time; we will look at how sentiment
- responds to sentiment subsequently.
+ an actor (either the government or FARC) is in a latent, or hidden, state
+ of being hardline or conciliatory.
+ For the purposes of simplifying this discussion, I assume two possible
+ discrete states.
+ In other words, given a sequence of FARC documents, we are interested in
+ the random variable that represents whether FARC is in a hardline state
+ or a conciliatory state--a hidden state, as negotiants may bluff to get
+ better terms.
+ This model focuses on one actor at a time; in the second part of this paper,
+ we will look at how sentiment responds to sentiment subsequently.
  
 \end_layout
 
@@ -1505,8 +1507,7 @@ Each entry
 
  is the probability of moving from a hardline to a concessions state, and
  so on.
- The transition probabilities must sum to 1.
- These values were calculated using the depmixS4 package in R.
+ I will use the depmixS4 package in R to calculate these values.
  [Visser]
 \end_layout
 
@@ -1526,15 +1527,135 @@ hardline
 \begin_inset Quotes eld
 \end_inset
 
+conciliatory.
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subparagraph*
+Optimizing the number of states.
+ 
+\end_layout
+
+\begin_layout Standard
+The ideal number of states can be identified by the Bayesian information
+ criterion (BIC) and the Akaike information criterion (AIC) values.
+ 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+In other applications of hidden Markov models, the number of states is not
+ optimized because it and the labels attached to the states tend to determined
+ by substantive criteria: e.g.
+ in medical examples, values for various indicators of health that fall
+ within certain ranges correspond to pre-set states, and in economic examples,
+ 
+\begin_inset Quotes eld
+\end_inset
+
+bull
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+bear
+\begin_inset Quotes erd
+\end_inset
+
+ markets are modelled with two states that clearly correspond with economic
+ indicators.
+ This paper uses a more agnostic approach.
+\end_layout
+
+\end_inset
+
+ To keep interpretation across models comparable, the same number of latent
+ states should be specified.
+ The substantive interpretation of the model accommodates small numbers
+ of latent states: for instance, two latent states would correspond to a
+ dichotomy between 
+\begin_inset Quotes eld
+\end_inset
+
+hardline
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+conciliatory,
+\begin_inset Quotes erd
+\end_inset
+
+ while three latent states might represent low, moderate, and high levels
+ of willingness to negotiate, representing hardline, moderate and conciliatory
+ regimes, respectively.
+ However, as the number of states increases, the substantive interpretation
+ of transition probabilities across these states becomes more challenging.
+ Moreover, a higher number of states means that fitting the model becomes
+ difficult because transitions between any two given states may be rare
+ or not happen at all.
+ These considerations will be weighed against the models' log-likelihood,
+ BIC, and AIC values.
+\end_layout
+
+\begin_layout Subparagraph*
+Labelling the states.
+\end_layout
+
+\begin_layout Standard
+Because hidden Markov model estimation does not attach substantive labels
+ to the states, such labelling must be done post-estimation.
+ I explore two possible methods.
+ First, I use the distributions of estimated states over the negative and
+ positive sentiment measures to rank the states in order of the relative
+ willingness to negotiate.
+ For example, the state with the highest mean positive emotion and lowest
+ mean negative emotion should correspond to the 
+\begin_inset Quotes eld
+\end_inset
+
+high
+\begin_inset Quotes erd
+\end_inset
+
+ willingness to negotiate state (i.e.
+ 
+\begin_inset Quotes eld
+\end_inset
+
 conciliatory
 \begin_inset Quotes erd
 \end_inset
 
-.
- Mathematically, the optimal number of states can be identified by the Bayesian
- information criterion (BIC) and the Akaike information criterion (AIC)
- values.
- 
+), while the state with the lowest mean positive emotion and the highest
+ mean negative emotion should be the 
+\begin_inset Quotes eld
+\end_inset
+
+low
+\begin_inset Quotes erd
+\end_inset
+
+ willingness to negotiate state (
+\begin_inset Quotes eld
+\end_inset
+
+hardline
+\begin_inset Quotes erd
+\end_inset
+
+).
+ I also use a multi-choice decision matrix implemented in R to optimize
+ the ranking based on the sentiment measures.
 \end_layout
 
 \begin_layout Subparagraph*
@@ -1545,7 +1666,12 @@ Modelling sentiment response.
 \begin_layout Standard
 The second part of this paper also uses Markov chains to model the response
  of sentiment to sentiment.
- This is to say, if a FARC issues a statement with 
+ A fundamental assumption is that the sequenece of time-ordered statements
+ during a time interval represents a single Markov process.
+ (In the following section, I will present results for the entire period
+ of negotiations covered in this paper, and I will also compare results
+ from regimes bounded by structural breaks.) This is to say, if a FARC issues
+ a statement with 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1779,6 +1905,10 @@ government/high.
  
 \end_layout
 
+\begin_layout Standard
+[insert summary statistics]
+\end_layout
+
 \begin_layout Subsection*
 Results and discussion
 \end_layout
@@ -1796,60 +1926,14 @@ I estimated the Markox transition matrix of a hidden Markov model for each
  actor separately, using the sentiment measures for negative and positive
  emotion.
  First, however, the number of latent states needs to be optimized.
- To keep interpretation across models comparable, the same number of latent
- states should be specified.
- The substantive interpretation of the model accommodates small numbers
- of latent states: for instance, two latent states would correspond to a
- dichotomy between 
-\begin_inset Quotes eld
-\end_inset
-
-hardline
-\begin_inset Quotes erd
-\end_inset
-
- and 
-\begin_inset Quotes eld
-\end_inset
-
-conciliatory,
-\begin_inset Quotes erd
-\end_inset
-
- while three latent states might represent willingness to negotiate as 
-\begin_inset Quotes eld
-\end_inset
-
-hardline, 
-\begin_inset Quotes eld
-\end_inset
-
-on the fence,
-\begin_inset Quotes erd
-\end_inset
-
- and 
-\begin_inset Quotes eld
-\end_inset
-
-conciliatory
-\begin_inset Quotes erd
-\end_inset
-
- regimes.
- However, with larger numbers the interpretation of transition probabilities
- across these states becomes more challenging, and fitting the model becomes
- difficult because transitions between any two given states become rare.
-\end_layout
-
-\begin_layout Standard
-Table shows the BIC and AIC values for HMMs fitted separately for FARC and
- the government with 
+ The table below shows the BIC and AIC values for HMMs fitted separately
+ for FARC and the government with 
 \begin_inset Formula $n=1:5$
 \end_inset
 
- latent states, and with/without covariates for level of violence and public
- opinion.
+ latent states.
+ I also included models for FARC and the government that include covariates
+ for the level of violence and public opinion.
 \end_layout
 
 \begin_layout Standard
@@ -2133,8 +2217,8 @@ Comparing Model (1) vs.
  The improvement in BIC and AIC values in the two-state model over the one-state
  model demonstrates that a mixture is a better fit for the data than a single
  state.
- Focusing on the FARC models, with and without covariates, the BIC values
- suggests that 
+ Focusing on the two FARC models, with and without covariates, the BIC values
+ suggest that 
 \begin_inset Formula $n=3$
 \end_inset
 
@@ -2151,7 +2235,11 @@ Comparing Model (1) vs.
  chosen.
  The AIC values for the FARC models, however, as well as both the BIC and
  AIC values for the government models, favor higher order specifications.
- However, these improvements in fit must be balanced against the tradeoff
+ 
+\end_layout
+
+\begin_layout Standard
+However, these improvements in fit must be balanced against the tradeoff
  in the interpretability of results in a model with so many states (e.g.
  what is the substantive meaning of 
 \begin_inset Quotes eld
@@ -2170,15 +2258,17 @@ transition for 1/5 to 2/5 hardline
 \end_inset
 
 ?).
+ Consequently, the following analysis will proceed with a HMM with three
+ latent states, or regimes.
+ The violence and public opinion covariates are not included.
+ The latent states represent high, moderate, and low willingness to negotiate.
+ 
 \end_layout
 
 \begin_layout Standard
-Consequently, the following analysis will proceed with a HMM with three
- latent states, or regimes.
- The violence and public opinion covariates are not included.
- The latent states represent high, medium, and low willingness to negotiate.
- However, the model estimation does not attach substantive labels to numbered
- states, nor does it order the states (i.e.
+As discussed in the Methods section, the hidden Markov model estimation
+ does not attach substantive labels to numbered states, nor does it order
+ the states (i.e.
  by magnitude).
  For instance, state 1 may correspond with 
 \begin_inset Quotes eld
@@ -2200,63 +2290,11 @@ low,
 \begin_inset Quotes eld
 \end_inset
 
-medium.
+moderate.
 \begin_inset Quotes erd
 \end_inset
 
- 
-\begin_inset Foot
-status open
 
-\begin_layout Plain Layout
-In other applications of hidden Markov models, the number of states is not
- optimized because it and the labels tend to determined by substantive criteria:
- e.g.
- in medical examples, values for various indicators of health that fall
- within certain ranges correspond to pre-set states.
- This paper uses a more agnostic approach.
-\end_layout
-
-\end_inset
-
-For post-estimation labeling of the latent states, I use the distributions
- of estimated states over the negative and positive emotion measures.
- The state with the highest mean positive emotion and lowest mean negative
- emotion should correspond to the 
-\begin_inset Quotes eld
-\end_inset
-
-high
-\begin_inset Quotes erd
-\end_inset
-
- willingness to negotiate state (i.e.
- 
-\begin_inset Quotes eld
-\end_inset
-
-conciliatory
-\begin_inset Quotes erd
-\end_inset
-
-), while the state with the lowest mean positive emotion and the highest
- mean negative emotion should be the 
-\begin_inset Quotes eld
-\end_inset
-
-low
-\begin_inset Quotes erd
-\end_inset
-
- willingness to negotiate state (
-\begin_inset Quotes eld
-\end_inset
-
-hardline
-\begin_inset Quotes erd
-\end_inset
-
-).
 \end_layout
 
 \begin_layout Standard
@@ -2596,7 +2634,7 @@ Across the board, the standard deviations relative to the means are high,
  i.e.
  have few data points (shown on plots below).
  The mean and median agree on their predictions, although they produce a
- different ranking (labeling) for each actor/sentiment type, as seen in
+ different ranking (labelling) for each actor/sentiment type, as seen in
  the table.
  Because those labels are not conclusive, I use the MCDM R package to identify
  the optimal ranking based on several different methods for computing multi-crit
@@ -2621,11 +2659,11 @@ high
 \begin_inset Quotes eld
 \end_inset
 
-high,
+high
 \begin_inset Quotes erd
 \end_inset
 
- 
+ (conciliatory), 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2637,20 +2675,323 @@ moderate,
 \begin_inset Quotes eld
 \end_inset
 
-low.
+low
 \begin_inset Quotes erd
 \end_inset
 
+ (hardline).
  This result is robust to changing the measure of central tendency (i.e.
  median or mean) used in the decision matrix.
 \end_layout
 
 \begin_layout Standard
-The figures below shows the hidden Markov estimated states of FARC and the
- government, respectively, over the time period of the negotiations, estimated
+The Markov transition matrices shown below, respectively, represent the
+ probabilities of regime switching for FARC and the government, estimated
  using the negative and positive emotion measures and labeled according
  to the results of the decision matrix.
+ The values in the diagonals reflect the persistence of some states.
+ For instance, when FARC is hardline, there is a high probability that it
+ will continue to be hardline.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{table}[!htbp] 
+\backslash
+centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+caption{Transition matrices} 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+label{} 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{subtable}{.65
+\backslash
+linewidth}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+caption{FARC}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{@{
+\backslash
+extracolsep{5pt}} rccc} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cmidrule(r){2-4}
+\end_layout
+
+\begin_layout Plain Layout
+
+ & 
+\backslash
+multicolumn{3}{c}{$to$} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ & Hardline & Moderate & Conciliatory 
+\backslash
+
+\backslash
  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cmidrule(r){2-4}
+\end_layout
+
+\begin_layout Plain Layout
+
+$from$ & & & 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Hardline & $0.90$ & $0.00$ & $0.10$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Moderate & $0.00$ & $0.48$ & $0.52$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Conciliatory & $0.00$ & $0.21$ & $0.79$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cmidrule{1-1} 
+\backslash
+cmidrule(r){2-4}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{subtable}%
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{subtable}{.35
+\backslash
+linewidth}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+caption{Government}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{@{
+\backslash
+extracolsep{5pt}} ccc} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cmidrule(r){1-3}
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+multicolumn{3}{c}{$to$} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ Hardline & Moderate & Conciliatory 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cmidrule(r){1-3}
+\end_layout
+
+\begin_layout Plain Layout
+
+ & & 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ $0.59$ & $0.00$ & $0.41$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ $0.02$ & $0.90$ & $0.08$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ $0.68$ & $0.08$ & $0.24$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cmidrule(r){1-3}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{subtable}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{table} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The graphs below show the estimated state of FARC and the government, respective
+ly, over the time period of the negotiations.
 \end_layout
 
 \begin_layout Standard
@@ -2793,17 +3134,39 @@ low
  topic-specific agreements) to terms that fall short of its Marxist ideology,
  this model shows that FARC in fact was usually moderately to highly willing
  to negotiate over this time period.
- This conclusion is borne out by the ( Using sentiment as a rough metric
- of FARC's true level of engagement in the talks is a new measure for use
- in war and peace studies.
+ This conclusion is borne out by the (out-of-sample) peace agreement reached
+ just three months after documents were scraped for this project.
+ Using sentiment as a rough metric of FARC's true level of engagement in
+ the talks is a new measure for use in war and peace studies.
  
 \end_layout
 
 \begin_layout Standard
-The Markov transition matrices are shown below.
- The diagonal reflects the persistence of some states: once an actor is
- in State 2, for instance, there is a probability of 0.762 and 0.713, respectively
-, that they will remain in that state.
+These probabilities also provide insight into whether states are 
+\begin_inset Quotes eld
+\end_inset
+
+sticky
+\begin_inset Quotes erd
+\end_inset
+
+ and may shed light on the lasting impact of events such as violent attacks
+ during negotiations.
+ If a FARC attack prompts a government hardline response, is this state
+ persistent over time? 
+\end_layout
+
+\begin_layout Subparagraph*
+Multinomial logit.
+\end_layout
+
+\begin_layout Standard
+When the model controls for year effects, because of the correlation between
+ sentiment level and time,
+\end_layout
+
+\begin_layout Standard
+When the model also controlled for violence and public opinion.
 \end_layout
 
 \begin_layout Standard
@@ -2823,59 +3186,565 @@ centering
 
   
 \backslash
-caption{Transition matrices} 
+caption{Results of Multinomial Logit Models} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+small
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{@{
+\backslash
+extracolsep{5pt}}lcccc} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex]
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+ & 
+\backslash
+multicolumn{4}{c}{
+\backslash
+textit{Dependent variable: State at t+1}} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cline{2-5} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex] & (1) & (2) & (3) & (4)
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+  S
+\backslash
+textsubscript{t+1}=F
+\backslash
+textsubscript{low} &&&&
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{5em}| S
+\backslash
+textsubscript{t} = F
+\backslash
+textsubscript{high} & $-$3.11$^{**}$ (1.22) & $-$3.03$^{**}$ (1.23) & $-$2.62
+ (1.62) & $-$2.36 (1.63) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{5em}| S
+\backslash
+textsubscript{t} = G
+\backslash
+textsubscript{low} & $-$5.79$^{***}$ (1.33) & $-$5.48$^{***}$ (1.34) & $-$4.39$^{***}
+$ (1.59) & $-$3.73$^{**}$ (1.64) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace{5em}| S
+\backslash
+textsubscript{t} = G
+\backslash
+textsubscript{high} & $-$4.82$^{***}$ (1.51) & $-$5.12$^{***}$ (1.57) & $-$3.44$^{*}$
+ (1.79) & $-$2.93 (1.80) 
+\backslash
+
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
 
   
 \backslash
-label{} 
+hspace{5em}| 2013 &  & 15.39 (3643.44) &  & 15.93 (3768.61) 
+\backslash
+
+\backslash
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
+  
+\backslash
+hspace{5em}| 2014 &  & 15.07 (3643.44) &  & 18.18 (3768.61) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2015 &  & 14.23 (3643.44) &  & 15.39 (3768.61) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2016 &  & 34.82 (4975.47) &  & 19.74 (6706.44) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}|Log FARC actions &  &  & 0.01 (0.27) & $-$0.29 (0.56) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}|Log approval rtg.
+ &  &  & 0.41 (2.26) & 5.46 (5.52) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+&&&& 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  S
+\backslash
+textsubscript{t+1}=F
+\backslash
+textsubscript{high}  &&&& 
+\backslash
+
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
 
 
 \backslash
-begin{subtable}{.5
+hspace{5em}| S
 \backslash
-linewidth}
+textsubscript{t} = F
+\backslash
+textsubscript{high} & $-$1.57 (1.11) & $-$1.88$^{*}$ (1.13) & $-$1.40 (1.21) &
+ $-$1.58 (1.21) 
+\backslash
+
+\backslash
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
 
 \backslash
-centering
+hspace{5em}| S
+\backslash
+textsubscript{t} = G
+\backslash
+textsubscript{low} & $-$3.46$^{***}$ (1.10) & $-$3.28$^{***}$ (1.11) & $-$2.91$^{**}$
+ (1.19) & $-$2.60$^{**}$ (1.19) 
+\backslash
+
+\backslash
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
 
 \backslash
-caption{FARC}
+hspace{5em}|  S
+\backslash
+textsubscript{t} = G
+\backslash
+textsubscript{high} & $-$2.45$^{**}$ (1.12) & $-$3.11$^{***}$ (1.16) & $-$2.35$^{*}$
+ (1.23) & $-$2.58$^{**}$ (1.23) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2013 &  & $-$1.92$^{***}$ (0.63) &  & $-$1.12 (0.73) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2014 &  & $-$2.46$^{***}$ (0.68) &  & $-$0.30 (1.00) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2015 &  & $-$2.27$^{***}$ (0.66) &  & $-$1.25 (0.83) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2016 &  & 17.73 (3388.32) &  & 19.42 (3863.87) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| Log FARC actions &  &  & $-$0.29$^{***}$ (0.08) & $-$0.19 (0.15)
+ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| Log approval rtg.
+ &  &  & 2.96$^{***}$ (0.85) & 4.15$^{***}$ (1.54) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+&&&& 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  S
+\backslash
+textsubscript{t+1}=G
+\backslash
+textsubscript{high} &&&& 
+\backslash
+
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
 
 
 \backslash
-begin{tabular}{@{
+hspace{5em}| S
 \backslash
-extracolsep{5pt}} rccc} 
+textsubscript{t} = F
+\backslash
+textsubscript{high} & $-$0.34 (1.44) & $-$0.64 (1.49) & $-$0.85 (1.50) & $-$1.24
+ (1.49) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| S
+\backslash
+textsubscript{t} = G
+\backslash
+textsubscript{low} & $-$1.80 (1.43) & $-$1.44 (1.48) & $-$1.98 (1.48) & $-$1.77
+ (1.47) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}|  S
+\backslash
+textsubscript{t} = G
+\backslash
+textsubscript{high} & 0.39 (1.43) & $-$0.60 (1.49) & $-$0.47 (1.49) & $-$1.36 (1.50)
+ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2013 &  & $-$1.85$^{***}$ (0.66) &  & $-$0.49 (0.78) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2014 &  & $-$2.73$^{***}$ (0.76) &  & 1.22 (1.20) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2015 &  & $-$1.71$^{**}$ (0.67) &  & 0.79 (0.90) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| 2016 &  & 18.87 (3388.32) &  & 23.51 (3863.87) 
+\backslash
+
+\backslash
+ 
 \end_layout
 
 \begin_layout Plain Layout
 
 
 \backslash
+hspace{5em}| Log FARC actions &  &  & $-$0.46$^{***}$ (0.08) & $-$0.05 (0.14)
+ 
+\backslash
 
 \backslash
-[-1.8ex]
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+hspace{5em}| Log approval rtg.
+ &  &  & 3.11$^{***}$ (0.88) & 8.60$^{***}$ (2.01) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+Obs.
+ & 418 & 418 & 401 & 401 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Log Likelihood & $-$400.97 & $-$358.52 & $-$352.28 & $-$317.52 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+LR Test & 117.52$^{***}$ & 202.42$^{***}$  & 138.12$^{***}$  & 207.63$^{***}$
+ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+& (df = 12) & (df = 24) & (df = 18) & (df = 30) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+AIC & $1.98$  & $1.83$ & $1.85$ & $1.73$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+BIC & $-1648.47$ & $-1660.95$ & $-1591.12$ & $-2588.71$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 hline 
 \end_layout
@@ -2893,18 +3762,11 @@ hline
 
 \begin_layout Plain Layout
 
- & 
-\backslash
-multicolumn{3}{c}{$to$} 
-\backslash
 
 \backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
- & State 1 & State 2 & State 3 
+textit{Notes:}  & 
+\backslash
+multicolumn{4}{c}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
 \backslash
 
 \backslash
@@ -2915,43 +3777,9 @@ multicolumn{3}{c}{$to$}
 
 
 \backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
-$from$ & & & 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-State 1 & $0.596$ & $0.404$ & $0.000$ 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-State 2 & $0.070$ & $0.762$ & $0.168$ 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-State 3 & $0.042$ & $0.502$ & $0.456$ 
+multicolumn{5}{l}{Models (3) and (4) include covariates for violence and
+ public opinion.
+ Models (3) and (4) include} 
 \backslash
 
 \backslash
@@ -2962,11 +3790,28 @@ State 3 & $0.042$ & $0.502$ & $0.456$
 
 
 \backslash
-hline 
+multicolumn{5}{l}{covariates for violence and public opinion.
+ The referent level is S
+\backslash
+textsubscript{t+1}=G
+\backslash
+textsubscript{low}, the most common state.
+ } 
 \backslash
 
 \backslash
-[-1.8ex] 
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+multicolumn{5}{l}{Log odds coefficients are reported.} 
+\backslash
+
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -2974,163 +3819,6 @@ hline
 
 \backslash
 end{tabular}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{subtable}%
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{subtable}{.5
-\backslash
-linewidth}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-centering
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-caption{Government}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{tabular}{@{
-\backslash
-extracolsep{5pt}} rccc} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-
-\backslash
-[-1.8ex]
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
- & 
-\backslash
-multicolumn{3}{c}{$to$} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
- & State 1 & State 2 & State 3 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
-$from$ & & & 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-State 1 & $0.654$ & $0.023$ & $0.324$ 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-State 2 & $0.023$ & $0.713$ & $0.264$ 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-State 3 & $0.572$ & $0.262$ & $0.165$ 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{tabular}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{subtable}
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -3146,44 +3834,256 @@ end{table}
 \end_layout
 
 \begin_layout Standard
-We may also be interested in mean shifts between regimes defined by the
- structural breaks.
-\end_layout
+As shown in the fit statistics at the bottom of the table, the AIC and BIC
+  Model (1) is nested in all of the other models, and Models (2) and (3)
+ are nested in Model (4).
+ A likelihood ratio test is appropriate for determining whether a nested
+ or 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Standard
-Do measures of textual sentiment reveal latent hardline/conciliatory states?
+full
+\begin_inset Quotes erd
+\end_inset
+
+ model is a better fit.
  
 \end_layout
 
 \begin_layout Standard
-These probabilities can also provide insight into whether states are 
-\begin_inset Quotes eld
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{table}[!htbp] 
+\backslash
+centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+caption{Likelihood Ratio Test Comparison of Nested Models} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+small
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{@{
+\backslash
+extracolsep{5pt}}ccccc} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex]
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+ & 
+\backslash
+multicolumn{4}{c}{
+\backslash
+textit{Likelihood Ratio $
+\backslash
+chi^{2}$ }} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cline{2-5} 
+\backslash
+
+\backslash
+[-1.8ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+& 
+\backslash
+multicolumn{4}{l}{Full model} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cline{2-3} 
+\backslash
+
+\backslash
+[-1.8ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex] & (1) & (2) & (3) & (4)
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+Nested model & & & & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cline{1-1} 
+\backslash
+
+\backslash
+[-1.8ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+ (1) & -- & $84.90^{***}$ & $55.09^{***}$ & $142.17^{***}$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ (2) & -- & -- & -- & $57.27^{***}$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ (3) & -- & -- & -- & $87.08^{***}$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+&&&& 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+textit{Notes:}  & 
+\backslash
+multicolumn{4}{c}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{table} 
+\end_layout
+
 \end_inset
 
-sticky.
-\begin_inset Quotes erd
-\end_inset
 
- If a FARC attack prompts a government hardline response, is this state
- persistent over time? 
-\end_layout
-
-\begin_layout Standard
-During the negotiations on political representation, for instance, FARC's
- demands initially included 
-\end_layout
-
-\begin_layout Subparagraph*
-Multinomial logit.
-\end_layout
-
-\begin_layout Standard
-When the model controls for year effects, because of the correlation between
- sentiment level and time,
-\end_layout
-
-\begin_layout Standard
-When the model also controlled for violence and public opinion.
 \end_layout
 
 \begin_layout Subsection*
@@ -3197,19 +4097,27 @@ This paper is a first attempt at applying some text and sentiment analysis
 \end_layout
 
 \begin_layout Standard
-Further research
+Overview of estimation and results
 \end_layout
 
 \begin_layout Standard
-Refine/adapt sentiment analysis for political science 
+Limitations of current project:
 \end_layout
 
 \begin_layout Standard
-Validate HMM using k-means or other form of validation
+Validate HMM labels using k-means or other form of validation
 \end_layout
 
 \begin_layout Standard
 Custom dictionary instead of LIWC
+\end_layout
+
+\begin_layout Standard
+Further research:
+\end_layout
+
+\begin_layout Standard
+Refine/adapt sentiment analysis for political science 
 \end_layout
 
 \begin_layout Standard
@@ -3219,6 +4127,10 @@ Answer questions about types of violence (need disaggregated data) as peace
 
 \begin_layout Standard
 Use new data to reassess question once FARC agreement is reached
+\end_layout
+
+\begin_layout Standard
+Apply to other conflicts if data is available
 \end_layout
 
 \end_body

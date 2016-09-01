@@ -1,0 +1,38 @@
+\documentclass[]{article}
+\setlength{\pdfpagewidth}{8.5in} \setlength{\pdfpageheight}{11in}
+\begin{document}
+\begin{tabular}{lcccc}
+\multicolumn{5}{c}{Multinomial Logit Model Results} \\ \hline
+ & (1) & (2) & (3) & (4) \\
+VARIABLES & 1 & 2 & 3 & 4 \\ \hline
+ &  &  &  &  \\
+1 & . &  &  &  \\
+ & [.] &  &  &  \\
+state\_x = 2, 2 & 0.045** & 0.208 &  & 0.714 \\
+ & [0.054] & [0.231] &  & [1.032] \\
+state\_x = 3, 3 & 0.003*** & 0.032*** &  & 0.165 \\
+ & [0.004] & [0.035] &  & [0.235] \\
+state\_x = 4, 4 & 0.008*** & 0.086** &  & 1.484 \\
+ & [0.012] & [0.097] &  & [2.127] \\
+2 &  & . &  &  \\
+ &  & [.] &  &  \\
+3 &  &  & . &  \\
+ &  &  & [.] &  \\
+state\_x = 2, omitted &  &  & - &  \\
+ &  &  &  &  \\
+state\_x = 3, omitted &  &  & - &  \\
+ &  &  &  &  \\
+state\_x = 4, omitted &  &  & - &  \\
+ &  &  &  &  \\
+o.\_cons &  &  & 1.000 &  \\
+ &  &  & [0.000] &  \\
+4 &  &  &  & . \\
+ &  &  &  & [.] \\
+Constant & 4.000 & 6.000* &  & 1.000 \\
+ & [4.472] & [6.481] &  & [1.414] \\
+ &  &  &  &  \\
+ Observations & 418 & 418 & 418 & 418 \\ \hline
+\multicolumn{5}{c}{ seEform in brackets} \\
+\multicolumn{5}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
+\end{tabular}
+\end{document}
