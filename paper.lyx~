@@ -3808,8 +3808,8 @@ multicolumn{4}{c}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01}
 
 
 \backslash
-multicolumn{5}{l}{Models (2) and (4) include year indicators.
- Models (3) and (4) include} 
+multicolumn{5}{l}{Models (2), (4) include year indicators.
+ Models (3), (4) include covariates for violence and approval} 
 \backslash
 
 \backslash
@@ -3820,24 +3820,15 @@ multicolumn{5}{l}{Models (2) and (4) include year indicators.
 
 
 \backslash
-multicolumn{5}{l}{covariates for violence and approval of the peace process.
- The referent} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-multicolumn{5}{l}{level is S
+multicolumn{5}{l}{of the peace process.
+ The referent level is S
 \backslash
 textsubscript{t+1}=G
 \backslash
 textsubscript{low}, the most common state.
- } 
+ No.
+ of obs.
+ in (3), (4)} 
 \backslash
 
 \backslash
@@ -3848,7 +3839,8 @@ textsubscript{low}, the most common state.
 
 
 \backslash
-multicolumn{5}{l}{Log odds coefficients are reported.} 
+multicolumn{5}{l}{is reduced because of missing covariate data.
+ Log odds coefficients are reported.} 
 \backslash
 
 \backslash
@@ -4238,6 +4230,41 @@ Apply to other conflicts if data is available
 
 \begin_layout Section*
 Appendix
+\end_layout
+
+\begin_layout Subsection*
+Violence and public opinion data
+\end_layout
+
+\begin_layout Paragraph*
+\begin_inset Graphics
+	filename violence_Append.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename approve_Append.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+Sentiment response model: likelihood ratio test 
 \end_layout
 
 \begin_layout Standard

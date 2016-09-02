@@ -139,11 +139,11 @@ death_breaks_gg
 # now let's take a look at trends in violence/military activity
 
 # make our base graph
-base_viol = ggplot(monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = FARC_actions, color = "FARC actions"), color = "#000000") +
-  geom_smooth(method = "loess", se = FALSE, linetype = 2, aes(color = "Loessed FARC actions"), color = "#000000") +
+base_viol = ggplot(monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = FARC_actions)) +
   geom_jitter() +
+  geom_smooth(method = "loess", se = FALSE, aes(color = "Loessed FARC actions"), color = "#000000") +
 #  geom_point(data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = deaths_fuerzapublica, color = "Army casualties (excl. wounded)"), shape = 5, size = 2) +
-#  geom_smooth(method = "loess", se = FALSE, data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = deaths_fuerzapublica, color = "Loessed casualties"), color = "#000000") +
+#  geom_smooth(method = "loess", se = FALSE, data = monthly_vio, aes(x = as.Date(date, origin = "1970-01-01"), y = deaths_fuerzapublica, color = "Loessed casualties"), color = "#000000") +
 #  geom_point(data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = desmovilizados, color = "Militants demobilized")) +
 #  geom_smooth(method = "loess", se = FALSE, data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = desmovilizados, color = "Militants demobilized"))  +
   labs(
@@ -152,7 +152,8 @@ base_viol = ggplot(monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
                limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  ggtitle("Level of Violence Over Time")
+  ggtitle("Number of FARC Actions Over Time") +
+  theme_bw()
 
 # let's see whether this lines up with ceasefires
 viol_cf <- base_viol +
@@ -181,6 +182,39 @@ viol_breaks_gg <- base_viol +
 viol_cf
 viol_major
 viol_breaks_gg
+
+#################################################################################
+#################################################################################
+# Public Opinion
+
+# graph it
+base_opinion = ggplot(public_op, aes(x = as.Date(date, origin = "1970-01-01"), y = approve_santos_decision_talks), color = "#000000") +
+  geom_smooth(method = "loess", se = FALSE, color = "#000000") +
+  geom_jitter() +
+  labs(
+    x = "Date",
+    y = "% Approve/Have Positive Image",
+    color = "Legend") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  ggtitle("Public Opinion: Approval rating of peace talks") +
+  theme_bw()
+
+# public opinion and ceasefires
+opinion_cf = base_opinion +
+  ggtitle("Public Opinion and Ceasefires") +
+  geom_rect(aes(xmin=cf_start[1], xmax=cf_end[1], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
+  geom_rect(aes(xmin=cf_start[2], xmax=cf_end[2], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) +
+  geom_rect(aes(xmin=cf_start[3], xmax=cf_end[3], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
+  geom_rect(aes(xmin=cf_start[4], xmax=cf_end[4], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
+  geom_rect(aes(xmin=cf_start[5], xmax=cf_end[5], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01)
+
+# public opinion and major events
+opinion_major = base_opinion + 
+  ggtitle("Major Events and Public Opinion Trends") +
+  geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
+  geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
+
 
 
 #################################################################################
