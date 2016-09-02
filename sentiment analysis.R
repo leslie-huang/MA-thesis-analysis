@@ -362,10 +362,6 @@ FARC_means <- calculate_breakmeans(FARC_breaks_df, FARC_results)
 govt_means <- calculate_breakmeans(govt_breaks_df, govt_results)
 joint_means <- calculate_breakmeans(joint_breaks_df, joint_results)
 
-neg_breaks_gg
-pos_breaks_gg
-ellos_breaks_gg
-death_breaks_gg
 
 #################################################################################
 #################################################################################
@@ -654,7 +650,7 @@ hmm_all_means <- cbind(FARC_hmm_means, govt_hmm_means)
 
 stargazer(hmm_all_means, summary = FALSE, title = "Mean Sentiment Scores for Latent States", digits = 2)
 
-# use hungarian algorithm to optimize labels
+# use decision matrix to optimize label
 hmm_medians_df <- cbind(FARC_hmm_means[, c(3,6)], govt_hmm_means[, c(3,6)])
 row.names(hmm_medians_df) <- c("state1", "state2", "state3")
 colnames(hmm_medians_df) <- c("F_neg", "F_pos", "G_neg", "G_pos")
@@ -839,7 +835,10 @@ stargazer(ml_mod1, ml_mod2, ml_mod3, ml_mod4, digits = 2, digit.separator = "", 
 # relative risk ratio
 mod1_rrr <- exp(coef(ml_mod1))
 
-# predicted vals
-mod1_fit <- fitted(ml_mod1)
+# goodness of fit tests
+# hmftest(ml_mod1, ml_mod2)
 
-hmftest(ml_mod1, ml_mod2)
+# predicted vals
+mod1_fit <- fitted(ml_mod1, outcome = FALSE)
+mod1_fit <- data.frame(cbind(mod1_fit, mnl_df$date[1:418]))
+mod1_fit$date <- as.Date(mod1_fit$V5, origin = "1970-01-01")

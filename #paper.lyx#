@@ -84,8 +84,8 @@
 \begin_body
 
 \begin_layout Title
-Using Markov processes to model textual sentiment in FARC's negotiations
- with the Colombian government
+Using Markov processes to model textual sentiment in FARC-Colombia peace
+ negotiations
 \end_layout
 
 \begin_layout Author
@@ -1739,7 +1739,7 @@ begin{block}{c(cccc)}
 
 \begin_layout Plain Layout
 
-   F_{H} & P_{F_{L}, F_{L}} & P_{F_{L}, F_{H}} & P_{F_{L}, G_{L}} & P_{F_{L},
+   F_{H} & P_{F_{H}, F_{L}} & P_{F_{H}, F_{H}} & P_{F_{H}, G_{L}} & P_{F_{H},
  G_{H}} 
 \backslash
 
@@ -1749,7 +1749,7 @@ begin{block}{c(cccc)}
 
 \begin_layout Plain Layout
 
-   G_{L} & P_{F_{L}, F_{L}} & P_{F_{L}, F_{H}} & P_{F_{L}, G_{L}} & P_{F_{L},
+   G_{L} & P_{G_{L}, F_{L}} & P_{G_{L}, F_{H}} & P_{G_{L}, G_{L}} & P_{G_{L},
  G_{H}} 
 \backslash
 
@@ -1759,7 +1759,7 @@ begin{block}{c(cccc)}
 
 \begin_layout Plain Layout
 
-   G_{H} & P_{F_{L}, F_{L}} & P_{F_{L}, F_{H}} & P_{F_{L}, G_{L}} & P_{F_{L},
+   G_{H} & P_{G_{H}, F_{L}} & P_{G_{H}, F_{H}} & P_{G_{H}, G_{L}} & P_{G_{H},
  G_{H}} 
 \backslash
 
@@ -1795,10 +1795,16 @@ end{blockarray}
 
 \begin_layout Standard
 Like before, 
-\begin_inset Formula $P_{ij}=Pr(S_{t+1}=state_{j}|S_{t}=state_{i}).$
+\begin_inset Formula $P_{i,j}=Pr(S_{t+1}=state_{j}|S_{t}=state_{i}).$
 \end_inset
 
- 
+ The diagonal reflects the probability of that each state is persistent,
+ while the entries 
+\begin_inset Formula $P_{F_{H},G_{H}},P_{F_{L},G_{L}},P_{G_{H},F_{H}},P_{G_{L},F_{L}}$
+\end_inset
+
+ represent the probability that an actor will respond with the same sentiment
+ as the previous statement from the other actor.
 \end_layout
 
 \begin_layout Standard
@@ -4072,6 +4078,60 @@ end{table}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Does sentiment respond to sentiment? There is a 
+\begin_inset Formula $0.01$
+\end_inset
+
+ probability that the response to a low-sentiment government statement will
+ be a low-sentiment statement from FARC, versus a 
+\begin_inset Formula $0.14$
+\end_inset
+
+ probability that the response will be a high-sentiment FARC statement.
+ On the other hand, there is a 
+\begin_inset Formula $0.17$
+\end_inset
+
+ probability that the response to a high-sentiment government statement
+ is a high-sentiment FARC statement, compared with a 
+\begin_inset Formula $0.01$
+\end_inset
+
+ probability that it will be a low-sentiment FARC statement.
+ (Another government statement is most likely to follow a government statement,
+ accounting for the rest of the probability) Similarly, the government has
+ a 
+\end_layout
+
+\begin_layout Standard
+The transition matrix provides a new method for answering some other questions
+ about negotiations.
+ We might ask whether sentiment is persistent or 
+\begin_inset Quotes eld
+\end_inset
+
+sticky
+\begin_inset Quotes erd
+\end_inset
+
+; and whether, for instance, a shock such as a terrorist attack might permanentl
+y derail sentiment (and the peace process).
+ Low government sentiment has a high probability of continuing in subsequent
+ time periods, although it should be noted that this was also the most common
+ state in the model.
+ 
+\end_layout
+
+\begin_layout Subparagraph*
+Validation.
+\end_layout
+
+\begin_layout Standard
+Up until now the estimation has not used the jointly issued statements.
+ 
 \end_layout
 
 \begin_layout Subsection*
