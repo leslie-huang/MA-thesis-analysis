@@ -139,20 +139,20 @@ death_breaks_gg
 # now let's take a look at trends in violence/military activity
 
 # make our base graph
-base_viol = ggplot(monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = FARC_actions, color = "FARC actions")) +
-  geom_smooth(method = "loess", se = FALSE) +
+base_viol = ggplot(monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = FARC_actions, color = "FARC actions"), color = "#000000") +
+  geom_smooth(method = "loess", se = FALSE, linetype = 2, aes(color = "Loessed FARC actions"), color = "#000000") +
   geom_jitter() +
-  geom_point(data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = deaths_fuerzapublica, color = "Army casualties (excl. wounded)")) +
-  geom_smooth(method = "loess", se = FALSE, data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = deaths_fuerzapublica, color = "Army casualties (excl. wounded)")) +
-  geom_point(data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = desmovilizados, color = "Militants demobilized")) +
-  geom_smooth(method = "loess", se = FALSE, data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = desmovilizados, color = "Militants demobilized"))  +
+#  geom_point(data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = deaths_fuerzapublica, color = "Army casualties (excl. wounded)"), shape = 5, size = 2) +
+#  geom_smooth(method = "loess", se = FALSE, data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = deaths_fuerzapublica, color = "Loessed casualties"), color = "#000000") +
+#  geom_point(data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = desmovilizados, color = "Militants demobilized")) +
+#  geom_smooth(method = "loess", se = FALSE, data = monthly_viol, aes(x = as.Date(date, origin = "1970-01-01"), y = desmovilizados, color = "Militants demobilized"))  +
   labs(
     x = "Date",
     y = "Number of Incidents",
     color = "Legend") +
   scale_x_date(date_minor_breaks = "1 month",
                limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  ggtitle("Level of Violence and Military Actions")
+  ggtitle("Level of Violence Over Time")
 
 # let's see whether this lines up with ceasefires
 viol_cf <- base_viol +

@@ -54,12 +54,13 @@ mlogit, rrr
 
 
 * Model #3: VIOL/OPINION COVARS
-mlogit state_y i.state_x FARC_actions pres_approve , baseoutcome(3)
+mlogit state_y i.state_x FARC_actions peace_approve , baseoutcome(3)
 fitstat
 estimates store ll3
 
 * Model #4: VIOL/OPINION COVARS PLUS YEAR
-mlogit state_y i.state_x FARC_actions pres_approve i.year , baseoutcome(3)
+mlogit state_y i.state_x FARC_actions peace_approve i.year , baseoutcome(3)
+fitstat
 estimates store ll4
 
 **************************************************************
