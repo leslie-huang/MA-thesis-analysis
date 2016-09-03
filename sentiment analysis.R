@@ -1,6 +1,7 @@
 # Leslie Huang
 # MA paper
-# LIWC analysis of FARC communiques
+# LIWC analysis of FARC, government, and joint communiques
+# See also: government statement cleaner; graph output script
 
 rm(list=ls())
 setwd("/Users/lesliehuang/Dropbox/MA-thesis-analysis/")
@@ -13,9 +14,6 @@ lapply(libraries, require, character.only=TRUE)
 
 devtools::install_github("ggbiplot", "vqv")
 library(ggbiplot)
-
-devtools::install_github("leeper/margins")
-library("margins")
 
 # get LIWC dict
 spanish_dict <- dictionary(file = "../LIWC/Spanish_LIWC2007_Dictionary.dic", format = "LIWC")
@@ -421,35 +419,6 @@ public_op$date <- as.Date(as.yearmon(public_op$date, "%Y-%m"))
 public_op[,2:3] <- sapply(public_op[,2:3], function(x) { as.numeric(x)})
 public_op <- subset(public_op, select = c(2:3, 1))
 
-# graph it
-base_opinion = ggplot(public_op, aes(x = as.Date(date, origin = "1970-01-01"), y = santos_positive_image, color = "Positive image of Pres. Santos")) +
-  geom_smooth(method = "loess", se = FALSE) +
-  geom_jitter() +
-  geom_point(data = public_op, aes(x = as.Date(date, origin = "1970-01-01"), y = approve_santos_decision_talks, color = "Approve of negotiations with guerrillas")) +
-  geom_smooth(method = "loess", se = FALSE, data = public_op, aes(x = as.Date(date, origin = "1970-01-01"), y = approve_santos_decision_talks, color = "Approve of negotiations with guerrillas")) +
-  labs(
-    x = "Date",
-    y = "Percent Approve/Positive Image",
-    color = "Legend") +
-  scale_x_date(date_minor_breaks = "1 month",
-               limits = c(as.Date("2012-01-01", "%Y-%m-%d"), NA)) +
-  ggtitle("Public Opinion")
-
-# public opinion and ceasefires
-opinion_cf = base_opinion +
-  ggtitle("Public Opinion and Ceasefires") +
-  geom_rect(aes(xmin=cf_start[1], xmax=cf_end[1], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[2], xmax=cf_end[2], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) +
-  geom_rect(aes(xmin=cf_start[3], xmax=cf_end[3], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[4], xmax=cf_end[4], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01) + 
-  geom_rect(aes(xmin=cf_start[5], xmax=cf_end[5], ymin=-Inf, ymax=Inf), fill = "yellow", linetype = 0, alpha = 0.01)
-
-# public opinion and major events
-opinion_major = base_opinion + 
-  ggtitle("Major Events and Public Opinion Trends") +
-  geom_vline(data = filter(dates, group == "major_agree"), mapping = aes(xintercept = as.numeric(date), color = "Major agreement"), linetype = 2) +
-  geom_vline(data = filter(dates, group == "major_viol"), mapping = aes(xintercept = as.numeric(date), color = "Major violence"), linetype = 1)
-
 # get breakdates in public opinion
 opinion_breakd <- get_breakdate(break_finder(na.omit(public_op)), public_op)
 
@@ -556,11 +525,11 @@ govt_results2 <- add_monthlies(govt_results1)
 FARC_results2[, 4:7] <- log(FARC_results2[, 4:7])
 govt_results2[, 6:9] <- log(govt_results2[, 4:7])
 
-BIC_vals_fitted <- sapply(num_states, function(x) {BIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = FARC_results2)))})
-AIC_vals_fitted <- sapply(num_states, function(x) {AIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = FARC_results2)))})
+BIC_vals_fitted <- sapply(num_states, function(x) {BIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ peace_approve), data = FARC_results2)))})
+AIC_vals_fitted <- sapply(num_states, function(x) {AIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ peace_approve), data = FARC_results2)))})
 
-BIC_vals_fitted_govt <- sapply(num_states, function(x) {BIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = govt_results2)))})
-AIC_vals_fitted_govt <- sapply(num_states, function(x) {AIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ pres_approve), data = govt_results2)))})
+BIC_vals_fitted_govt <- sapply(num_states, function(x) {BIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ peace_approve), data = govt_results2)))})
+AIC_vals_fitted_govt <- sapply(num_states, function(x) {AIC(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = x, transitions = list(~ FARC_actions, ~ peace_approve), data = govt_results2)))})
 
 ## make a table for the paper
 hmm_comparison <- data.frame(BIC_vals1, AIC_vals1, BIC_vals_fitted, AIC_vals_fitted, BIC_vals1_govt, AIC_vals1_govt, BIC_vals_fitted_govt, AIC_vals_fitted_govt)
@@ -825,12 +794,16 @@ summary(ml_mod1)
 ml_mod2 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + year, data = ml_df, reflevel = "3")
 
 # Model #3: base + covars
-ml_mod3 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + pres_approve, data = ml_df, reflevel = "3")
+ml_mod3 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + peace_approve, data = ml_df, reflevel = "3")
 
 # Model #4: base + year + covars
-ml_mod4 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + pres_approve + year, data = ml_df, reflevel = "3")
+ml_mod4 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + peace_approve + year, data = ml_df, reflevel = "3")
 
 stargazer(ml_mod1, ml_mod2, ml_mod3, ml_mod4, digits = 2, digit.separator = "", title = "Comparison of Multinomial Logit Models", single.row = TRUE)
+
+#################################################################################
+#################################################################################
+# Proceed with Model #1
 
 # relative risk ratio
 mod1_rrr <- exp(coef(ml_mod1))
@@ -841,4 +814,26 @@ mod1_rrr <- exp(coef(ml_mod1))
 # predicted vals
 mod1_fit <- fitted(ml_mod1, outcome = FALSE)
 mod1_fit <- data.frame(cbind(mod1_fit, mnl_df$date[1:418]))
-mod1_fit$date <- as.Date(mod1_fit$V5, origin = "1970-01-01")
+colnames(mod1_fit) <- c("Pr_1", "Pr_2", "Pr_3", "Pr_4", "date")
+mod1_fit$date <- as.Date(mod1_fit$date, origin = "1970-01-01")
+
+# fiddle with melting data
+mod1_fit$id <- rep(1:length(mod1_fit[,1]))
+mod1_long <- melt(mod1_fit, id = c("date", "id"), variable.name = "state", value.name = "predicted_Pr")
+
+predicted_mnl_gg <- ggplot(data = mod1_long, aes(y = predicted_Pr, x = as.Date(date, origin = "1970-01-01"), group = state)) +
+  geom_smooth(method = "loess", se = FALSE, aes(linetype = state, color = state)) +
+  labs(
+    x = "Date",
+    y = "Probability") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  scale_colour_manual(name = "State",
+                      labels = c("FARC-low", "FARC-high", "Govt-low", "Govt-high"),
+                      values = c("grey30", "grey50", "grey70", "black")) +
+  scale_linetype_manual(name = "State",
+                        labels = c("FARC-low", "FARC-high", "Govt-low", "Govt-high"),
+                        values = c(1, 2, 3, 4)) +
+  ggtitle("Probability of Each State Over Time") +
+  theme_bw()
+

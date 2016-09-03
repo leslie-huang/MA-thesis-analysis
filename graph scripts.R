@@ -412,3 +412,64 @@ summary_stats <- cbind(FARC_summary, govt_summary, joint_summary)
 row.names(summary_stats) <- c("Num docs", "WC", "WC sd", "Neg mean", "Neg sd", "Pos mean", "Pos sd", "Ellos mean", "ellos sd")
 stargazer(summary_stats, title="Summary Statistics of Documents", digits = 2, digit.separator = "")
 
+#########################################################################
+FARC_results_melt <- FARC_results[, -4]
+FARC_results_melt$id <- rep(1:length(FARC_results[,1]))
+FARC_results_melt <- melt(FARC_results_melt, id = c("date", "id"), variable.name = "sentiment_type", value.name = "sentiment_measure")
+
+FARC_melt_gg <- ggplot(data = FARC_results_melt, aes(y = sentiment_measure, x = as.Date(date, origin = "1970-01-01"), group = sentiment_type)) +
+  geom_smooth(method = "loess", se = FALSE, aes(linetype = sentiment_type, color = sentiment_type)) +
+  labs(
+    x = "Date",
+    y = "Loessed % of Document") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  scale_colour_manual(name = "Sentiment",
+                      labels = c("Neg. emotion", "Pos. emotion", "3rd per. pl."),
+                      values = c("grey30", "grey70", "black")) +
+  scale_linetype_manual(name = "Sentiment",
+                        labels = c("Neg. emotion", "Pos. emotion", "3rd per. pl."),
+                        values = c(1,2,3)) +
+  ggtitle("FARC: Loessed % of Document Contributed by Sentiment Type") +
+  theme_bw()
+
+
+govt_results_melt <- govt_results[, -4]
+govt_results_melt$id <- rep(1:length(govt_results[,1]))
+govt_results_melt <- melt(govt_results_melt, id = c("date", "id"), variable.name = "sentiment_type", value.name = "sentiment_measure")
+
+govt_melt_gg <- ggplot(data = FARC_results_melt, aes(y = sentiment_measure, x = as.Date(date, origin = "1970-01-01"), group = sentiment_type)) +
+  geom_smooth(method = "loess", se = FALSE, aes(linetype = sentiment_type, color = sentiment_type)) +
+  labs(
+    x = "Date",
+    y = "Loessed % of Document") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  scale_colour_manual(name = "Sentiment",
+                      labels = c("Neg. emotion", "Pos. emotion", "3rd per. pl."),
+                      values = c("grey30", "grey70", "black")) +
+  scale_linetype_manual(name = "Sentiment",
+                        labels = c("Neg. emotion", "Pos. emotion", "3rd per. pl."),
+                        values = c(1,2,3)) +
+  ggtitle("Govt: Loessed % of Document Contributed by Sentiment Type") +
+  theme_bw()
+
+joint_results_melt <- joint_results[, -4]
+joint_results_melt$id <- rep(1:length(joint_results[,1]))
+joint_results_melt <- melt(joint_results_melt, id = c("date", "id"), variable.name = "sentiment_type", value.name = "sentiment_measure")
+
+joint_melt_gg <- ggplot(data = joint_results_melt, aes(y = sentiment_measure, x = as.Date(date, origin = "1970-01-01"), group = sentiment_type)) +
+  geom_smooth(method = "loess", se = FALSE, aes(linetype = sentiment_type, color = sentiment_type)) +
+  labs(
+    x = "Date",
+    y = "Loessed % of Document") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  scale_colour_manual(name = "Sentiment",
+                      labels = c("Neg. emotion", "Pos. emotion", "3rd per. pl."),
+                      values = c("grey30", "grey70", "black")) +
+  scale_linetype_manual(name = "Sentiment",
+                        labels = c("Neg. emotion", "Pos. emotion", "3rd per. pl."),
+                        values = c(1,2,3)) +
+  ggtitle("Joint: Loessed % of Document Contributed by Sentiment Type") +
+  theme_bw()

@@ -1114,9 +1114,9 @@ The optimal structural breaks for each sentiment/actor, using loessed values,
  emotion.
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Standard
 \begin_inset Graphics
-	filename melted_gov.eps
+	filename neg_g.eps
 	width 100text%
 
 \end_inset
@@ -1126,7 +1126,7 @@ The optimal structural breaks for each sentiment/actor, using loessed values,
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename melted_FARC.eps
+	filename neg_f.eps
 	width 100text%
 
 \end_inset
@@ -1134,9 +1134,39 @@ The optimal structural breaks for each sentiment/actor, using loessed values,
 
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Standard
 \begin_inset Graphics
-	filename melted_joint.eps
+	filename neg_j.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pos_g.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pos_f.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pos_j.eps
 	width 100text%
 
 \end_inset

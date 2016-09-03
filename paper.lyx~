@@ -1114,9 +1114,9 @@ The optimal structural breaks for each sentiment/actor, using loessed values,
  emotion.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph*
 \begin_inset Graphics
-	filename neg_g.eps
+	filename melted_gov.eps
 	width 100text%
 
 \end_inset
@@ -1126,47 +1126,7 @@ The optimal structural breaks for each sentiment/actor, using loessed values,
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename neg_f.eps
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename neg_j.eps
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename pos_g.eps
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename pos_f.eps
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename pos_j.eps
+	filename melted_FARC.eps
 	width 100text%
 
 \end_inset
@@ -3006,7 +2966,7 @@ The graphs below show the estimated state of FARC and the government, respective
 ly, over the time period of the negotiations.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph*
 \begin_inset Graphics
 	filename hmm_farc.eps
 	width 100text%
@@ -3016,7 +2976,7 @@ ly, over the time period of the negotiations.
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph*
 \begin_inset Graphics
 	filename hmm_govt.eps
 	width 100text%
@@ -3877,7 +3837,17 @@ ly.
  I also use pairwise likelihood ratio tests (see Appendix).
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph*
+\begin_inset Graphics
+	filename mnl_pr.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
 \begin_inset Graphics
 	filename mnl_margins.eps
 	width 100text%
@@ -4263,7 +4233,7 @@ Violence and public opinion data
 
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Subsection*
 Sentiment response model: likelihood ratio test 
 \end_layout
 
