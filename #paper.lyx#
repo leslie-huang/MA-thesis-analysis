@@ -12,6 +12,8 @@
 \usepackage{dcolumn}
 \usepackage{blkarray}
 \usepackage{subcaption}
+\usepackage{natbib}
+\usepackage{url}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -106,35 +108,18 @@ Adviser: Arthur Spirling
 \end_layout
 
 \begin_layout Abstract
-As peace negotiations can stretch on for years and are often marred by continued
- violence, bluffing, or internal factionalization, how can we assess whether
- progress is being made or predict whether talks will yield an agreement?
- In the international relations literature, game theoretical and cross-country
- approaches have been used to make predictions, but with limited applicability.
- This paper uses sentiment analysis as a new method that can answer these
- questions.
- Using texts from the ongoing (2012-present) peace talks between the Colombian
- government and the Fuerzas Armadas Revolucionarias de Colombia (FARC),
- I use word usage ratios to reveal whether actors are in hardline or conciliator
-y state.
- I also show that one actor's sentiment (i.e.
- 
-\begin_inset Quotes eld
-\end_inset
-
-positive
-\begin_inset Quotes erd
-\end_inset
-
- or 
-\begin_inset Quotes eld
-\end_inset
-
-negative
-\begin_inset Quotes erd
-\end_inset
-
-) responds to the other actor's sentiment.
+Peace negotiations can stretch on for years and are often marred by continued
+ fighting, obfuscated by public bluffing, and complicated by internal factionali
+zation.
+ How can we assess whether progress is being made, measure actors' willingness
+ to negotiate, or measure the impact of violent attacks on the peace process?
+ This paper uses sentiment analysis as a new method that offers quantitative
+ answers to these questions.
+ With a new dataset of texts from the ongoing (2012-present) peace talks
+ between the Colombian government and the Fuerzas Armadas Revolucionarias
+ de Colombia (FARC), I use measures of textual sentiment to predict each
+ actor's willingness to negotiate over time.
+ I also model the responsiveness of sentiment to sentiment.
 \end_layout
 
 \begin_layout Subsection*
@@ -142,26 +127,62 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Background and contribution.
+How do we measure 
+\begin_inset Quotes eld
+\end_inset
+
+how things are going
+\begin_inset Quotes erd
+\end_inset
+
+ in peace negotiations? Analysis of the progress of peace processes, such
+ as in the Middle East, has tended to be case-specific or game theoretical.
+ Often these accounts are complicated by an inability to discern whether
+ actors are sincere and by the disconnect between unitary negotiants (government
+, rebel) and the cacophony of factions that each contains.
+ To date, some research has offered theories explaining the variable effect
+ of violent attacks on derailing peace talks, and theories for the relationship
+ between government concessions and the level of terrorist activity.
+ Other research has examined the texts of peace agreements to better understand
+ the relationship between peace survival and specific agreement provisions.
+ However, there is no research that analyzes texts issued during ongoing
+ peace negotiations, nor has sentiment analysis previously been used to
+ study peace negotiations.
 \end_layout
 
 \begin_layout Standard
-This paper offers several original contributions: a new dataset of government
- and rebel/terrorist texts as well as jointly released statements, all issued
- during an ongoing conflict; and the use of new methods to measure the somewhat
- ineffable quality of the tenor of peace talks.
+This paper makes several original contributions.
+ First, I collected a new dataset of texts from the Colombian government
+ and FARC, in addition to jointly released statements, all of which were
+ issued during an ongoing conflict and negotiation process (2012-2016).
+ Second, I bring in several new methods from psychology and natural language
+ processing for measuring that ineffable quantity, 
+\begin_inset Quotes eld
+\end_inset
+
+how things are going.
+\begin_inset Quotes erd
+\end_inset
+
+ I use text analysis techniques to model each actor's willingness to negotiate
+ as a function of their textual sentiment.
+ I also use sentiment analysis to model how one actor's sentiment responds
+ to another actor's sentiment.
 \end_layout
 
 \begin_layout Standard
-Description of estimation and results.
-\end_layout
-
-\begin_layout Standard
-Brief discussion.
+There are obvious difficulties in quantifying the status of negotiations;
+ however, understanding these processes has valuable real-world implications.
+ Better measurement of the effects of attacks on often-fragile negotiations,
+ for example, could indicate strategies that facilitate agreement and cut
+ short a violent conflict.
+ Understanding how sentiment responds to sentiment may yield insights about
+ signalling and bluffing not only in peace negotiations but also in the
+ exchanges between countries that avoid or lead down the path to war.
 \end_layout
 
 \begin_layout Subsection*
-Theory and background
+Background
 \end_layout
 
 \begin_layout Subparagraph*
@@ -169,40 +190,115 @@ The Colombian conflict.
 \end_layout
 
 \begin_layout Standard
-FARC (Fuerzas Armadas Revolucionarias de Colombia / Revolutionary Armed
- Forces of Colombia) was founded in 1964 the aftermath of the ten-year period
- of civil war known as La Violencia.
+FARC (Revolutionary Armed Forces of Colombia) was founded in 1964 the aftermath
+ of the ten-year period of civil war known as La Violencia.
  
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
-The group refers to itself as Fuerzas Armadas Revolucionarias de Colombia--Ejérc
-ito del Pueblo (People's Army), or FARC-EP.
+The group's official name is Fuerzas Armadas Revolucionarias de Colombia--Ejérci
+to del Pueblo (People's Army), or FARC-EP.
 \end_layout
 
 \end_inset
 
- Originally a Marxist insurgency, FARC sought to overthrow the government,
- and its base was communists and rural peasants.
- (CFR) FARC's tactics included murder, kidnappings for ransom and disappearances
- of civilians and security personnel, and extortion.
- Notorious as the longest-running guerrilla insurgency in the Western Hemisphere
-, the violence has claimed the lives of more than 200,000 civilians and
- displacing millions.
- (BBC News) 
+ Originally a Marxist insurgency seeking to overthrow the government, FARC's
+ supporters were mainly communists and rural peasants.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CFR"
+
+\end_inset
+
+ The group's tactics included murder, kidnappings for ransom, disappearances
+ of civilians and security personnel, and extortion; less widely known abroad
+ is their use of landmines, which have resulted in thousands killed or maimed,
+ and their kidnapping and forced conscription of child soldiers.
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
-Ejército de Liberación Nacional (ELN; National Liberation Army), a smaller
+The Ejército de Liberación Nacional (ELN; National Liberation Army), a smaller
  and also Marxist group, has also contributed to violence and instability
  during the same period and has also engaged in murder, kidnappings, violence,
  extortion.
- (CFR) ELN began pursuing cooperation with FARC and peace talks with the
- government as FARC's peace process came underway over the last several
- years.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CFR"
+
+\end_inset
+
+ ELN began pursuing cooperation with FARC and peace talks with the government
+ as FARC's peace process came underway over the last several years.
 \end_layout
+
+\end_inset
+
+ FARC's current circumstances stem from a major shift in the 1980s and 1990s,
+ when the group began to tax cocaine producers but soon became involved
+ in cocaine production itself, sparking the formation of right-wing paramilitary
+ groups such as the Autodefensas Unidas de Colombia (AUC; United Self-Defense
+ Forces of Colombia) that battled FARC about, inter alia, control over drug
+ trafficking.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wilson_center"
+
+\end_inset
+
+ Notorious until recently as the longest-running guerrilla insurgency in
+ the Western Hemisphere, the violence has claimed the lives of more than
+ 200,000 civilians and displacing millions,
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bbc_ceasefire"
+
+\end_inset
+
+ and FARC, the paramilitary groups, and the government have all been accused
+ of human rights abuses.
+ (The AUC was also labelled a terrorist organization and was involved in
+ drug trafficking as well prior to being disbanded in the mid-2000s.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "colombiareports_auc"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+During the tenure of president (now senator) Álvaro Uribe from 2002-2010,
+ the government cracked down on Marxist groups and drug traffickers, significant
+ly reducing the strength of FARC and other armed groups.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CFR"
+
+\end_inset
+
+ FARC's willingness to negotiate is generally attributed in part to this
+ crackdown.
+ Peace talks, brokered by Cuba and Norway, commenced in the fall of 2012
+ in Havana and have been championed by president Juan Manuel Santos.
+ The talks were limited to an agenda of six topics: agrarian reform/land
+ development; political participation; ending of the conflict (i.e.
+ ceasefire, post-conflict justice, disarmament, and reintegration); illegal
+ drugs; victims; and implementation.
+ Despite negotiating preliminary agreements for the topics on the agenda,
+ which will be included in the final peace deal, Santos's approval ratings
+ have plummeted over the years, as has public optimism about the talks.
+ An agreement faces not just the skepticism of the public but also vociferous
+ opposition of right-wing politicians such as Uribe, as well as some members
+ of the military, that initially disapproved of negotiating with FARC and
+ oppose agreement provisions that, in their view, would give the former
+ rebels political representation and amnesty instead of prosecution for
+ crimes committed.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "nyt,isaacson"
 
 \end_inset
 
@@ -210,57 +306,15 @@ Ejército de Liberación Nacional (ELN; National Liberation Army), a smaller
 \end_layout
 
 \begin_layout Standard
-In the 1980s and 1990s, FARC's activities began to tax cocaine producers
- but soon became involved in cocaine production itself.
- (Wilson) This sparked the formation of right-wing paramilitary groups such
- as the Autodefensas Unidas de Colombia (AUC; United Self-Defense Forces
- of Colombia), which battled with FARC about control over drug trafficking.
- (Wilson) FARC, the paramilitary groups, and the government have all been
- accused of human rights abuses.
- In the last 20 years, FARC's involvement with cocaine trafficking has prompted
- action from the U.S.
- government, and it has caught international attention with kidnappings
- for ransom and assassinations of political and military figures.
- Less widely known abroad is FARC's use of landmines, which have resulted
- in thousands killed or maimed, and their kidnapping and forced conscription
- of child soldiers.
-\end_layout
-
-\begin_layout Standard
-During the tenure of president (now senator) Álvaro Uribe from 2002-2010,
- the government cracked down on Marxist groups and drug traffickers, resulting
- in significant reductions the strength of FARC as well as other armed groups.
- (CFR) FARC's willingness to negotiate is generally attributed in part to
- this crackdown.
- Peace talks, brokered by Cuba and Norway, began in the fall of 2012 in
- Havana.
- The talks are limited to an agenda of six topics: agrarian reform/land
- development; political participation; ending of the conflict (i.e.
- ceasefire, post-conflict justice, disarmament, and reintegration); illegal
- drugs; victims; and implementation.
- The talks have been championed by president Juan Manuel Santos, who succeeded
- Uribe in 2010.
- Despite negotiating preliminary agreements for the agenda topics, which
- will be included in the final peace deal, Santos's approval ratings have
- plummeted over the years along with public optimism about the talks.
- A deal faces not just the skepticism of the public but also vociferous
- opposition of right-wing politicians such as Uribe, as well as members
- of the military, that initially disapproved of negotiating with FARC and
- oppose agreement provisions that, in their view, would give the former
- rebels political representation and amnesty instead of prosecution for
- crimes committed.
- [New York Times]
-\end_layout
-
-\begin_layout Standard
 With many of its leaders and founders killed in the years leading up to
- the peace negotiations, FARC is currently led by a rebel known as Timochenko.
- Numerous Secretariat members are on their negotiating team, led by the
- rebel alias Ivan Marquez.
+ the negotiations, FARC is currently led by a rebel known as Timochenko.
+ Their negotiating team, led by the rebel alias Ivan Marquez, is comprised
+ of numerous Secretariat members and has included top members from key Fronts
+ (regional subdivisions).
  Despite this high-ranking participation and the declaration of several
  unilateral ceasefires during the negotiations period, attacks have continued
- during the peace talks, ranging from the kidnapping of rural policemen
- to the kidnapping of a high-ranking general and the bombing of oil pipelines.
+ during the peace talks, ranging from the killings of rural policemen to
+ the kidnapping of a high-ranking general and the bombing of oil pipelines.
  Throughout (and prior to) the talks, FARC has released public statements
  on their website and have created an additional website about the peace
  process, which features the individual blogs of negotiators.
@@ -282,11 +336,13 @@ This project examines texts from the peace process up until May 31, 2016;
  a bilateral ceasefire agreement on June 22, 2016, and announced that they
  had reached a final deal on August 24, 2016, which will subsequently be
  voted on in a popular referendum.
- [Guardian] 
-\end_layout
+\begin_inset CommandInset citation
+LatexCommand cite
+key "guardian_agreement"
 
-\begin_layout Subsubsection*
-Literature
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Subparagraph*
@@ -295,7 +351,7 @@ Sentiment analysis of extremist texts.
 \end_layout
 
 \begin_layout Standard
-Relevant analysis of extremist texts (
+Analysis of extremist texts (
 \begin_inset Quotes eld
 \end_inset
 
@@ -303,13 +359,25 @@ text
 \begin_inset Quotes erd
 \end_inset
 
- being any form of written statement) has emanated from James Pennebaker
- and coauthors in the field of psychology.
- With a focus on divining the emotional and psychological states of individuals,
- Pennebaker's research has found associations between frequency of usage
- of particular types of words and emotional, cognitive, and social attributes.
- (Pennebaker and Chung) In analysis of extremist texts from American Nazi
- and militant animal rights organizations, they found that 
+ being any form of written or transcribed statement) has emanated from James
+ Pennebaker and coauthors in the field of psychology.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "tausczik_pennebaker"
+
+\end_inset
+
+ Focusing on divining the emotional and psychological states of individuals,
+ this research has found associations between frequency of usage of particular
+ types of words and emotional, cognitive, and social attributes.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pennebaker_chung"
+
+\end_inset
+
+ In analysis of extremist texts from American Nazi and militant animal rights
+ organizations, for instance, Pennebaker and Chung found that 
 \begin_inset Quotes eld
 \end_inset
 
@@ -319,10 +387,23 @@ third-person plural pronouns are the single best predictor of extremism...
 \begin_inset Quotes erd
 \end_inset
 
- (Pennebaker and Chung) Consistent with that result, their study of texts
- issued by Osama bin Laden and Ayman al-Zawahiri of al Qaeda found greater
- frequency in the use of third-person plural pronouns, as well as emotional
- words and first-person pronouns.
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pennebaker_chung"
+
+\end_inset
+
+ Consistent with that result, their study of texts issued by Osama bin Laden
+ and Ayman al-Zawahiri of al Qaeda found greater frequency in the use of
+ third-person plural pronouns, as well as emotional words and first-person
+ pronouns.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pennebaker_chung"
+
+\end_inset
+
  The data in that study differs in several significant ways from the data
  in this paper: those texts were translated, were authored by specific individua
 ls,
@@ -349,51 +430,89 @@ government
 \begin_inset Quotes erd
 \end_inset
 
-; and indeed, the question of whether presidents themselves or speechwriters
- or staff members have actually authored texts has been explored in the
- literature.
- (Sigelman)
+; and indeed, the question of whether presidents themselves have actually
+ authored texts has been explored in the literature.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sigelman"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
- and were originally oral rather than printed texts.
- Other analyses of extremist texts have tended to focus on large corpora
- of online postings, for instance the emotional affect of posts on extremist
- Internet forums (Abbasi and Chen), network analysis of the authors of extremist
- blogs, (Chau and Xu) and content analysis of extremist documents.
- (Smith et al) Text analysis of politicians, on the other hand, tends to
- have a different focus, but one study of speeches of a former Australian
- prime minister, John Howard, found varying levels of fear-mongering rhetoric.
- (De Castella)
-\end_layout
-
-\begin_layout Subparagraph*
-Peace negotiation literature: predicting success of ongoing talks, existing
- measurement methods.
+ and were originally oral rather than printed texts; however, Pennebaker
+ et al.'s results guide the measures of sentiment used in this paper.
 \end_layout
 
 \begin_layout Standard
-The Colombian peace negotiations exemplify numerous questions posed in internati
-onal relations and war and peace studies which, to date, have been answered
- with approaches that do not utilize texts produced from the peace process
- and do not attempt to measure the ineffable qualities like the 
-\begin_inset Quotes eld
+Other analyses of extremist texts have tended to utilize large corpora of
+ online postings, with a focus on the emotional affect of posts on extremist
+ Internet forums 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "abbasichen"
+
 \end_inset
 
-tenor of the talks
-\begin_inset Quotes erd
+, network analysis of the authors of extremist blogs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "chau_xu"
+
 \end_inset
 
- or 
-\begin_inset Quotes eld
+, and content analysis of extremist documents.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "smith"
+
 \end_inset
 
-mood of the government/rebel group.
-\begin_inset Quotes erd
+ On the other hand, text analysis of heads of state, tends to have a different
+ focus and can be either empirical or qualitative: George W.
+ Bush's speeches following September 11, 2001, have been especially popular
+ with researchers, as are the themes of propaganda devices and fear-mongering
+ rhetoric.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "graham2004call"
+
 \end_inset
 
- However, impressions or assessments of 
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "schonhardt2005measuring"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bligh2004charisma"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "de_castella"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Theory and hypotheses
+\end_layout
+
+\begin_layout Standard
+Why does it matter how talks are going? It is not a stretch to suggest that
+ impressions or assessments of 
 \begin_inset Quotes eld
 \end_inset
 
@@ -401,9 +520,9 @@ how the talks are going
 \begin_inset Quotes erd
 \end_inset
 
- inevitably affect the views of the negotiants as well as the public, and
- it is not a stretch to suggest that decisions made during talks may be
- colored by assessments of questions such as 
+ affect the views of the public, nor it is an exaggeration to claim that
+ decisions made by negotiants during talks may be colored by answers to
+ or beliefs about questions such as 
 \begin_inset Quotes eld
 \end_inset
 
@@ -419,16 +538,18 @@ how hard are they pushing for their demands?
 \begin_inset Quotes erd
 \end_inset
 
- 
+ This paper offers new methods of measurement that get past the vagueness
+ or relativism in the way these questions are stated.
 \end_layout
 
 \begin_layout Standard
 The answer to the first question, whether the other party is serious about
  negotiations, is significant for two reasons.
- First, (for example), the government needs to know whether FARC is serious
- about a peace deal that certainly would not include the implementation
- of a Marxist economic-political system.
- Second, regardless of what the 
+ To use FARC-Colombia as our example: The government wants to know, given
+ the political cost of continuing to negotiate, whether an avowedly Marxist-Leni
+nist group will actually follow through on a peace deal that almost certainly
+ would not include the implementation of a Marxist economic-political system.
+ Second, regardless of the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -436,22 +557,36 @@ truth
 \begin_inset Quotes erd
 \end_inset
 
- is about FARC's seriousness, popular impressions (e.g.
+ about FARC's seriousness or how hard they are bargaining behind closed
+ doors, popular impressions (e.g.
  
 \begin_inset Quotes eld
 \end_inset
 
-FARC is toying with the government and the government isn't driving a hard
- enough bargain
+FARC is stalling for time
 \begin_inset Quotes erd
 \end_inset
 
-) can especially affect a government's negotiating behavior, demands, and
- its level of military operations, as it has to answer to political opponents
- and, eventually, the next cycle of elections.
- For instance, the government long refused to stop military operations against
- FARC, and FARC frequently used its unilateral ceasefires to call for a
- bilateral ceasefire.
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+the government isn't driving a hard enough bargain
+\begin_inset Quotes erd
+\end_inset
+
+) will affect the government's bargaining behavior and demands in public
+ and in private, its level of military operations, and certainly its rhetoric,
+ as the government has to answer to its political opponents and, eventually,
+ in the next cycle of elections.
+\end_layout
+
+\begin_layout Standard
+More generally, peace talks are often characterized by mistrust and an inability
+ to know whether the other party's statements are sincere.
+ For instance, Santos's government long refused to stop military operations
+ against FARC, and FARC frequently used its unilateral ceasefires to call
+ for a bilateral ceasefire.
  The government's decision has been seen as a safeguard thwarting a 
 \begin_inset Quotes eld
 \end_inset
@@ -463,15 +598,40 @@ long con
  being played by FARC--that is to say, continued military operations would
  prevent FARC from using the negotiations as a cover to buy time to increase
  their military strength.
- (NOREF) Negotiations, after all, may very well fall apart without producing
- an agreement, because of (1) an inability to agree on settlements or (2)
- changes in relative military strength that cause either side to change
- its mind about deciding the outcome of the conflict at the negotiating
- table rather than on the battlefield.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "battaglino_lodola"
+
+\end_inset
+
+ A variety of concerns likely contributed to the government's suspicions:
+ first, the criticism of politicians such as Uribe; second, continuing FARC
+ attacks; and third, the fact that negotiations may very well fall apart
+ without producing an agreement for various reasons.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+E.g.
+ changes in relative military strength may cause either side to change its
+ mind about deciding the outcome of the conflict at the negotiating table
+ rather than on the battlefield.
+ This, of course, FARC, as most insurgencies, would be wary of giving up
+ secret information such as its members locations, or surrendering its arms,
+ if it thinks the government is not serious
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subparagraph*
+Peace negotiations literature.
 \end_layout
 
 \begin_layout Standard
-As this discussion suggests, an assessment about an actor's 
+As the above discussion suggests, assessing an actor's 
 \begin_inset Quotes eld
 \end_inset
 
@@ -479,36 +639,72 @@ seriousness about peace
 \begin_inset Quotes erd
 \end_inset
 
- may be based on the level and nature of ongoing violence.
- Kydd and Walter, for instance, offer a game theoretical explanation for
- why violence during peace negotiations can sometimes derail talks by revealing
- information about an actor's capacity or willingness to control extremist
- factions.
- (Kydd) A driving force behind this research and these questions is the
- inability for one negotiant to discern whether the other is sincere, bluffing
- (potentially intererested in an agreement but overstating their demands
- to get a better deal), or uninterested in peace and stalling (to allow
- military forces to regroup), based on their words alone.
+ may factor in the level and nature of ongoing violence.
+ Kydd and Walter offer a game theoretical explanation for why violence during
+ peace negotiations can sometimes derail talks by revealing information
+ about an actor's capacity or willingness to control extremist factions.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "kydd_walter"
+
+\end_inset
+
+ A driving force behind this research and these questions is the inability
+ for one negotiant to discern whether the other is sincere, bluffing (potentiall
+y intererested in an agreement but overstating their demands to get a better
+ deal), or uninterested in peace and stalling (to allow military forces
+ to regroup), based on their words alone.
  
 \begin_inset Foot
 status open
 
 \begin_layout Plain Layout
 Cf.
- a rationalist explanation for war that is based on on the incentives of
- both parties to misrepresent their resolve to go to war and their military
- power.
- (Fearon)
+ a rationalist explanation for war based on on the incentives of both parties
+ to misrepresent their resolve to go to war and their military power.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "fearon"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
-This paper introduces a new tool for measuring the sentiment of actors during
- ongoing peace talks based on the actual 
+In other research on negotiations and violence, Bueno de Mesquita theorizes
+ that violence increases after government concessions because more extreme
+ members are left in control of their organization after moderate members
+ accept the concessions.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "demesquita_conciliation"
+
+\end_inset
+
+ The peace process with FARC, with more than fifty regional fronts but a
+ unified central command that has remained in control throughout the peace
+ talks and is unquestioned in speaking for its fighters, does not exemplify
+ a (perhaps unintentional) divide-and-conquer strategy of the kind discussed
+ by Bueno de Mesquita.
+ Nevertheless, this area of research underscores the fact that we are interested
+ in understanding not just the effect of violence--or the motivations behind
+ it--on peace talks but also in understanding how talks can affect the level
+ of violence.
+\end_layout
+
+\begin_layout Standard
+To date, analysis of peace negotiations has not utilized sentiment analysis.
+\end_layout
+
+\begin_layout Standard
+This paper introduces a new tool for measuring actors' willingness to negotiate
+ based on sentiment analysis of their actual 
 \begin_inset Quotes eld
 \end_inset
 
@@ -517,56 +713,7 @@ talk,
 \end_inset
 
  not just the level of violence.
- Other research has used violence or attacks to gauge the status of talks,
- but in fact we may better understand the effect of violence--or the motivation
- for attacks--on peace talks if we understand the status of the talks prior
- to the violence.
-\end_layout
-
-\begin_layout Standard
-The FARC negotiations are a fascinating example of the relationship between
- violence and negotiations.
- From the beginning of the negotiations, FARC called for a bilateral ceasefire,
- which the government denied up until just weeks before the final peace
- deal was announced in August 2016.
- Prior to that, FARC declared numerous unilateral ceasefires, although given
- the number of violations recorded by monitoring groups, it is debatable
- whether all of them should be truly considered ceasefires.
- The kidnappings or killings of policemen and bombings in rural departments
- (provinces) did not derail talks.
- Talks were suspended only on two occasions: first, when a high-ranking
- general was kidnapped, and second, when FARC escalated a campaign of bombings
- of infrastructure such as power plants and oil pipelines, resulting in
- an oil spill that was the worst environmental disaster in Colombian history.
- Meanwhile, the government, under a steady hail of pressure from right-wing
- politicians, continued military operations; despite that, FARC did not
- walk away from the negotiating table.
-\end_layout
-
-\begin_layout Standard
-In other research on negotiations and violence, Bueno de Mesquita argues
- that violence increases after government concessions because more extreme
- members are left in control of their organization after moderate members
- accept the concessions.
- (Bueno de Mesquita) The peace process with FARC, with fifty regional blocs
- but a unified central command that has remained in control throughout the
- peace talks, does not exemplify a government employing a divide-and-conquer
- strategy of the kind discussed by Bueno de Mesquita.
-\end_layout
-
-\begin_layout Standard
-Sentiment analysis literature: use of hidden Markov models.
-\end_layout
-
-\begin_layout Standard
-Literature review: other papers that try to predict whether peace negotiations
- will be successful or fall apart.
-\end_layout
-
-\begin_layout Standard
-Numerous papers in the international relations literature have offered reasons
- that violence during peace negotiations may be a spoiler in some cases
- but not in others.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -615,17 +762,29 @@ Comunicados
 \begin_inset Quotes erd
 \end_inset
 
- (Communiques) section of the official FARC website.[CITE] Some communiques
- were authored by specific FARC generals; however, this paper's analysis
- does not examine individual-level authorship.
+ (Communiques) section of the official FARC website.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "farc_comunicados"
+
+\end_inset
+
+ Some communiques were authored by specific FARC generals; however, this
+ paper's analysis does not examine individual-level authorship.
  
 \end_layout
 
 \begin_layout Standard
 Joint statements were scraped from the official Mesa de Conversaciones (Table
  for Dialogue) website of the negotiations.
- [CITE] This excludes reports also published during the negotiations, which
- have a different purpose, format, and audience than the statements.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "mesadeconversaciones"
+
+\end_inset
+
+ I exclude reports also published during the negotiations, which have a
+ different purpose, format, and audience than the statements.
 \end_layout
 
 \begin_layout Standard
@@ -639,9 +798,15 @@ Sala de Prensa
 \end_inset
 
  (Press Room) section of the Colombian president's website.
- [(http://wp.presidencia.gov.co)] The same president, Santos, has been in office
- during the peace talks, conveniently obviating variance that might result
- from different administrations.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "president_2012-2015,president_2016"
+
+\end_inset
+
+ The same president, Santos, has been in office during the peace talks,
+ conveniently obviating variance that might result from different administration
+s.
  Because the government issues statements on all manner of topics besides
  FARC, a simple keyword search was used as an initial screening method.
  The implementation of this search differed slightly for 2012-2015 and 2016
@@ -1021,20 +1186,27 @@ Violence data.
 \begin_layout Standard
 Monthly statistics on levels of ongoing violence were gathered from several
  sources.
- The number of service personnel killed per month were collected from a
- Fundación Paz y Reconciliación (PARES) report and a Defense Ministry report.
- (The PARES report cites the Defense Ministry as the source for its figures.)
- [
-\begin_inset Quotes eld
+ The number of service personnel killed per month were collected from reports
+ by the Fundación Paz y Reconciliación (PARES)
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+In fact, PARES cites the Defense Ministry as the source for its figures.
+\end_layout
+
 \end_inset
 
-Lo que hemos ganado
-\begin_inset Quotes erd
+ and the Defense Ministry.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "PARES_2015,ministerio_defensa"
+
 \end_inset
 
-] [Ministerio de Defensa] It should be noted that these numbers may include
- casualties from a smaller ongoing conflict with the ELN; however, in other
- Defense Ministry statistics that are disaggregated by rebel group (e.g.
+ It should be noted that these numbers may include casualties from a smaller
+ ongoing conflict with the ELN; however, in other Defense Ministry statistics
+ that are disaggregated by rebel group (e.g.
  number of demobilized militants), FARC's contribution is overwhelming.
  An additional statistic, the number of 
 \begin_inset Quotes eld
@@ -1054,10 +1226,22 @@ offensive actions
 
  of FARC per month were collected from data available from two Colombian
  conflict analysis groups.
- For 2012-2014, the source of the data was Fundación Paz y Reconciliación
- (PARES).
+ For 2012-2014, the source of the data was PARES.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "PARES_2013"
+
+\end_inset
+
  For 2015-2016, data from PARES was not available and was collected instead
  from the Centro de Recursos para el Análisis de Conflictos (CERAC).
+\begin_inset CommandInset citation
+LatexCommand cite
+key "cerac,cerac_assessing_ceasefire"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subparagraph*
@@ -1066,8 +1250,14 @@ Public opinion data.
 \end_layout
 
 \begin_layout Standard
-Monthly public opinion data was collected from the Centro Nacional De Consultorí
-a, a Colombian consultancy firm.
+Monthly public opinion data was collected from reports by the Centro Nacional
+ De Consultoría, a Colombian consultancy firm.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "centro_imagen01-2013,centro_imagen09-2012,centro_imagen_12-2013,centro_zoom"
+
+\end_inset
+
  Answers to the questions, 
 \begin_inset Quotes eld
 \end_inset
@@ -1090,9 +1280,7 @@ Do you approve of the decision of President Santos to open peace talks with
 status open
 
 \begin_layout Plain Layout
-Author's translation from Spanish.
- It should be noted that the latter question is missing before September
- 2012 because the peace process had not started yet!
+Author's translation.
 \end_layout
 
 \end_inset
@@ -1110,14 +1298,19 @@ Structural breaks.
 \begin_layout Standard
 The optimal structural breaks for each sentiment/actor, using loessed values,
  were identified using Zeileis et al.'s strucchange R package.
- [Zeileis] There were no structural breaks identified in positive government
- emotion.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "strucchange"
+
+\end_inset
+
+ There were no structural breaks identified in positive government emotion.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph*
 \begin_inset Graphics
-	filename neg_g.eps
-	width 100text%
+	filename melted_gov.eps
+	width 105text%
 
 \end_inset
 
@@ -1126,48 +1319,18 @@ The optimal structural breaks for each sentiment/actor, using loessed values,
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename neg_f.eps
-	width 100text%
+	filename melted_FARC.eps
+	width 105text%
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph*
 \begin_inset Graphics
-	filename neg_j.eps
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename pos_g.eps
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename pos_f.eps
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename pos_j.eps
-	width 100text%
+	filename melted_joint.eps
+	width 105text%
 
 \end_inset
 
@@ -1185,22 +1348,40 @@ Sentiment measures.
 
 \begin_layout Standard
 The Linguistic Inquiry and Word Count (LIWC) was developed by Pennebaker.
- [INSERT CITES] LIWC in English has been used to analyze texts written by
- individuals from terrorist organizations (and translated into English),
- e.g.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pennebaker_liwc01,pennebaker_liwc07"
+
+\end_inset
+
+ LIWC in English has been used to analyze texts written by individuals from
+ terrorist organizations (and translated into English), e.g.
  transcripts of statements by Osama bin Laden and Ayman al-Zawahiri.
- (Pennebaker and Chung) The LIWC methodology reflects Pennebaker et al.'s
- approach to text analysis, which is centered around 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pennebaker_chung"
+
+\end_inset
+
+ The LIWC methodology reflects Pennebaker et al.'s approach to text analysis,
+ which is centered around 
 \begin_inset Quotes eld
 \end_inset
 
 examin[ing] people's social and psychological states by analyzing their
- use of function and emotion words
+ use of function and emotion words,
 \begin_inset Quotes erd
 \end_inset
 
- (Pennebaker and Chung 453), the former being relatively neutral words such
- articles or pronouns rather than words that are content- or document-specific.
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pennebaker_chung"
+
+\end_inset
+
+ the former being relatively neutral words such articles or pronouns rather
+ than words that are content- or document-specific.
  Consequently, LIWC measures are very simple: words belonging to specific
  categories--parts of speech (e.g.
  
@@ -1258,10 +1439,22 @@ d.
  (e.g.
  additional Spanish synonyms for words translated from the English) by Ramírez-E
 sparza, Pennebaker, García, and Suriá Martínez.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ramirez_esparza_liwc"
+
+\end_inset
+
  This paper uses the following categories: positive emotion, negative emotion,
  and third-person plural pronouns, which research from psychology has found
  to be used at higher rates by extremist groups.
- (Pennebaker and Chung)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pennebaker_chung"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1406,7 +1599,13 @@ The sequence of states is a Markov chain: the probabilities of
 \end_inset
 
 .
- [Jurafsky] 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "jurafsky"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1513,8 +1712,14 @@ Each entry
 
  is the probability of moving from a hardline to a concessions state, and
  so on.
- I will use the depmixS4 package in R to calculate these values.
- [Visser]
+ I use the depmixS4 package in R to calculate these values.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "depmixs4"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1851,7 +2056,13 @@ low
 \begin_layout Standard
 To estimate overall sentiment of these texts, I created a new measure based
  on research showing that in normal usage, positive emotion words occur
- twice as frequently as negative emotion words (Pennebaker and Chung).
+ twice as frequently as negative emotion words.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pennebaker_chung"
+
+\end_inset
+
  I constructed an indicator for 
 \begin_inset Quotes eld
 \end_inset
@@ -2650,7 +2861,13 @@ Across the board, the standard deviations relative to the means are high,
  the table.
  Because those labels are not conclusive, I use the MCDM R package to identify
  the optimal ranking based on several different methods for computing multi-crit
-eria decisions [Ceballos Martin].
+eria decisions.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "martin_mcdm"
+
+\end_inset
+
  This ranking is based on maximizing positive emotion percent and minimizing
  negative emotion percent (i.e.
  the choice ranked first is the 
@@ -3067,7 +3284,14 @@ The House of Representatives passed a bill in 2013 requiring that any deal
  from Havana must survive a referendum, but this was followed by wrangling
  in the constitutional court and various statements by the president suggesting
  that a popular vote would happen if an agreement was made but that this
- was not legally required.[El Tiempo] 
+ was not legally required.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "el_tiempo_legis"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -3084,9 +3308,14 @@ Finally, anecdotally we may consider some events in the peace timeline that
 , Putumayo, and Nariño, resulting in an oil spill that caused severe environment
 al damage and contaminated the water supply of thousands; and bombing power
  stations that supplied electricity to the cities of Buenaventura and Tumaco.
- [Guardian] [Colombia Peace Timeline] [Colombia Reports] This time period
- coincides with the high level of regime-switching observed in the government
- graph.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "guardian_pipeline,colombiareports_attacks,colombiapeace_timelines,telesur_timeline"
+
+\end_inset
+
+ This time period coincides with the high level of regime-switching observed
+ in the government graph.
  Also interesting, however, is the lack of regime switching in November
  2014 following FARC's kidnapping of a general.
  The government suspended peace talks from November 16 and talks resumed
@@ -3104,7 +3333,11 @@ walking away from the table
 \end_inset
 
 ) may seem like a common bluffing maneuver, it occurred very rarely during
- these negotiations.
+ these negotiations: first, when that general was kidnapped, and second,
+ when FARC bombed infrastructure such as power plants and oil pipelines,
+ resulting in an oil spill that was the worst environmental disaster in
+ Colombian history.
+ 
 \end_layout
 
 \end_inset
@@ -3119,7 +3352,13 @@ moderate
 \end_inset
 
  willingness to negotiate state.
- [Colombia Peace Timeline]
+\begin_inset CommandInset citation
+LatexCommand cite
+key "colombiapeace_timelines,telesur_timeline"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3880,7 +4119,7 @@ ly.
 \begin_layout Paragraph*
 \begin_inset Graphics
 	filename mnl_pr.eps
-	width 100text%
+	width 105text%
 
 \end_inset
 
@@ -4232,6 +4471,13 @@ Apply to other conflicts if data is available
 \end_layout
 
 \begin_layout Standard
+Given that provisions of a peace agreement can predict whether peace will
+ survive, much could be learned from the study of the process that produces
+ such agreements.
+ 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
 
@@ -4242,7 +4488,7 @@ Apply to other conflicts if data is available
 Appendix
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsubsection
 Violence and public opinion data
 \end_layout
 
@@ -4273,7 +4519,7 @@ Violence and public opinion data
 
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsubsection
 Sentiment response model: likelihood ratio test 
 \end_layout
 
@@ -4507,6 +4753,25 @@ end{tabular}
 \backslash
 end{table} 
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintAll"
+bibfiles "/Users/lesliehuang/Dropbox/MA library bib"
+options "plain"
 
 \end_inset
 
