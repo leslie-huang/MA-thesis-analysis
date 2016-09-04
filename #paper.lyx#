@@ -608,6 +608,12 @@ key "battaglino_lodola"
  first, the criticism of politicians such as Uribe; second, continuing FARC
  attacks; and third, the fact that negotiations may very well fall apart
  without producing an agreement for various reasons.
+ Although this paper focuses only on the negotiation process leading up
+ to a peace agreement, mistrust can extend to the implementation of a deal
+ (e.g.
+ FARC would be wary of disarming or giving up secret information such as
+ its members' locations if it thought the government would renege).
+ 
 \begin_inset Foot
 status open
 
@@ -616,14 +622,11 @@ E.g.
  changes in relative military strength may cause either side to change its
  mind about deciding the outcome of the conflict at the negotiating table
  rather than on the battlefield.
- This, of course, FARC, as most insurgencies, would be wary of giving up
- secret information such as its members locations, or surrendering its arms,
- if it thinks the government is not serious
 \end_layout
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Subparagraph*
@@ -631,7 +634,7 @@ Peace negotiations literature.
 \end_layout
 
 \begin_layout Standard
-As the above discussion suggests, assessing an actor's 
+As the above discussion suggests, current assessments of an actor's 
 \begin_inset Quotes eld
 \end_inset
 
@@ -639,21 +642,37 @@ seriousness about peace
 \begin_inset Quotes erd
 \end_inset
 
- may factor in the level and nature of ongoing violence.
- Kydd and Walter offer a game theoretical explanation for why violence during
- peace negotiations can sometimes derail talks by revealing information
- about an actor's capacity or willingness to control extremist factions.
+ factor in the level and nature of ongoing violence.
+ However, to date the analysis of peace negotiations has not utilized sentiment
+ analysis.
+ Instead, perhaps because 
+\begin_inset Quotes eld
+\end_inset
+
+actions speak louder than words,
+\begin_inset Quotes erd
+\end_inset
+
+ the focus of much of the empirical research in this field is on violence.
+ 
+\end_layout
+
+\begin_layout Standard
+For instance, Kydd and Walter offer a game theoretical explanation for why
+ extremist violence during peace negotiations can sometimes derail talks
+ by revealing information about the rebel group's capacity or willingness
+ to control extremist factions.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "kydd_walter"
 
 \end_inset
 
- A driving force behind this research and these questions is the inability
- for one negotiant to discern whether the other is sincere, bluffing (potentiall
-y intererested in an agreement but overstating their demands to get a better
- deal), or uninterested in peace and stalling (to allow military forces
- to regroup), based on their words alone.
+ A driving force underlying this research is the inability for one negotiant
+ to discern whether the other is sincere, bluffing (potentially intererested
+ in an agreement but overstating their demands to get a better deal), or
+ uninterested in peace and stalling (to allow military forces to regroup),
+ based on their words alone.
  
 \begin_inset Foot
 status open
@@ -693,43 +712,48 @@ key "demesquita_conciliation"
  a (perhaps unintentional) divide-and-conquer strategy of the kind discussed
  by Bueno de Mesquita.
  Nevertheless, this area of research underscores the fact that we are interested
- in understanding not just the effect of violence--or the motivations behind
- it--on peace talks but also in understanding how talks can affect the level
- of violence.
+ in understanding not just the effect of violence on peace talks, but also
+ how events at the negotiating table affect the level of violence.
 \end_layout
 
 \begin_layout Standard
-To date, analysis of peace negotiations has not utilized sentiment analysis.
+As this discussion demonstrates, measuring actors' willingness to negotiate
+ during a peace process can inform our understanding of violence during
+ peace talks as well as our understanding of the dynamics of how agreements
+ are or are not reached.
+ This paper introduces a new tool for measuring actors' willingness to negotiate
+ based on sentiment analysis of their actual words, and a new method for
+ using sentiment to model the responsiveness of actors to each other's words.
+\end_layout
+
+\begin_layout Subparagraph*
+Hypotheses.
 \end_layout
 
 \begin_layout Standard
-This paper introduces a new tool for measuring actors' willingness to negotiate
- based on sentiment analysis of their actual 
-\begin_inset Quotes eld
-\end_inset
-
-talk,
-\begin_inset Quotes erd
-\end_inset
-
- not just the level of violence.
- 
+I present a regime-switching Markov model that estimates an actor's willingness
+ to negotiate using measures of negative and positive emotion.
+ To validate the results from this model, I predict there is a positive
+ relationship between a predicted state of high willingness to negotiate
+ and the sentiment and incidence of joint statements.
+ This is to say, when FARC and/or the government are predicted to be in
+ a conciliatory rather than a hardline state, joint statements are more
+ likely to occur and their sentiment is likely to be more positive.
 \end_layout
 
 \begin_layout Standard
-Hypotheses:
+I also test the relationship between extremism and increased use of third-person
+ plural pronouns.
 \end_layout
 
 \begin_layout Standard
-Sentiment measures (negative and positive emotion for both FARC and the
- government, and third-person plural pronouns for FARC) reveal a regime-switchin
-g Markov model.
-\end_layout
-
-\begin_layout Standard
-Sentiment responds to sentiment: that is to say, after a FARC statement
- with high (positive) sentiment, a government statement is more likely to
- respond with high sentiment than low sentiment.
+In the second part of the paper, I model the responsiveness of sentiment
+ to sentiment using another Markov process.
+ I hypothesize that actors are more likely to respond with the same level
+ of sentiment.
+ In other words, if FARC issues a statement with high (positive) sentiment,
+ the following government statement is more likely to respond with high
+ rather than low (negative) sentiment, and vice versa.
 \end_layout
 
 \begin_layout Subsection*
@@ -737,15 +761,17 @@ Data
 \end_layout
 
 \begin_layout Standard
-This paper uses an original dataset of communiques and statements issued
- separately by FARC and the Colombian government, and joint communiques
- issued by the peace negotiators in Havana.
- The statements were scraped and parsed in Python by the author.
- All are in the original Spanish, thus avoiding the obvious pitfalls of
- inter-translator variance, loss of nuance through translation, etc.
- The time period being studied is September 1, 2012, through May 31, 2016,
- a period bounded by the month in which formal peace talks were announced
- and the beginning of this project.
+This paper uses an original dataset of (1) communiques issued by FARC, (2)
+ statements of the Colombian government, and (3) joint communiques issued
+ by the peace negotiators in Havana.
+ The statements were scraped and parsed in Python in the original Spanish,
+ thus avoiding the obvious pitfalls of inter-translator variance, loss of
+ nuance through translation, etc.
+ The data was collected from September 1, 2012, the month in which formal
+ peace talks were announced, through May 31, 2016, the beginning of this
+ project.
+ Unfortunately, this excludes the months immediately preceding the announcement
+ of a final peace agreement in August 2016.
 \end_layout
 
 \begin_layout Subparagraph*
@@ -769,14 +795,15 @@ key "farc_comunicados"
 
 \end_inset
 
- Some communiques were authored by specific FARC generals; however, this
- paper's analysis does not examine individual-level authorship.
+ Some communiques were authored by specific FARC generals or Secretariat
+ members; however, this paper's analysis does not examine individual-level
+ authorship.
  
 \end_layout
 
 \begin_layout Standard
 Joint statements were scraped from the official Mesa de Conversaciones (Table
- for Dialogue) website of the negotiations.
+ for Dialogue) website of the peace negotiators.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "mesadeconversaciones"
@@ -816,16 +843,15 @@ al websites.
 status open
 
 \begin_layout Plain Layout
-Press releases from 2012-15 were scraped if the words 
+Press releases from 2012-15 were scraped if 
 \begin_inset Quotes eld
 \end_inset
 
-Farc
+las Farc
 \begin_inset Quotes erd
 \end_inset
 
- (NB: this is the typical usage in Spanish-language sources, as few publications
- besides FARC's own refer to the group as FARC-EP) and 
+ and 
 \begin_inset Quotes eld
 \end_inset
 
@@ -894,8 +920,8 @@ Quotes from Joe Biden
 
  I removed those that were irrelevant on the basis of content (e.g.
  if the peace talks with FARC were mentioned only in passing and/or a minor
- proportion of the document was spent discussing it), reducing the number
- of government texts to 318.
+ proportion of the document was spent discussing FARC among a laundry list
+ of other policy issues), reducing the number of government texts to 318.
 \end_layout
 
 \begin_layout Standard
@@ -1024,6 +1050,16 @@ SD & $620.86$ & $1269.80$ & $501.85$
 
 \backslash
  
+\end_layout
+
+\begin_layout Plain Layout
+
+Min.
+ & 31 & 125 & 42 
+\backslash
+
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -1186,29 +1222,7 @@ Violence data.
 \begin_layout Standard
 Monthly statistics on levels of ongoing violence were gathered from several
  sources.
- The number of service personnel killed per month were collected from reports
- by the Fundación Paz y Reconciliación (PARES)
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-In fact, PARES cites the Defense Ministry as the source for its figures.
-\end_layout
-
-\end_inset
-
- and the Defense Ministry.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "PARES_2015,ministerio_defensa"
-
-\end_inset
-
- It should be noted that these numbers may include casualties from a smaller
- ongoing conflict with the ELN; however, in other Defense Ministry statistics
- that are disaggregated by rebel group (e.g.
- number of demobilized militants), FARC's contribution is overwhelming.
- An additional statistic, the number of 
+ The number of 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1226,7 +1240,8 @@ offensive actions
 
  of FARC per month were collected from data available from two Colombian
  conflict analysis groups.
- For 2012-2014, the source of the data was PARES.
+ For 2012-2014, the source of the data was the Fundación Paz y Reconciliación
+ (PARES).
 \begin_inset CommandInset citation
 LatexCommand cite
 key "PARES_2013"
@@ -1238,6 +1253,39 @@ key "PARES_2013"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "cerac,cerac_assessing_ceasefire"
+
+\end_inset
+
+ The number of service personnel killed per month were collected from reports
+ by PARES
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+PARES cites the Defense Ministry as the source for its figures.
+\end_layout
+
+\end_inset
+
+ and the Defense Ministry.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "PARES_2015,ministerio_defensa"
+
+\end_inset
+
+ It should be noted that these numbers may include casualties from the smaller
+ ongoing conflict with the ELN as well as bacrim (criminal gangs); however,
+ in other Defense Ministry statistics that are disaggregated by rebel group
+ (e.g.
+ number of demobilized militants), FARC's share is overwhelming.
+ 
+\end_layout
+
+\begin_layout Paragraph*
+\begin_inset Graphics
+	filename melt_viol.eps
+	width 105text%
 
 \end_inset
 
@@ -1287,7 +1335,10 @@ Author's translation.
 
  were recorded as approval ratings for the president and for the peace process,
  respectively.
- 
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Subparagraph*
@@ -1304,7 +1355,7 @@ key "strucchange"
 
 \end_inset
 
- There were no structural breaks identified in positive government emotion.
+
 \end_layout
 
 \begin_layout Paragraph*
@@ -2796,7 +2847,7 @@ cmidrule{5-7}
 
 \begin_layout Plain Layout
 
-1 & $12.05$ $(8.06)$ & $9.44$ & Low & $16.32$ $(10.10)$ & $12.73$ & High   
+1 & $14.71$ $(7.37)$ & $13.86$ & Low & $18.29$ $(10.46)$ & $17.41$ & High   
 \backslash
 
 \backslash
@@ -2805,7 +2856,8 @@ cmidrule{5-7}
 
 \begin_layout Plain Layout
 
-2  & $4.64$ $(3.68)$ & $4.03$ & Moderate & $1.48$ $(1.25)$ & $0.94$ & Low 
+2  & $4.92$ $(2.59)$ & $4.98$ & Moderate & $4.51$ $(2.84)$ & $4.33$ & Moderate
+ 
 \backslash
 
 \backslash
@@ -2814,7 +2866,7 @@ cmidrule{5-7}
 
 \begin_layout Plain Layout
 
-3  & $1.84$ $(1.40)$ & $1.52$ & High & $3.00$ $(1.47)$ & $2.67$ & Moderate 
+3  & $1.65$ $(1.13)$ & $1.44$ & High & $2.06$ $(1.21)$ & $2.03$ & Low 
 \backslash
 
 \backslash
@@ -2859,6 +2911,8 @@ Across the board, the standard deviations relative to the means are high,
  The mean and median agree on their predictions, although they produce a
  different ranking (labelling) for each actor/sentiment type, as seen in
  the table.
+ Positive sentiment for FARC and negative sentiment for the government do
+ produce the same rankings, but the other rankings are nearly the opposite.
  Because those labels are not conclusive, I use the MCDM R package to identify
  the optimal ranking based on several different methods for computing multi-crit
 eria decisions.
@@ -3245,14 +3299,12 @@ ly, over the time period of the negotiations.
 
 \begin_layout Standard
 These graphs indicate a number of surprising results: First and foremost,
- it appears that FARC's willingness to negotiate has usually been medium
- to high.
- The government's willingness, however, seems more volatile, with a high
- level of regime switching especially during 2013 and 2015.
+ it appears that FARC's willingness to negotiate has usually fluctuated
+ between low and moderate.
+ The government's willingness is more volatile, with frequent regime switching
+ throughout the time interval.
  Interestingly, the government tends to shift from low to high and rarely
- was in the moderate state, with the exception of a period from mid-2014
- to mid-2015, during which FARC was also in a moderate state.
- 
+ was in the moderate state.
 \end_layout
 
 \begin_layout Standard
@@ -3300,9 +3352,9 @@ key "el_tiempo_legis"
 \end_layout
 
 \begin_layout Standard
-Finally, anecdotally we may consider some events in the peace timeline that
- are objectively likely to have affected whether the government was in a
- hardline or conciliatory state.
+Anecdotally we may consider some events in the peace timeline that are objective
+ly likely to have affected whether the government was in a hardline or conciliat
+ory state.
  In June 2015, FARC launched a series of attacks including attacking police
  stations and bombing infrastructure such as oil pipelines in Norte de Santander
 , Putumayo, and Nariño, resulting in an oil spill that caused severe environment
@@ -3314,10 +3366,10 @@ key "guardian_pipeline,colombiareports_attacks,colombiapeace_timelines,telesur_t
 
 \end_inset
 
- This time period coincides with the high level of regime-switching observed
- in the government graph.
- Also interesting, however, is the lack of regime switching in November
- 2014 following FARC's kidnapping of a general.
+ This time period coincides with an episode of frequent regime-switching
+ observed in the government graph.
+ Also interesting, however, is the government's state of high willingness
+ to negotiate in November 2014 following FARC's kidnapping of a general.
  The government suspended peace talks from November 16 and talks resumed
  on December 9
 \begin_inset Foot
@@ -3342,16 +3394,16 @@ walking away from the table
 
 \end_inset
 
- after the general was returned; however, this entire episode falls within
- the government's long spell in the 
+ after the general was returned; moreover, this episode falls within a very
+ long 
 \begin_inset Quotes eld
 \end_inset
 
-moderate
+low
 \begin_inset Quotes erd
 \end_inset
 
- willingness to negotiate state.
+ willingness to negotiate state for FARC.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "colombiapeace_timelines,telesur_timeline"
@@ -3405,6 +3457,18 @@ sticky
  during negotiations.
  If a FARC attack prompts a government hardline response, is this state
  persistent over time? 
+\end_layout
+
+\begin_layout Subparagraph*
+Validation.
+\end_layout
+
+\begin_layout Standard
+To validate the results from this model, I use a simple regression of the
+ predicted state (high/moderate/low willingness) and joint statement sentiment.
+ Some joint statements are prosaic status updates or announcements about
+ the next steps in the talks, while others detail provisional agreements
+ that have been reached.
 \end_layout
 
 \begin_layout Subparagraph*
@@ -4489,38 +4553,7 @@ Appendix
 \end_layout
 
 \begin_layout Subsubsection
-Violence and public opinion data
-\end_layout
-
-\begin_layout Paragraph*
-\begin_inset Graphics
-	filename violence_Append.eps
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename approve_Append.eps
-	width 100text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Sentiment response model: likelihood ratio test 
+Sentiment response model: likelihood ratio test
 \end_layout
 
 \begin_layout Standard

@@ -620,7 +620,7 @@ hmm_all_means <- cbind(FARC_hmm_means, govt_hmm_means)
 stargazer(hmm_all_means, summary = FALSE, title = "Mean Sentiment Scores for Latent States", digits = 2)
 
 # use decision matrix to optimize label
-hmm_medians_df <- cbind(FARC_hmm_means[, c(3,6)], govt_hmm_means[, c(3,6)])
+hmm_medians_df <- cbind(FARC_hmm_means[, c(1,4)], govt_hmm_means[, c(1,4)])
 row.names(hmm_medians_df) <- c("state1", "state2", "state3")
 colnames(hmm_medians_df) <- c("F_neg", "F_pos", "G_neg", "G_pos")
 dec_mat <- as.matrix(hmm_medians_df)
@@ -628,8 +628,8 @@ dec_mat <- as.matrix(hmm_medians_df)
 MetaRanking(dec_mat, weights = c(.25, .25, .25, .25), cb = c("min", "max", "min", "max"), lambda = .5, v = .5)
 
 # relabel the states on a spectrum of willingness to negotiate
-prob_HMM_F$est_state <- recode(prob_HMM_F$est_state, "3=1; 1=3")
-prob_HMM_g$est_state <- recode(prob_HMM_g$est_state, "3=1; 1=3")
+prob_HMM_F$est_state <- recode(prob_HMM_F$est_state, "1=2; 2=1")
+prob_HMM_g$est_state <- recode(prob_HMM_g$est_state, "1=2; 2=1")
 
 # what state are we in at a given time? graphs
 
@@ -656,6 +656,11 @@ HMM_g_est_state_gg = ggplot(prob_HMM_g, aes(x = as.Date(date, origin = "1970-01-
   scale_y_continuous(breaks = 1:3, labels = c("Low", "Moderate", "High")) +
   ggtitle("Estimation of States of Willingness to Negotiate: Government")
 
+HMM_F_est_state_gg
+HMM_g_est_state_gg
+
+#################################################################################
+# is there a relationship between predicted state and joint statement sentiment?
 
 
 #################################################################################
