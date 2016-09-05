@@ -64,3 +64,28 @@ sum(df[,3] == 4.904)
 
 
 # do the same for the government
+
+df2 <- matrix(data = NA, nrow = 1000, ncol = 3)
+
+for (i in 1:1000) {
+  # get the unique set of intercepts that corresponds with each transition matrix
+  results <- summary(fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = 3, data = govt_results1)))
+  intercepts <- sort(results[1:3])
+  
+  df2[i, ] <- intercepts
+}
+
+View(df2)
+
+unique(df2)
+
+# unique values for column 1 (rounded)
+# 1.65 1.87 0.70 1.08
+
+df2_rounded <- round(df2, digits = 2)
+unique(df2_rounded)
+
+sum(df2_rounded[,1] == 1.66 | df2_rounded[,1] == 1.65)
+sum(df2_rounded[,1] == .70)
+sum(df2_rounded[,1] == 1.08)
+sum(df2_rounded[,1] == 1.87 | df2_rounded[,1] == 1.88)
