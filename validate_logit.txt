@@ -1,0 +1,18 @@
+Joint statement issuance		
+		(1)
+VARIABLES	LABELS	Coefficient
+		
+joint_dummy	joint_dummy	.
+		(.)
+2.F_est_state	F_est_state = 2, 1	1.335
+		(0.992)
+3.F_est_state	F_est_state = 3, 3	1.151
+		(0.860)
+2.g_est_state	g_est_state = 2, 1	1.338
+		(0.377)
+3.g_est_state	g_est_state = 3, 3	1.681
+		(0.542)
+		
+Observations		1,464
+Pseudo R2		0.00451
+chi2		1464

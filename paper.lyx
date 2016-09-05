@@ -727,8 +727,8 @@ As this discussion demonstrates, measuring actors' willingness to negotiate
  using sentiment to model the responsiveness of actors to each other's words.
 \end_layout
 
-\begin_layout Subparagraph*
-Hypotheses.
+\begin_layout Subsubsection
+Hypotheses
 \end_layout
 
 \begin_layout Standard
@@ -737,9 +737,9 @@ I present a regime-switching Markov model that estimates an actor's willingness
  To validate the results from this model, I predict there is a positive
  relationship between a predicted state of high willingness to negotiate
  and the sentiment and incidence of joint statements.
- This is to say, when FARC and/or the government are predicted to be in
- a conciliatory rather than a hardline state, joint statements are more
- likely to occur and their sentiment is likely to be more positive.
+ When FARC and/or the government are predicted to be in a conciliatory rather
+ than a hardline state, joint statements are more likely to occur and their
+ sentiment is likely to be more positive.
 \end_layout
 
 \begin_layout Standard
@@ -3369,15 +3369,20 @@ To better understand these results, we can examine the graphs below which
 
 \begin_layout Standard
 These graphs indicate a number of surprising results: First and foremost,
- both FARC and the government spend little time in the moderate state, which
- actually suggests that a model with two latent states might have been preferabl
-e.
+ both FARC and the government spend little time in the moderate state, a
+ result that suggests that a model with two latent states might actually
+ have been preferable for ease of interpretation.
  Overall, the government's willingness to negotiate is more volatile, with
  frequent regime switching from low to high throughout the time interval.
  The irregularity and frequency of data (statements may be issued days,
- weeks, or months apart) explains some of this volatility.
- There are three times as many government documents than FARC documents,
- and government statements are issued more frequently.
+ weeks, or months apart) explains some of this volatility: there are three
+ times as many government documents than FARC documents.
+ But although the higher frequency of government statements affects the
+ appearance of the regime switching graph, the government does have lower
+ probabilities of state persistence, as seen in the diagonal of the transition
+ matrix.
+ The higher probabilities in FARC's transition matrix diagonal also explain
+ the group's less frequent regime switching.
 \end_layout
 
 \begin_layout Standard
@@ -3395,6 +3400,18 @@ One likely substantive cause of the government's volatile transitions is
  will actually bring about peace, that the voices of victims of the conflict
  have been heard, and that they should vote in favor of the agreement if
  it is on a referendum.
+ FARC, on the other hand, addresses its 
+\begin_inset Quotes eld
+\end_inset
+
+constituency,
+\begin_inset Quotes erd
+\end_inset
+
+ rank and file fighters who will may need to be persuaded to demobilize;
+ the government and occasionally the right wing (e.g.
+ accusing Uribe of being a paramilitary); and more generally a skeptical
+ Colombian nation.
 \begin_inset Foot
 status open
 
@@ -3420,8 +3437,7 @@ key "el_tiempo_legis"
 
 \begin_layout Standard
 Anecdotally we may consider some events in the peace timeline that are objective
-ly likely to have affected whether the government was in a hardline or conciliat
-ory state.
+ly likely to be associated with the government's willingness to negotiate.
  In June 2015, FARC launched a series of attacks including attacking police
  stations and bombing infrastructure such as oil pipelines in Norte de Santander
 , Putumayo, and Nariño, resulting in an oil spill that caused severe environment
@@ -3488,7 +3504,7 @@ high
 \end_inset
 
  willingness to negotiate, and again, the conciliatory sentiment of FARC
- (combined with the safe return of hte general) may help explain why the
+ (combined with the safe return of the general) may help explain why the
  peace talks were able to recover.
 \end_layout
 
@@ -3498,16 +3514,556 @@ Validation
 
 \begin_layout Standard
 Clearly, with noisy and irregular data, matching events to states is imperfect
- and in any event assumes certain associations between events and sentiment
- measures (e.g.
- in the paragraph above, I assume that devastating FARC attacks are associated
- with more negative sentiment and a less conciliatory stance from the government
-).
- To validate the results from this model, I use a simple regression of the
- predicted state (high/moderate/low willingness) and joint statement sentiment.
- Some joint statements are prosaic status updates or announcements about
- the next steps in the talks, while others detail provisional agreements
- that have been reached.
+ and at best anecdotal.
+ To evaluate the validity of the hidden Markov model, I use a simple regression
+ of joint statement sentiment on the predicted states on the day that the
+ joint statement was issued to test my hypothesis that there is a positive
+ association between willingness to negotiate and joint sentiment.
+ I also use a logistic regression to test the hypothesis that there is a
+ positive association between conciliatory states (high willingness to negotiate
+) and the issuing of joint statements.
+\end_layout
+
+\begin_layout Standard
+Regarding the first hypothesis, high government willingness to negotiate,
+ relative to low willingness, is correlated with increases in both positive
+ and negative emotion, whereas FARC's high willingness state is associated
+ with decreases in both types of sentiment.
+ The relationship between state and the sentiment measures, in the first
+ two columns of the table, should be taken with a grain of salt: the conclusion
+ to be drawn here is that high willingness to negotiate is correlated with
+ more frequent emotional language.
+ The third column indicates contradictory but statistically insignificant
+ conclusions: the FARC hardline state and government conciliatory states
+ are associated with a higher ratio of positive to negative language.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{table}[!htbp] 
+\backslash
+centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+caption{Relationship between Joint Sentiment and FARC/Government Willingness
+ to Negotiate} 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+label{} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{@{
+\backslash
+extracolsep{5pt}}lccc} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex]
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+ & 
+\backslash
+multicolumn{3}{c}{
+\backslash
+textit{Sentiment measure}} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cline{2-4} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex] & Positive & Negative & Positive to negative ratio 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex] & (1) & (2) & (3)
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+ FARC low willingness & $-$26.61$^{*}$ (15.41) & $-$3.98 (2.47) & 1.06 (2.27)
+ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  FARC high willingness & $-$28.29$^{*}$ (15.61) & $-$4.52$^{*}$ (2.51) & $-$0.74
+ (2.30) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  Government low willingness & 5.41 (5.86) & 1.30 (0.94) & 0.46 (0.86) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  Government high willingness & 10.22 (6.77) & 2.66$^{**}$ (1.09) & $-$0.51 (1.00)
+ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  Constant & 37.43$^{**}$ (15.31) & 4.73$^{*}$ (2.46) & 2.18 (2.25) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+Observations & 88 & 88 & 88 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+R$^{2}$ & 0.06 & 0.09 & 0.10 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Adjusted R$^{2}$ & 0.01 & 0.05 & 0.05 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Residual Std.
+ Error (df = 83) & 21.25 & 3.41 & 3.13 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+F Statistic (df = 4; 83) & 1.22 & 2.03$^{*}$ & 2.26$^{*}$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+textit{Notes:}  & 
+\backslash
+multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+multicolumn{4}{l}{Because positive or negative emotion sometimes takes on
+ the value of zero, the ratio is calculated } 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+multicolumn{4}{l}{by smoothing emotion by 0.001 and taking the log of the
+ ratio.} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{table} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Perhaps, however, we are simply interested in whether joint statement issuance
+ is correlated with willingness to negotiate.
+ Since joint statements can announce agreements on policy, as well as announceme
+nts of the next steps in the negotiating schedule, their occurrence may
+ be a metric for how much is being accomplished in the negotiations, and
+ we want to know whether the hidden Markov model can predict them.
+ The logistic regression in the table below uses date/state indicator variables
+ for FARC and the government for every day from September 1, 2012, and May
+ 31, 2016, and a dummy variable for whether a joint statement was issued
+ on that day.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{table}[!htbp] 
+\backslash
+centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+caption{Does Willingness to Negotiate Predict Issuance of Joint Statements?}
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+label{} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{@{
+\backslash
+extracolsep{5pt}}lc} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex]
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex] & Joint statement issuance 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+ FARC low willingness & 1.34 (0.99) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  FARC high willingness & 1.15 (0.86) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  Government low willingness & 1.34 (0.38) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+  Government high willingness & 1.68 (0.54) 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+Observations & 1,464 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Log Likelihood & $-$331.22 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Akaike Inf.
+ Crit.
+ & 672.44 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+textit{Note:}  & 
+\backslash
+multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+multicolumn{2}{l}{Odds ratios are reported.} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{table} 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection

@@ -712,6 +712,8 @@ for (i in 7:1469) {
 
 # merge in joint sentiment
 validate_hmm_df <- merge(validate_hmm_df, joint_results[, c(1:2, 5)], by = "date", all.x = TRUE)
+# code dummy for joint statement
+validate_hmm_df$joint_dummy <- as.numeric(!is.na(validate_hmm_df$EmoNeg))
 
 # code the overall willingness variable
 for (i in 7:length(validate_hmm_df[, 1])) {
@@ -726,20 +728,37 @@ for (i in 7:length(validate_hmm_df[, 1])) {
 #################################################################################
 # now run some models
 
-# overall willingness as a dummy var
+# lm of Emo ~ dummy for overall willingness
 summary(lm(EmoPos ~ overall_willing, data = validate_hmm_df))
-
 summary(lm(EmoNeg ~ overall_willing, data = validate_hmm_df))
 
-# states of willingness as categorical vars
+# factor and relevel to set 2 as base case
 validate_hmm_df$F_est_state <- factor(validate_hmm_df$F_est_state)
 validate_hmm_df$g_est_state <- factor(validate_hmm_df$g_est_state)
 
+validate_hmm_df <- within(validate_hmm_df, F_est_state <- relevel(F_est_state, ref = 2))
+validate_hmm_df <- within(validate_hmm_df, g_est_state <- relevel(g_est_state, ref = 2))
+
+# make a positive to negative emotion ratio
+validate_hmm_df$emotion_ratio <- log((validate_hmm_df$EmoPos+0.001)/(validate_hmm_df$EmoNeg+0.001))
+
+# export to Stata to get logistic reg
+write.dta(validate_hmm_df, "validate_data.dta")
+
+# logit of Joint_dummy ~ categorical vars for state
+logit_joint <- glm(joint_dummy ~ F_est_state + g_est_state, data = validate_hmm_df, family = binomial(link = "logit"))
+summary(logit_joint)
+exp_logit_results <- exp(coef(logit_joint))
+
+stargazer(exp_logit_results, digits = 2, title = "Does Willingness to Negotiate Predict Issuance of Joint Statements", covariate.labels = c("FARC low willingness", "FARC high willingness", "Government low willingness", "Government high willingness"))
+
+
+# lm of Emo ~ categorical vars for state
 val_model_pos <- lm(EmoPos ~ F_est_state + g_est_state, data = validate_hmm_df)
 val_model_neg <- lm(EmoNeg ~ F_est_state + g_est_state, data = validate_hmm_df)
+val_model_ratio <- lm(emotion_ratio ~ F_est_state + g_est_state, data = validate_hmm_df)
 
-stargazer(val_model_pos, val_model_neg)
-
+stargazer(val_model_pos, val_model_neg, val_model_ratio, digits = 2, title = "Relationship between Joint Sentiment and FARC/Government Willingness to Negotiate", dep.var.labels = c("Positive sentiment", "Negative sentiment", "Positive to Negative Ratio"), covariate.labels = c("FARC low willingness", "FARC high willingness", "Government low willingness", "Government high willingness"), single.row = TRUE)
 
 
 #################################################################################

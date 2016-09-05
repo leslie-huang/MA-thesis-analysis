@@ -1,0 +1,185 @@
+----------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/lesliehuang/Dropbox/MA-thesis-analysis/validate_log.log
+  log type:  text
+ opened on:   5 Sep 2016, 15:52:54
+
+. 
+. set seed 1234
+
+. 
+. * import data from R: already cleaned and transformed
+. use validate_data.dta
+(Written by R.              )
+
+. 
+. * convert dates to stata format
+. gen statadate = date - td(01jan1960)
+
+. format statadate %td
+
+. 
+. logit joint_dummy i.F_est_state i.g_est_state, or
+
+Iteration 0:   log likelihood = -332.72054  
+Iteration 1:   log likelihood = -331.23727  
+Iteration 2:   log likelihood = -331.21852  
+Iteration 3:   log likelihood = -331.21852  
+
+Logistic regression                             Number of obs     =      1,464
+                                                LR chi2(4)        =       3.00
+                                                Prob > chi2       =     0.5571
+Log likelihood = -331.21852                     Pseudo R2         =     0.0045
+
+------------------------------------------------------------------------------
+ joint_dummy | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ F_est_state |
+          1  |   1.335385   .9916363     0.39   0.697     .3115424    5.723947
+          3  |   1.150834   .8600329     0.19   0.851     .2660105    4.978821
+             |
+ g_est_state |
+          1  |   1.337799   .3767109     1.03   0.301     .7703731    2.323169
+          3  |   1.680677   .5422358     1.61   0.108     .8930209    3.163056
+             |
+       _cons |   .0392547   .0296858    -4.28   0.000     .0089163    .1728226
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD04033.000000"
+
+. outreg2 using validate_logit, title("Joint statement issuance") drop(merger) label sideway p
+> arenthesis(se) stats(coef se pval) coefastr symb(***,**,*) rdec(2) bdec(2) ctitle("Coefficie
+> nt"; "Robust SE"; "P>|z|") nocons r2 addstat(Pseudo R2, e(r2_p), chi2, e(N)) nonotes replace
+dir : seeout
+
+. 
+end of do-file
+
+. seeout using "validate_logit.txt", label
+Hit Enter to continue. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD04033.000000"
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD04033.000000"
+
+. 
+. logit joint_dummy i.F_est_state i.g_est_state, or
+
+Iteration 0:   log likelihood = -332.72054  
+Iteration 1:   log likelihood = -331.23727  
+Iteration 2:   log likelihood = -331.21852  
+Iteration 3:   log likelihood = -331.21852  
+
+Logistic regression                             Number of obs     =      1,464
+                                                LR chi2(4)        =       3.00
+                                                Prob > chi2       =     0.5571
+Log likelihood = -331.21852                     Pseudo R2         =     0.0045
+
+------------------------------------------------------------------------------
+ joint_dummy | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ F_est_state |
+          1  |   1.335385   .9916363     0.39   0.697     .3115424    5.723947
+          3  |   1.150834   .8600329     0.19   0.851     .2660105    4.978821
+             |
+ g_est_state |
+          1  |   1.337799   .3767109     1.03   0.301     .7703731    2.323169
+          3  |   1.680677   .5422358     1.61   0.108     .8930209    3.163056
+             |
+       _cons |   .0392547   .0296858    -4.28   0.000     .0089163    .1728226
+------------------------------------------------------------------------------
+
+. outreg2 using validate_logit, tex title("Joint statement issuance") label parenthesis(se) st
+> ats(coef se) coefastr symb(***,**,*) rdec(2) bdec(2) ctitle("Coefficient") nocons r2 addstat
+> (Pseudo R2, e(r2_p), chi2, e(N)) nonotes replace
+validate_logit.tex
+dir : seeout
+
+. 
+end of do-file
+
+. shellout using `"validate_logit.tex"'
+shellout probably will not work with MacOSX
+
+/bin/bash: validate_logit.tex: command not found
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD04033.000000"
+
+. 
+. logit joint_dummy i.F_est_state i.g_est_state, or
+
+Iteration 0:   log likelihood = -332.72054  
+Iteration 1:   log likelihood = -331.23727  
+Iteration 2:   log likelihood = -331.21852  
+Iteration 3:   log likelihood = -331.21852  
+
+Logistic regression                             Number of obs     =      1,464
+                                                LR chi2(4)        =       3.00
+                                                Prob > chi2       =     0.5571
+Log likelihood = -331.21852                     Pseudo R2         =     0.0045
+
+------------------------------------------------------------------------------
+ joint_dummy | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ F_est_state |
+          1  |   1.335385   .9916363     0.39   0.697     .3115424    5.723947
+          3  |   1.150834   .8600329     0.19   0.851     .2660105    4.978821
+             |
+ g_est_state |
+          1  |   1.337799   .3767109     1.03   0.301     .7703731    2.323169
+          3  |   1.680677   .5422358     1.61   0.108     .8930209    3.163056
+             |
+       _cons |   .0392547   .0296858    -4.28   0.000     .0089163    .1728226
+------------------------------------------------------------------------------
+
+. outreg2 using validate_logit, tex title("Joint statement issuance") label parenthesis(se) st
+> ats(coef se) coefastr symb(***,**,*) rdec(3) bdec(3) ctitle("Coefficient") nocons r2 addstat
+> (Pseudo R2, e(r2_p), chi2, e(N)) nonotes replace
+validate_logit.tex
+dir : seeout
+
+. 
+end of do-file
+
+. seeout using "validate_logit.txt", label
+Hit Enter to continue. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD04033.000000"
+
+. do "/var/folders/w3/gyjcgdsx15vc8y_zdl2rd2bh0000gn/T//SD04033.000000"
+
+. 
+. logit joint_dummy i.F_est_state i.g_est_state, or
+
+Iteration 0:   log likelihood = -332.72054  
+Iteration 1:   log likelihood = -331.23727  
+Iteration 2:   log likelihood = -331.21852  
+Iteration 3:   log likelihood = -331.21852  
+
+Logistic regression                             Number of obs     =      1,464
+                                                LR chi2(4)        =       3.00
+                                                Prob > chi2       =     0.5571
+Log likelihood = -331.21852                     Pseudo R2         =     0.0045
+
+------------------------------------------------------------------------------
+ joint_dummy | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ F_est_state |
+          1  |   1.335385   .9916363     0.39   0.697     .3115424    5.723947
+          3  |   1.150834   .8600329     0.19   0.851     .2660105    4.978821
+             |
+ g_est_state |
+          1  |   1.337799   .3767109     1.03   0.301     .7703731    2.323169
+          3  |   1.680677   .5422358     1.61   0.108     .8930209    3.163056
+             |
+       _cons |   .0392547   .0296858    -4.28   0.000     .0089163    .1728226
+------------------------------------------------------------------------------
+
+. outreg2 using validate_logit, tex title("Joint statement issuance") label parenthesis(se) ef
+> orm coefastr symb(***,**,*) rdec(3) bdec(3) ctitle("Coefficient") nocons r2 addstat(Pseudo R
+> 2, e(r2_p), chi2, e(N)) nonotes replace
+validate_logit.tex
+dir : seeout
+
+. 
+end of do-file
+
