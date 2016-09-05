@@ -756,8 +756,11 @@ summary(lm(EmoNeg ~ overall_willing, data = validate_hmm_df))
 validate_hmm_df$F_est_state <- factor(validate_hmm_df$F_est_state)
 validate_hmm_df$g_est_state <- factor(validate_hmm_df$g_est_state)
 
-summary(lm(EmoPos ~ F_est_state + g_est_state, data = validate_hmm_df))
-summary(lm(EmoNeg ~ F_est_state + g_est_state, data = validate_hmm_df))
+val_model_pos <- lm(EmoPos ~ F_est_state + g_est_state, data = validate_hmm_df)
+val_model_neg <- lm(EmoNeg ~ F_est_state + g_est_state, data = validate_hmm_df)
+
+stargazer(val_model_pos, val_model_neg)
+
 
 
 #################################################################################
