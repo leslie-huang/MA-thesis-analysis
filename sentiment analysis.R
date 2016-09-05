@@ -412,6 +412,10 @@ add_monthlies <- function(df) {
 
 #################################################################################
 #################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
 # Markov models
 
 # Hidden Markov model: FARC
@@ -430,7 +434,6 @@ num_states <- seq(1, 6, by = 1)
 # (4) AIC, fitted model w/ covars
 
 #################################################################################
-
 # formulas for the model
 forms1 <- list(FARC_results1$EmoNeg ~ 1, FARC_results1$EmoPos ~ 1)
 
@@ -495,7 +498,11 @@ stargazer(hmm_comparison, title="Comparison of Hidden Markov Models", column.lab
 
 #################################################################################
 #################################################################################
-# HMM wih 3 states
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
+# Proceed w/ estimation using HMM wih 3 states
 
 # for FARC: model w/o covars
 hmm_F <- fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = 3, data = FARC_results1))
@@ -531,8 +538,49 @@ rowSums(head(prob_HMM_F)[,2:4])
 colnames(prob_HMM_F) <- c("est_state", paste("P",1:3, sep="_state"))
 prob_HMM_F <- cbind(FARC_results1, prob_HMM_F)
 
-# label the states with substantive labels based on mean sentiment
-# function to calculate measures of central tendency
+
+#################################################################################
+## Fit HMM for government
+
+hmm_g <- fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = 3, data = govt_results1))
+summary(hmm_g)
+
+## used here:
+# Initial state probabilties model 
+# pr1 pr2 pr3 
+# 0   0   1 
+# 
+# Transition matrix 
+# toS1  toS2  toS3
+# fromS1 0.484 0.238 0.278
+# fromS2 0.551 0.180 0.269
+# fromS3 0.367 0.229 0.404
+# 
+# Response parameters 
+# Resp 1 : gaussian 
+# Resp 2 : gaussian 
+# Re1.(Intercept) Re1.sd Re2.(Intercept) Re2.sd
+# St1           1.656  1.166           2.033  1.217
+# St2          14.278  7.601          17.975 10.498
+# St3           4.528  2.823           4.172  2.780
+
+# what is the probability of being in a given state over time?
+prob_HMM_g <- posterior(hmm_g)
+
+# check that the rows sum to 1
+rowSums(head(prob_HMM_g)[,2:4])
+
+# plot probability of being in a state over time against the sentiment measures
+colnames(prob_HMM_g) <- c("est_state", paste("P",1:3, sep="_state"))
+prob_HMM_g <- cbind(govt_results1, prob_HMM_g)
+
+#################################################################################
+#################################################################################
+#################################################################################
+# Label the states with substantive labels based on mean sentiment
+
+# Method #1: central tendency
+# function to calculate mean, sd, median
 mean_of_states <- function(df) {
   n1 <- mean(filter(df, est_state == 1)$EmoNeg)
   p1 <- mean(filter(df, est_state == 1)$EmoPos)
@@ -569,43 +617,6 @@ mean_of_states <- function(df) {
 }
 
 FARC_hmm_means <- mean_of_states(prob_HMM_F)
-
-#################################################################################
-## now do the same for the government
-
-hmm_g <- fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = 3, data = govt_results1))
-summary(hmm_g)
-
-## used here:
-# Initial state probabilties model 
-# pr1 pr2 pr3 
-# 0   0   1 
-# 
-# Transition matrix 
-# toS1  toS2  toS3
-# fromS1 0.484 0.238 0.278
-# fromS2 0.551 0.180 0.269
-# fromS3 0.367 0.229 0.404
-# 
-# Response parameters 
-# Resp 1 : gaussian 
-# Resp 2 : gaussian 
-# Re1.(Intercept) Re1.sd Re2.(Intercept) Re2.sd
-# St1           1.656  1.166           2.033  1.217
-# St2          14.278  7.601          17.975 10.498
-# St3           4.528  2.823           4.172  2.780
-
-# what is the probability of being in a given state over time?
-prob_HMM_g <- posterior(hmm_g)
-
-# check that the rows sum to 1
-rowSums(head(prob_HMM_g)[,2:4])
-
-# plot probability of being in a state over time against the sentiment measures
-colnames(prob_HMM_g) <- c("est_state", paste("P",1:3, sep="_state"))
-prob_HMM_g <- cbind(govt_results1, prob_HMM_g)
-
-# get means
 govt_hmm_means <- mean_of_states(prob_HMM_g)
 
 # cbind it into a table for stargazer
@@ -613,9 +624,10 @@ hmm_all_means <- cbind(FARC_hmm_means, govt_hmm_means)
 
 stargazer(hmm_all_means, summary = FALSE, title = "Mean Sentiment Scores for Latent States", digits = 2)
 
-#####################################################################
-# use decision matrix to optimize labels
-# use median
+#################################################################################
+# Method #2: use decision matrix to optimize labels
+
+# 2.1 use median
 hmm_medians_df <- cbind(FARC_hmm_means[, c(3,6)], govt_hmm_means[, c(3,6)])
 row.names(hmm_medians_df) <- c("state1", "state2", "state3")
 colnames(hmm_medians_df) <- c("F_neg", "F_pos", "G_neg", "G_pos")
@@ -624,7 +636,7 @@ dec_mat <- as.matrix(hmm_medians_df)
 MetaRanking(dec_mat, weights = c(.25, .25, .25, .25), cb = c("max", "min", "max", "min"), lambda = .5, v = .5)
 # 1 = low willingness, 3 = high willingness
 
-# use mean
+# 2.2 use mean
 hmm_means_df <- cbind(FARC_hmm_means[, c(1,4)], govt_hmm_means[, c(1,4)])
 row.names(hmm_means_df) <- c("state1", "state2", "state3")
 colnames(hmm_means_df) <- c("F_neg", "F_pos", "G_neg", "G_pos")
@@ -636,7 +648,8 @@ MetaRanking(dec_mat2, weights = c(.25, .25, .25, .25), cb = c("max", "min", "max
 prob_HMM_F$est_state <- recode(prob_HMM_F$est_state, "1=2; 2=1")
 prob_HMM_g$est_state <- recode(prob_HMM_g$est_state, "1=2; 2=1")
 
-# what state are we in at a given time? graphs
+#################################################################################
+# What state are we in at a given time? GGplot it!
 
 HMM_F_est_state_gg = ggplot(prob_HMM_F, aes(x = as.Date(date, origin = "1970-01-01"), y = est_state)) +
   geom_step(color = "#000000") +
@@ -666,11 +679,16 @@ HMM_g_est_state_gg
 
 
 #################################################################################
-# is there a relationship between predicted state and joint statement sentiment?
+#################################################################################
+#################################################################################
+# Validation: what is the relationship between joint sentiment and the predicted state?
+
+# make date observations for entire time period, merge in states
 date_seq <- seq(as.Date("2012-09-01"), as.Date("2016-05-31"), by = "day")
 hmm_F_merge <- prob_HMM_F[, 3:4]
 hmm_g_merge <- prob_HMM_g[, 3:4]
 
+# create var for overall willingness and merge in estimated FARC and govt states
 validate_hmm_df <- data.frame(cbind(as.Date(date_seq, origin = "1970-01-01"), rep(NA, length(date_seq))))
 validate_hmm_df$X1 <- as.Date(validate_hmm_df$X1, origin = "1970-01-01")
 colnames(validate_hmm_df) <- c("date", "overall_willing")
@@ -692,7 +710,7 @@ for (i in 7:1469) {
   }
 }
 
-# add joint sentiment
+# merge in joint sentiment
 validate_hmm_df <- merge(validate_hmm_df, joint_results[, c(1:2, 5)], by = "date", all.x = TRUE)
 
 # code the overall willingness variable
@@ -705,11 +723,15 @@ for (i in 7:length(validate_hmm_df[, 1])) {
   }
 }
 
+#################################################################################
+# now run some models
+
+# overall willingness as a dummy var
 summary(lm(EmoPos ~ overall_willing, data = validate_hmm_df))
 
 summary(lm(EmoNeg ~ overall_willing, data = validate_hmm_df))
 
-# let's try a categorical var
+# states of willingness as categorical vars
 validate_hmm_df$F_est_state <- factor(validate_hmm_df$F_est_state)
 validate_hmm_df$g_est_state <- factor(validate_hmm_df$g_est_state)
 
@@ -724,8 +746,12 @@ stargazer(val_model_pos, val_model_neg)
 #################################################################################
 #################################################################################
 #################################################################################
+#################################################################################
+#################################################################################
 
 # Transition model: sentiment-responds-to-sentiment
+
+# Set up the data
 
 # Classify overall sentiment as "high" or "low": Compare negative and positive emotion proportions within a given document. 1 = high, 0 = low
 FARC_results3 <- FARC_results
@@ -742,6 +768,7 @@ transition_chain <- transition_chain[order(as.Date(transition_chain$date, format
 # filter dates to the peace process
 transition_chain <- filter(transition_chain, date > "2012-01-01")
 
+#################################################################################
 # pairwise comparison to gauge "responsiveness": how often are the parties giving statements at t and t-1 different?
 
 get_responsiveness <- function(df) {
@@ -766,7 +793,7 @@ pairwise_num
 
 #################################################################################
 #################################################################################
-# Multinomial logit fitted MLE
+# Multinomial logit fitted w/ MLE
 
 # Let's get our dataset!!!!!!
 mnl_df <- dplyr::select(transition_chain, date, sentiment_level, side)
@@ -819,11 +846,11 @@ state_maker <- function(df) {
 # Run function to create dataset
 mnl_df <- state_maker(mnl_df)
 
-# add the violence and public opinion stats to the dataset (for fixed effects) and then take log(x+1) because of zeroes
+# add the violence and public opinion stats to the dataset and then take log(x+1) because of zeroes
 mnl_df <- add_monthlies(mnl_df)
 mnl_df[6:9] <- log(mnl_df[6:9] + 1)
 
-# add year for random/fixed effects
+# add year for fixed effects
 mnl_df$year <- mnl_df$date
 mnl_df$year <- sapply(mnl_df$year, function(x) {substr(toString(x), 1, 4)})
 mnl_df$year <- factor(mnl_df$year)
@@ -832,7 +859,6 @@ mnl_df$year <- factor(mnl_df$year)
 mnl_df$state_y <- factor(mnl_df$state_y)
 mnl_df$state_x <- factor(mnl_df$state_x)
 mnl_df$state_y2 <- relevel(mnl_df$state_y, ref = "1")
-
 
 # Export to Stata.... sigh
 write.dta(mnl_df, "mnl_data.dta")
@@ -844,9 +870,12 @@ write.dta(mnl_df, "mnl_data.dta")
 # get the relative risk ratios
 # exp(coef(mnl_mod))
 
-# Convert for mlogit pkg
+# Convert data to wide for mlogit pkg
 ml_df <- mnl_df
 ml_df <- mlogit.data(ml_df, choice = "state_y2", shape = "wide")
+
+#################################################################################
+# Now let's test 4 different nested models
 
 # Model #1 specification: base
 ml_mod1 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x, data = ml_df, reflevel = "3")
@@ -861,11 +890,12 @@ ml_mod3 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + peac
 # Model #4: base + year + covars
 ml_mod4 <- mlogit::mlogit(formula = state_y2 ~ 1 | state_x + FARC_actions + peace_approve + year, data = ml_df, reflevel = "3")
 
+# output table for paper
 stargazer(ml_mod1, ml_mod2, ml_mod3, ml_mod4, digits = 2, digit.separator = "", title = "Comparison of Multinomial Logit Models", single.row = TRUE)
 
 #################################################################################
 #################################################################################
-# Proceed with Model #1
+# Proceed w/ Model #1 for estimation
 
 # relative risk ratio
 mod1_rrr <- exp(coef(ml_mod1))
@@ -879,7 +909,7 @@ mod1_fit <- data.frame(cbind(mod1_fit, mnl_df$date[1:418]))
 colnames(mod1_fit) <- c("Pr_1", "Pr_2", "Pr_3", "Pr_4", "date")
 mod1_fit$date <- as.Date(mod1_fit$date, origin = "1970-01-01")
 
-# fiddle with melting data
+# melt data for graphing
 mod1_fit$id <- rep(1:length(mod1_fit[,1]))
 mod1_long <- melt(mod1_fit, id = c("date", "id"), variable.name = "state", value.name = "predicted_Pr")
 
