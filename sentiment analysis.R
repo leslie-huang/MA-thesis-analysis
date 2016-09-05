@@ -483,11 +483,10 @@ BIC_vals1 <- sapply(num_states, function(x) {BIC(fit(depmix(forms1, family = lis
 BIC_df1 <- data.frame(cbind(num_states, BIC_vals1))
 
 # plot the BIC values to select the optimal number of states
-BIC_plot1 <- ggplot(BIC_df1, aes(x = num_states, y = BIC_vals1)) +
+# BIC_plot1 <- ggplot(BIC_df1, aes(x = num_states, y = BIC_vals1)) +
   geom_point() +
   ggtitle("BIC Values for n = 2:10 Latent States Fitted HMM")
-
-BIC_plot1
+# BIC_plot1
 
 # Optimize AIC vals for same fitted model
 AIC_vals1 <- sapply(num_states, function(x) {AIC(fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = x, data = FARC_results1)))})
@@ -495,11 +494,11 @@ AIC_vals1 <- sapply(num_states, function(x) {AIC(fit(depmix(forms1, family = lis
 AIC_df1 <- data.frame(cbind(num_states, AIC_vals1))
 
 # plot the AIC values to select the optimal number of states
-AIC_plot1 <- ggplot(AIC_df1, aes(x = num_states, y = AIC_vals1)) +
-  geom_point() +
-  ggtitle("AIC Values for n = 2:10 Latent States Fitted HMM")
-
-AIC_plot1
+# AIC_plot1 <- ggplot(AIC_df1, aes(x = num_states, y = AIC_vals1)) +
+#   geom_point() +
+#   ggtitle("AIC Values for n = 2:10 Latent States Fitted HMM")
+# 
+# AIC_plot1
 
 
 #################################################################################
@@ -544,6 +543,25 @@ stargazer(hmm_comparison, title="Comparison of Hidden Markov Models", column.lab
 # for FARC: model w/o covars
 hmm_F <- fit(depmix(forms1, family = list(gaussian(), gaussian()), nstates = 3, data = FARC_results1))
 summary(hmm_F)
+
+## used here: 
+# Initial state probabilties model 
+# pr1 pr2 pr3 
+# 0   1   0 
+# 
+# Transition matrix 
+# toS1 toS2  toS3
+# fromS1 0.792  0.0 0.208
+# fromS2 0.100  0.9 0.000
+# fromS3 0.518  0.0 0.482
+# 
+# Response parameters 
+# Resp 1 : gaussian 
+# Resp 2 : gaussian 
+# Re1.(Intercept) Re1.sd Re2.(Intercept) Re2.sd
+# St1           0.501  0.292           2.851  1.746
+# St2           5.480  3.257           3.455  2.784
+# St3           1.967  1.065          11.843  6.332
 
 # what is the probability of being in a given state over time?
 prob_HMM_F <- posterior(hmm_F)
@@ -601,6 +619,25 @@ FARC_hmm_means <- mean_of_states(prob_HMM_F)
 hmm_g <- fit(depmix(forms1_govt, family = list(gaussian(), gaussian()), nstates = 3, data = govt_results1))
 summary(hmm_g)
 
+## used here:
+# Initial state probabilties model 
+# pr1 pr2 pr3 
+# 0   0   1 
+# 
+# Transition matrix 
+# toS1  toS2  toS3
+# fromS1 0.484 0.238 0.278
+# fromS2 0.551 0.180 0.269
+# fromS3 0.367 0.229 0.404
+# 
+# Response parameters 
+# Resp 1 : gaussian 
+# Resp 2 : gaussian 
+# Re1.(Intercept) Re1.sd Re2.(Intercept) Re2.sd
+# St1           1.656  1.166           2.033  1.217
+# St2          14.278  7.601          17.975 10.498
+# St3           4.528  2.823           4.172  2.780
+
 # what is the probability of being in a given state over time?
 prob_HMM_g <- posterior(hmm_g)
 
@@ -619,13 +656,24 @@ hmm_all_means <- cbind(FARC_hmm_means, govt_hmm_means)
 
 stargazer(hmm_all_means, summary = FALSE, title = "Mean Sentiment Scores for Latent States", digits = 2)
 
-# use decision matrix to optimize label
-hmm_medians_df <- cbind(FARC_hmm_means[, c(1,4)], govt_hmm_means[, c(1,4)])
+#####################################################################
+# use decision matrix to optimize labels
+# use median
+hmm_medians_df <- cbind(FARC_hmm_means[, c(3,6)], govt_hmm_means[, c(3,6)])
 row.names(hmm_medians_df) <- c("state1", "state2", "state3")
 colnames(hmm_medians_df) <- c("F_neg", "F_pos", "G_neg", "G_pos")
 dec_mat <- as.matrix(hmm_medians_df)
 
-MetaRanking(dec_mat, weights = c(.25, .25, .25, .25), cb = c("min", "max", "min", "max"), lambda = .5, v = .5)
+MetaRanking(dec_mat, weights = c(.25, .25, .25, .25), cb = c("max", "min", "max", "min"), lambda = .5, v = .5)
+# 1 = low willingness, 3 = high willingness
+
+# use mean
+hmm_means_df <- cbind(FARC_hmm_means[, c(1,4)], govt_hmm_means[, c(1,4)])
+row.names(hmm_means_df) <- c("state1", "state2", "state3")
+colnames(hmm_means_df) <- c("F_neg", "F_pos", "G_neg", "G_pos")
+dec_mat2 <- as.matrix(hmm_means_df)
+
+MetaRanking(dec_mat2, weights = c(.25, .25, .25, .25), cb = c("max", "min", "max", "min"), lambda = .5, v = .5)
 
 # relabel the states on a spectrum of willingness to negotiate
 prob_HMM_F$est_state <- recode(prob_HMM_F$est_state, "1=2; 2=1")
@@ -659,8 +707,57 @@ HMM_g_est_state_gg = ggplot(prob_HMM_g, aes(x = as.Date(date, origin = "1970-01-
 HMM_F_est_state_gg
 HMM_g_est_state_gg
 
+
 #################################################################################
 # is there a relationship between predicted state and joint statement sentiment?
+date_seq <- seq(as.Date("2012-09-01"), as.Date("2016-05-31"), by = "day")
+hmm_F_merge <- prob_HMM_F[, 3:4]
+hmm_g_merge <- prob_HMM_g[, 3:4]
+
+validate_hmm_df <- data.frame(cbind(as.Date(date_seq, origin = "1970-01-01"), rep(NA, length(date_seq))))
+validate_hmm_df$X1 <- as.Date(validate_hmm_df$X1, origin = "1970-01-01")
+colnames(validate_hmm_df) <- c("date", "overall_willing")
+validate_hmm_df <- merge(validate_hmm_df, hmm_F_merge, by = "date", all.x = TRUE)
+colnames(validate_hmm_df) <- c("date", "overall_willing", "F_est_state")
+validate_hmm_df <- merge(validate_hmm_df, hmm_g_merge, by = "date", all.x = TRUE)
+colnames(validate_hmm_df) <- c("date", "overall_willing", "F_est_state", "g_est_state")
+
+# manually populate all of the regime-day observations
+for (i in 4:1469) {
+  if (is.na(validate_hmm_df$F_est_state[i + 1])) {
+    validate_hmm_df$F_est_state[i + 1] <- validate_hmm_df$F_est_state[i]
+  }
+}
+
+for (i in 7:1469) {
+  if (is.na(validate_hmm_df$g_est_state[i + 1])) {
+    validate_hmm_df$g_est_state[i + 1] <- validate_hmm_df$g_est_state[i]
+  }
+}
+
+# add joint sentiment
+validate_hmm_df <- merge(validate_hmm_df, joint_results[, c(1:2, 5)], by = "date", all.x = TRUE)
+
+# code the overall willingness variable
+for (i in 7:length(validate_hmm_df[, 1])) {
+  if (validate_hmm_df$F_est_state[i] >= 2 & validate_hmm_df$g_est_state[i] >= 2) {
+    validate_hmm_df$overall_willing[i] <- 1
+  }
+  else {
+    validate_hmm_df$overall_willing[i] <- 0
+  }
+}
+
+summary(lm(EmoPos ~ overall_willing, data = validate_hmm_df))
+
+summary(lm(EmoNeg ~ overall_willing, data = validate_hmm_df))
+
+# let's try a categorical var
+validate_hmm_df$F_est_state <- factor(validate_hmm_df$F_est_state)
+validate_hmm_df$g_est_state <- factor(validate_hmm_df$g_est_state)
+
+summary(lm(EmoPos ~ F_est_state + g_est_state, data = validate_hmm_df))
+summary(lm(EmoNeg ~ F_est_state + g_est_state, data = validate_hmm_df))
 
 
 #################################################################################

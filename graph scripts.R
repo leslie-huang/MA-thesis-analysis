@@ -473,3 +473,48 @@ joint_melt_gg <- ggplot(data = joint_results_melt, aes(y = sentiment_measure, x 
                         values = c(1,2,3)) +
   ggtitle("Joint: Loessed % of Document Contributed by Sentiment Type") +
   theme_bw()
+
+############################################################################
+# melted violence and public opinion graphs
+
+
+opinion_melt <- public_op
+opinion_melt$id <- rep(1:length(opinion_melt[,1]))
+opinion_melt <- melt(opinion_melt, id = c("date", "id"), variable.name = "rating_type", value.name = "rating")
+
+opinion_melt_gg <- ggplot(data = opinion_melt, aes(y = rating, x = as.Date(date, origin = "1970-01-01"), group = rating_type)) +
+  geom_smooth(method = "loess", se = FALSE, aes(linetype = rating_type, color = rating_type)) +
+  labs(
+    x = "Date",
+    y = "Approval Rating (Loessed)") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  scale_colour_manual(name = "Rating",
+                      labels = c("Approval of Santos", "Approval of peace talks"),
+                      values = c("grey50", "black")) +
+  scale_linetype_manual(name = "Rating",
+                        labels = c("Approval of Santos", "Approval of peace talks"),
+                        values = c(1,2)) +
+  ggtitle("Public Opinion (loessed)") +
+  theme_bw()
+
+
+violence_melt <- monthly_viol
+violence_melt$id <- rep(1:length(violence_melt[,1]))
+violence_melt <- melt(violence_melt, id = c("date", "id"), variable.name = "violence_type", value.name = "number_incidents")
+
+violence_melt_gg <- ggplot(data = violence_melt, aes(y = number_incidents, x = as.Date(date, origin = "1970-01-01"), group = violence_type)) +
+  geom_smooth(method = "loess", se = FALSE, aes(linetype = violence_type, color = violence_type)) +
+  labs(
+    x = "Date",
+    y = "Number of Incidents (loessed)") +
+  scale_x_date(date_minor_breaks = "1 month",
+               limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
+  scale_colour_manual(name = "Violence Type",
+                      labels = c("FARC actions", "Army casualties (excl. wounded)", "Militants demobilized"),
+                      values = c("grey30", "grey70", "black")) +
+  scale_linetype_manual(name = "Violence Type",
+                        labels = c("FARC actions", "Army casualties (excl. wounded)", "Militants demobilized"),
+                        values = c(1,2,3)) +
+  ggtitle("Levels of Violence (loessed)") +
+  theme_bw()
