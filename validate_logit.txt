@@ -4,15 +4,33 @@ VARIABLES	LABELS	Coefficient
 		
 joint_dummy	joint_dummy	.
 		(.)
-2.F_est_state	F_est_state = 2, 1	1.335
-		(0.992)
-3.F_est_state	F_est_state = 3, 3	1.151
-		(0.860)
-2.g_est_state	g_est_state = 2, 1	1.338
-		(0.377)
-3.g_est_state	g_est_state = 3, 3	1.681
-		(0.542)
+2.F_est_state	F_est_state = 2, 1	0.603
+		(0.653)
+3.F_est_state	F_est_state = 3, 3	0.404
+		(0.461)
+2.g_est_state	g_est_state = 2, 1	0.367
+		(0.534)
+3.g_est_state	g_est_state = 3, 3	2.357
+		(1.272)
+1b.F_est_state#1b.g_est_state		1.000
+		(0.000)
+1b.F_est_state#2o.g_est_state		1.000
+		(0.000)
+1b.F_est_state#3o.g_est_state		1.000
+		(0.000)
+2o.F_est_state#1b.g_est_state		1.000
+		(0.000)
+2.F_est_state#2.g_est_state		3.635
+		(5.450)
+2.F_est_state#3.g_est_state		0.586
+		(0.406)
+3o.F_est_state#1b.g_est_state		1.000
+		(0.000)
+3.F_est_state#2.g_est_state		4.389
+		(6.778)
+3o.F_est_state#3o.g_est_state		1.000
+		(0.000)
 		
 Observations		1,464
-Pseudo R2		0.00451
+Pseudo R2		0.00671
 chi2		1464

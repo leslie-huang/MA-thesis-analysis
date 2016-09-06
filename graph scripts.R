@@ -438,7 +438,7 @@ govt_results_melt <- govt_results[, -4]
 govt_results_melt$id <- rep(1:length(govt_results[,1]))
 govt_results_melt <- melt(govt_results_melt, id = c("date", "id"), variable.name = "sentiment_type", value.name = "sentiment_measure")
 
-govt_melt_gg <- ggplot(data = FARC_results_melt, aes(y = sentiment_measure, x = as.Date(date, origin = "1970-01-01"), group = sentiment_type)) +
+govt_melt_gg <- ggplot(data = govt_results_melt, aes(y = sentiment_measure, x = as.Date(date, origin = "1970-01-01"), group = sentiment_type)) +
   geom_smooth(method = "loess", se = FALSE, aes(linetype = sentiment_type, color = sentiment_type)) +
   labs(
     x = "Date",

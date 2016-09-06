@@ -82,17 +82,12 @@ lrtest ll2 ll4, force
 
 lrtest ll3 ll4, force
 
-* get rid of factor vars because mlogtest doesn't like them
-xi i.state_x i.year
-mlogit state_y _Is* army_casualties pres_approve _Iy*
-mlogtest, lr
-mlogtest , hausman smhsiao base
 
 ***********************************************************************
 * graphs graphs graphs
 * We're going with Model # 4
 
-mlogit state_y i.state_x
+mlogit state_y i.state_x i.year FARC_actions peace_approve , baseoutcome(3)
 
 margins state_x, atmeans predict(outcome(1))
 marginsplot, name(state_x)  xlabel(`=1' "FARC/low" `=2' "FARC/high" `=3' "Govt/low" `=4' "Govt/high", labsize(small) )  title("Pr(State at t+1 = FARC/low)") xtitle("State at t", margin(0 4 0 0)) ytitle("Pr(State at t+1 = FARC-low)") ytitle( , size(small) margin(0 2 0 0)) ytick(0(.2)1) ylabel(`=.2' "0.2" `=.4' "0.4" `=.6' "0.6" `=.8' "0.8" , labsize(small))

@@ -729,10 +729,10 @@ for (i in 7:length(validate_hmm_df[, 1])) {
 # now run some models
 
 # lm of Emo ~ dummy for overall willingness
-summary(lm(EmoPos ~ overall_willing, data = validate_hmm_df))
-summary(lm(EmoNeg ~ overall_willing, data = validate_hmm_df))
+# summary(lm(EmoPos ~ overall_willing, data = validate_hmm_df))
+# summary(lm(EmoNeg ~ overall_willing, data = validate_hmm_df))
 
-# factor and relevel to set 2 as base case
+# factor and relevel, set 2 as base case
 validate_hmm_df$F_est_state <- factor(validate_hmm_df$F_est_state)
 validate_hmm_df$g_est_state <- factor(validate_hmm_df$g_est_state)
 
@@ -947,5 +947,7 @@ predicted_mnl_gg <- ggplot(data = mod1_long, aes(y = predicted_Pr, x = as.Date(d
                         values = c(1, 2, 3, 4)) +
   ggtitle("Probability of Each State Over Time") +
   theme_bw()
+
+predicted_mnl_gg
 
 save.image()

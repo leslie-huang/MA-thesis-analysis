@@ -518,8 +518,35 @@ Theory and hypotheses
 \end_layout
 
 \begin_layout Standard
-Why does it matter how talks are going? It is not a stretch to suggest that
- impressions or assessments of 
+Why does it matter how peace talks are going? Scholars have theorized that
+ bargaining failures and commitment problems explain why most civil wars
+ do not end with negotiated settlements.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "walter1997critical"
+
+\end_inset
+
+ Other research has shown that, should an agreement be reached, its survival
+ can be predicted by the circumstances of the just-ended conflict (e.g.
+ its intensity and the previous regime) as well as provisions such as territoria
+l autonomy and assurances of security made by third-party states or organization
+s.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "hartzell2001stabilizing"
+
+\end_inset
+
+ This suggests that we should not be interested only in the end product,
+ but also in the process that generates agreements, or fails to achieve
+ them.
+ A better understanding of how peace talks progress may help our understanding
+ of what contributes to durable peace.
+\end_layout
+
+\begin_layout Standard
+Impressions or assessments of 
 \begin_inset Quotes eld
 \end_inset
 
@@ -527,9 +554,8 @@ how the talks are going
 \begin_inset Quotes erd
 \end_inset
 
- affect the views of the public, nor it is an exaggeration to claim that
- decisions made by negotiants during talks may be colored by answers to
- or beliefs about questions such as 
+ affect the views of the public, and decisions made by negotiants may be
+ colored by answers to or beliefs about questions such as 
 \begin_inset Quotes eld
 \end_inset
 
@@ -547,15 +573,28 @@ how hard are they pushing for their demands?
 
  This paper offers new methods of measurement that get past the vagueness
  or relativism in the way these questions are stated.
-\end_layout
-
-\begin_layout Standard
-The answer to the first question, whether the other party is serious about
+ The answer to the first question, whether the other party is serious about
  negotiations, is significant for two reasons.
  To use FARC-Colombia as our example: The government wants to know, given
- the political cost of continuing to negotiate, whether an avowedly Marxist-Leni
-nist group will actually follow through on a peace deal that almost certainly
- would not include the implementation of a Marxist economic-political system.
+ the political cost of continuing to negotiate and the still heavier cost
+ of a failure (a common observation is that Santos 
+\begin_inset Quotes eld
+\end_inset
+
+has staked his legacy on the deal
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "washpost_santos"
+
+\end_inset
+
+), whether an avowedly Marxist-Leninist group will actually follow through
+ on a peace deal that almost certainly would not include the implementation
+ of a Marxist economic-political system.
  Second, regardless of the 
 \begin_inset Quotes eld
 \end_inset
@@ -582,10 +621,10 @@ the government isn't driving a hard enough bargain
 \begin_inset Quotes erd
 \end_inset
 
-) will affect the government's bargaining behavior and demands in public
- and in private, its level of military operations, and certainly its rhetoric,
- as the government has to answer to its political opponents and, eventually,
- in the next cycle of elections.
+) affect the government's bargaining behavior and demands in public and
+ in private, its level of military operations, and certainly its rhetoric,
+ as the government has to answer to public opinion, political opponents
+ and, eventually, the next cycle of elections.
 \end_layout
 
 \begin_layout Standard
@@ -3050,12 +3089,13 @@ low
 \end_inset
 
  state.
- For the government, on the other hand, the transition probabilities are
- more evenly dispersed.
+ For the government, on the other hand, the transition probabilities in
+ each row are more evenly dispersed.
  There are relatively higher probabilities that the government will transition
  to a state of moderate willingness from any state; but, for instance, when
- the government is in a moderate state of willingness, it is roughly equally
- likely to transition to a hardline or conciliatory state (
+ the government is in a state of moderate willingness to negotiate, it is
+ roughly equally likely to transition to a hardline or conciliatory state
+ (
 \begin_inset Formula $0.24$
 \end_inset
 
@@ -3542,26 +3582,27 @@ Validation
 Clearly, with noisy and irregular data, matching events to states is imperfect
  and at best anecdotal.
  To evaluate the validity of the hidden Markov model, I use a simple regression
- of joint statement sentiment on the predicted states on the day that the
- joint statement was issued to test my hypothesis that there is a positive
- association between willingness to negotiate and joint sentiment.
+ of joint statement sentiment on the predicted states of willingness on
+ the day that the joint statement was issued, with linear interaction terms,
+ to test my hypothesis that there is a positive association between willingness
+ to negotiate and sentiment of joint statements.
  I also use a logistic regression to test the hypothesis that there is a
  positive association between conciliatory states (high willingness to negotiate
-) and the issuing of joint statements.
+) and the issuance of joint statements.
 \end_layout
 
 \begin_layout Standard
-Regarding the first hypothesis, high government willingness to negotiate,
- relative to low willingness, is correlated with increases in both positive
- and negative emotion, whereas FARC's high willingness state is associated
- with decreases in both types of sentiment.
- The relationship between state and the sentiment measures, in the first
- two columns of the table, should be taken with a grain of salt: the conclusion
- to be drawn here is that high willingness to negotiate is correlated with
- more frequent emotional language.
- The third column indicates contradictory but statistically insignificant
- conclusions: the FARC hardline state and government conciliatory states
- are associated with a higher ratio of positive to negative language.
+The interaction terms show that when both parties are estimated to be in
+ the low willingness (hardline) state, this is associated with much lower
+ levels of positive sentiment and slightly lower levels of negative sentiment.
+ An even more pronounced effect is observed when FARC is in a conciliatory
+ state but the government is in a hardline state.
+ Joint statements are more positive only when the government is conciliatory
+ but FARC is hardline.
+ These results generally support the estimation from the hidden Markov model.
+ It seems that the government's level of willingness to negotiate has a
+ greater influence on the sentiment of joint statements than FARC's level
+ of willingness does.
 \end_layout
 
 \begin_layout Standard
@@ -3581,8 +3622,7 @@ centering
 
   
 \backslash
-caption{Relationship between Joint Sentiment and FARC/Government Willingness
- to Negotiate} 
+caption{Joint Sentiment and FARC/Government Willingness to Negotiate} 
 \end_layout
 
 \begin_layout Plain Layout
@@ -3598,7 +3638,7 @@ label{}
 \backslash
 begin{tabular}{@{
 \backslash
-extracolsep{5pt}}lccc} 
+extracolsep{5pt}}lcc} 
 \end_layout
 
 \begin_layout Plain Layout
@@ -3627,29 +3667,9 @@ hline
 
  & 
 \backslash
-multicolumn{3}{c}{
+multicolumn{2}{c}{
 \backslash
-textit{Sentiment measure}} 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-cline{2-4} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-
-\backslash
-[-1.8ex] & Positive & Negative & Positive to negative ratio 
+textit{Does Willingness to Negotiate Predict Joint Sentiment?}} 
 \backslash
 
 \backslash
@@ -3660,9 +3680,29 @@ cline{2-4}
 
 
 \backslash
+cline{2-3} 
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
-[-1.8ex] & (1) & (2) & (3)
+
+\backslash
+[-1.8ex] & Negative & Positive 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex] & (1) & (2) 
 \backslash
 
 \backslash
@@ -3682,88 +3722,194 @@ hline
 
 \begin_layout Plain Layout
 
- FARC low willingness & $-$26.61$^{*}$ (15.41) & $-$3.98 (2.47) & 1.06 (2.27)
- 
+FARC low willingness & 0.39 & 5.47 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-  FARC high willingness & $-$28.29$^{*}$ (15.61) & $-$4.52$^{*}$ (2.51) & $-$0.74
- (2.30) 
+ & (3.51) & (21.49) 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-  Government low willingness & 5.41 (5.86) & 1.30 (0.94) & 0.46 (0.86) 
+FARC high willingness & 1.23 & 15.53 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-  Government high willingness & 10.22 (6.77) & 2.66$^{**}$ (1.09) & $-$0.51 (1.00)
- 
+ & (3.71) & (22.69) 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-  Constant & 37.43$^{**}$ (15.31) & 4.73$^{*}$ (2.46) & 2.18 (2.25) 
+Government low willingness & 10.30** & 72.37** 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
- 
-\backslash
-hline 
+ & (4.79) & (29.29) 
 \backslash
 
 \backslash
-[-1.8ex] 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-Observations & 88 & 88 & 88 
+Government high willingness & 1.45 & -3.48 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-Adjusted R$^{2}$ & 0.01 & 0.05 & 0.05 
+ & (1.78) & (10.90) 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-F Statistic (df = 4; 83) & 1.22 & 2.03$^{*}$ & 2.26$^{*}$ 
+& & 
 \backslash
 
 \backslash
- 
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Interactions & & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FARC low x Govt.
+ low & -8.77* & -66.57** 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ & (4.92) & (30.14) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FARC low x Govt.
+ high & 1.29 & 19.46 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ & (2.28) & (13.95) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FARC high x Govt.
+ low & -10.60** & -77.70** 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ & (5.08) & (31.07) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ &  &  
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Constant & 0.23 & 3.95 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+& (3.38) & (20.71) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Observations & 88 & 88 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+R-squared & 0.14 & 0.14 
+\backslash
+
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -3790,7 +3936,7 @@ hline
 \backslash
 textit{Notes:}  & 
 \backslash
-multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
+multicolumn{2}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
 \backslash
 
 \backslash
@@ -3801,20 +3947,8 @@ multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01}
 
 
 \backslash
-multicolumn{4}{l}{Because positive or negative emotion sometimes takes on
- the value of zero, the ratio is calculated } 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-multicolumn{4}{l}{by smoothing emotion by 0.001 and taking the log of the
- ratio.} 
+multicolumn{3}{l}{FARC high x Govt.
+ high interaction term omitted because of collinearity.} 
 \backslash
 
 \backslash
@@ -3841,23 +3975,17 @@ end{table}
 \end_layout
 
 \begin_layout Standard
-We are also interested in whether joint statement issuance is correlated
- with willingness to negotiate, as estimated by this model.
- Since joint statements can announce agreements on policy, as well as announceme
-nts of the next steps in the negotiating schedule, their occurrence may
- be a metric for how much is being accomplished in the negotiations, and
- we want to know whether the hidden Markov model can predict them.
- The logistic regression in the table below uses date/state indicator variables
- for FARC and the government for every day from September 1, 2012, and May
- 31, 2016, and a dummy variable for whether a joint statement was issued
- on that day.
- The results are statistically insignificant because of the infrequence
- of joint statements, but they would suggest that, relative to moderate
- government willingness, high government willingness is more associated
- with joint statement issuance than is low government willingness.
- The opposite relationship is observed for FARC, where, relative to moderate
- willingness, low willingness is more likely than high willingness to be
- associated with a joint statement being issued.
+We are also interested in whether levels of willingness to negotiate are
+ correlated with whether a joint statement is issued at all.
+ Since joint statements can announce agreements on policy, progress reports,
+ or the next steps in the negotiating schedule, their occurrence may be
+ a metric for how much is being accomplished in the negotiations.
+ To test whether the states estimated by the HMM can predict joint statement
+ issuance, I created date/state indicator variables for FARC and the government
+ for each day in the negotiations period, and a dummy variable for whether
+ a joint statement was issued.
+ I use a logistic regression with linear interaction terms.
+ As the table below shows, none of the results are statistically significant.
 \end_layout
 
 \begin_layout Standard
@@ -3945,49 +4073,149 @@ hline
 
 \begin_layout Plain Layout
 
- FARC low willingness & 1.34 (0.99) 
+ FARC low willingness & 0.60 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-  FARC high willingness & 1.15 (0.86) 
+ & (0.653) 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-  Government low willingness & 1.34 (0.38) 
+FARC high willingness & 0.40 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-  Government high willingness & 1.68 (0.54) 
+ & (0.461) 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
- 
-\backslash
-hline 
+Government low willingness & 0.37 
 \backslash
 
 \backslash
-[-1.8ex] 
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ & (0.534) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Government high willingness & 2.36 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ & (1.272) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Interactions & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FARC low x Govt.
+ low & 3.64 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ & (5.45) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FARC low x Govt.
+ high & 0.59 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ & (0.41) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FARC high x Govt.
+ low & 4.39 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ & (6.78) 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ &  
+\backslash
+
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -3996,27 +4224,27 @@ Observations & 1,464
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-Log Likelihood & $-$331.22 
+Pseudo R2 & 0.0067 
 \backslash
 
 \backslash
- 
+
 \end_layout
 
 \begin_layout Plain Layout
 
-Akaike Inf.
- Crit.
- & 672.44 
+ chi2 & 1464 
 \backslash
 
 \backslash
  
+\backslash
+hline
 \end_layout
 
 \begin_layout Plain Layout
@@ -4054,7 +4282,8 @@ multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01}
 
 
 \backslash
-multicolumn{2}{l}{Odds ratios are reported.} 
+multicolumn{2}{l}{Odds ratios are reported.
+ The referent level is moderate willingness to negotiate.} 
 \backslash
 
 \backslash
@@ -4080,6 +4309,10 @@ end{table}
 
 \end_layout
 
+\begin_layout Standard
+Problematic is 
+\end_layout
+
 \begin_layout Subsection
 Sentiment response results
 \end_layout
@@ -4087,8 +4320,8 @@ Sentiment response results
 \begin_layout Standard
 For the second part of this paper, I estimate the responsiveness of sentiment
  to sentiment, in the form of a Markov transition matrix.
- As discussed previously, the probabilities in this matrix are calculated
- using a multinomial logit with maximum likelihood estimation.
+ The probabilities in this matrix are calculated using a multinomial logit
+ with maximum likelihood estimation.
  I test four models: The first is a simple MNL of 
 \begin_inset Formula $State_{t+1}$
 \end_inset
@@ -4107,8 +4340,8 @@ For the second part of this paper, I estimate the responsiveness of sentiment
  month and log transformed presidential approval ratings for that month.
  Model (4) includes both the year indicators and the violence and public
  opinion covariates.
- Thus, Model (1) is nested in all of the other models, and Models (2) and
- (3) are nested in Model (4).
+ Thus, Model (1) is nested in each of the other models, and Models (2) and
+ (3) are nested in Model (4), the full model.
  
 \end_layout
 
@@ -4784,15 +5017,253 @@ As shown in the fit statistics at the bottom of the table, the AIC and the
 ly.
  However, the log likelihood value suggests that the reduced model, (1),
  is actually the best fit.
- In the interest of parsimony, the following analysis will utilize model
- (1).
- I also use pairwise likelihood ratio tests (see Appendix).
+ I also use pairwise likelihood ratio tests, shown in the table below, to
+ compare each nested model with the full model.
+ Those results suggest that Model (4), with year effects and the log violence
+ and log public opinion coefficients, is the best fit, so the rest of the
+ results proceed using that model.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{table}[!htbp] 
+\backslash
+centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+caption{Likelihood Ratio Test Comparison of Nested Models} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+small
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{@{
+\backslash
+extracolsep{5pt}}ccccc} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex]
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+ & 
+\backslash
+multicolumn{4}{c}{
+\backslash
+textit{Likelihood Ratio $
+\backslash
+chi^{2}$ }} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cline{2-5} 
+\backslash
+
+\backslash
+[-1.8ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+& 
+\backslash
+multicolumn{4}{l}{Full model} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cline{2-3} 
+\backslash
+
+\backslash
+[-1.8ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex] & (1) & (2) & (3) & (4)
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+Nested model & & & & 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cline{1-1} 
+\backslash
+
+\backslash
+[-1.8ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+ (1) & -- & $84.90^{***}$ & $77.71^{***}$ & $142.17^{***}$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ (2) & -- & -- & -- & $57.27^{***}$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ (3) & -- & -- & -- & $64.46^{***}$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+&&&& 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+textit{Notes:}  & 
+\backslash
+multicolumn{4}{c}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{table} 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph*
 \begin_inset Graphics
-	filename mnl_pr.eps
-	width 105text%
+	filename mnl_pr_mod4.eps
+	width 110text%
 
 \end_inset
 
@@ -4898,7 +5369,7 @@ cmidrule(l){2-5}
 
 \begin_layout Plain Layout
 
-FARC-low & $0.33$ & $0.50$ & $0.08$ & $0.08$  
+FARC-low & $0.10$ & $0.51^{**}$ & $0.13$ & $0.26$  
 \backslash
 
 \backslash
@@ -4907,7 +5378,7 @@ FARC-low & $0.33$ & $0.50$ & $0.08$ & $0.08$
 
 \begin_layout Plain Layout
 
-FARC-high & $0.06$ & $0.40$ & $0.32$ & $0.23$ 
+FARC-high & $0.03$ & $0.33^{***}$ & $0.40^{***}$ & $0.24^{***}$ 
 \backslash
 
 \backslash
@@ -4916,7 +5387,7 @@ FARC-high & $0.06$ & $0.40$ & $0.32$ & $0.23$
 
 \begin_layout Plain Layout
 
-Govt-low & $0.01$ & $0.14$ & $0.73$ & $0.12$ 
+Govt-low & $0.01$ & $0.17^{***}$ & $0.62^{***}$ & $0.20^{***}$ 
 \backslash
 
 \backslash
@@ -4925,7 +5396,7 @@ Govt-low & $0.01$ & $0.14$ & $0.73$ & $0.12$
 
 \begin_layout Plain Layout
 
-Govt-high & $0.01$ & $0.17$ & $0.33$ & $0.49$ 
+Govt-high & $0.02$ & $0.16^{***}$ & $0.52^{***}$ & $0.30^{***}$ 
 \backslash
 
 \backslash
@@ -4969,8 +5440,7 @@ hline
 \backslash
 textit{Note:}  & 
 \backslash
-multicolumn{4}{c}{Because of rounding, some row probabilities do not sum
- to 1.} 
+multicolumn{4}{c}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
 \backslash
 
 \backslash
@@ -5007,78 +5477,88 @@ Does sentiment respond to sentiment? There is a
 
  probability that the response to a low-sentiment government statement will
  be a low-sentiment statement from FARC, versus a 
-\begin_inset Formula $0.14$
+\begin_inset Formula $0.17$
 \end_inset
 
  probability that the response will be a high-sentiment FARC statement.
  On the other hand, there is a 
-\begin_inset Formula $0.17$
+\begin_inset Formula $0.16$
 \end_inset
 
  probability that the response to a high-sentiment government statement
  is a high-sentiment FARC statement, compared with a 
-\begin_inset Formula $0.01$
+\begin_inset Formula $0.02$
 \end_inset
 
  probability that it will be a low-sentiment FARC statement.
- (Another government statement is most likely to follow a government statement,
- for either level of sentiment.) This result seems promising: FARC seems
+ (The statement most likely to follow a government statement of any kind
+ is another government statement.) This result seems promising: FARC seems
  more likely to respond to government statements with high positive sentiment.
- The government, on the other hand, is equally likely 
-\begin_inset Formula $(0.08)$
+ The government, on the other hand, is twice as likely 
+\begin_inset Formula $(0.26$
 \end_inset
 
- to respond with either level of sentiment to a low-sentiment FARC statement.
- Interestingly, the government is more likely 
-\begin_inset Formula $(0.32)$
+ versus 
+\begin_inset Formula $0.13)$
 \end_inset
 
- to respond with a low-sentiment statement to a high-sentiment FARC statement
- and less likely to respond with a high-sentiment statement 
-\begin_inset Formula $(0.23)$
+ to respond with high positive sentiment following a low-sentiment FARC
+ statement, and more likely (
+\begin_inset Formula $0.40$
 \end_inset
 
-.
+versus 
+\begin_inset Formula $0.24)$
+\end_inset
+
+ to respond to a high positive FARC statement with a low sentiment statement
+ of its own rather than a high sentiment statement.
 \end_layout
 
 \begin_layout Standard
-The transition matrix provides a new method for answering some other questions
+The transition matrix provides a new method to answering some other questions
  about negotiations.
  We might ask whether sentiment is persistent or 
 \begin_inset Quotes eld
 \end_inset
 
-sticky
+sticky.
 \begin_inset Quotes erd
 \end_inset
 
-; and whether, for instance, a shock such as a terrorist attack might permanentl
-y derail sentiment (and the peace process).
  Low government sentiment has a high probability 
-\begin_inset Formula $(0.73)$
+\begin_inset Formula $(0.62)$
 \end_inset
 
  of continuing in subsequent time periods, although it should be noted that
  this was also the most common state occurring in the data.
- High government sentiment is about as likely to persist 
-\begin_inset Formula $(0.49)$
+ High government sentiment is less likely to persist 
+\begin_inset Formula $(0.30)$
 \end_inset
 
- than it is to be followed by any of the other states combined.
- FARC's persistence is lower, with 
-\begin_inset Formula $0.33$
+ and is more likely to be followed by low government sentiment 
+\begin_inset Formula $(0.52)$
+\end_inset
+
+, on the other hand.
+ Persistence of FARC's sentiment is less frequent, with 
+\begin_inset Formula $0.10$
 \end_inset
 
  and 
-\begin_inset Formula $0.40$
+\begin_inset Formula $0.33$
 \end_inset
 
- for low and high sentiment, respectively, although this result may partly
- reflect the relatively fewer FARC statements in the dataset.
+ for low and high sentiment.
 \end_layout
 
-\begin_layout Subsubsection
-Validation
+\begin_layout Standard
+Overall, these results suggest that dire pronouncements from either negotiant
+ do not necessarily spell doom for a peace process.
+ These results put us on our way to answering questions such as whether
+ a shock such as a terrorist attack permanently derail sentiment (and the
+ peace process).
+ 
 \end_layout
 
 \begin_layout Section
@@ -5316,253 +5796,6 @@ Structural breaks
 \begin_inset Graphics
 	filename neg_j.eps
 	width 105text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Sentiment response model: likelihood ratio test
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{table}[!htbp] 
-\backslash
-centering 
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\backslash
-caption{Likelihood Ratio Test Comparison of Nested Models} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-small
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{tabular}{@{
-\backslash
-extracolsep{5pt}}ccccc} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-
-\backslash
-[-1.8ex]
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
- & 
-\backslash
-multicolumn{4}{c}{
-\backslash
-textit{Likelihood Ratio $
-\backslash
-chi^{2}$ }} 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-cline{2-5} 
-\backslash
-
-\backslash
-[-1.8ex]
-\end_layout
-
-\begin_layout Plain Layout
-
-& 
-\backslash
-multicolumn{4}{l}{Full model} 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-cline{2-3} 
-\backslash
-
-\backslash
-[-1.8ex]
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-
-\backslash
-[-1.8ex] & (1) & (2) & (3) & (4)
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
-Nested model & & & & 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-cline{1-1} 
-\backslash
-
-\backslash
-[-1.8ex]
-\end_layout
-
-\begin_layout Plain Layout
-
- (1) & -- & $84.90^{***}$ & $77.71^{***}$ & $142.17^{***}$ 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
- (2) & -- & -- & -- & $57.27^{***}$ 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
- (3) & -- & -- & -- & $64.46^{***}$ 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-&&&& 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-textit{Notes:}  & 
-\backslash
-multicolumn{4}{c}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{tabular}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{table} 
-\end_layout
 
 \end_inset
 

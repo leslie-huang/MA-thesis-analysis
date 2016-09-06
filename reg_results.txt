@@ -1,0 +1,34 @@
+Joint statement sentiment			
+		(1)	(2)
+VARIABLES	LABELS	Coefficient	Coefficient
+			
+2.F_est_state	F_est_state = 2, 1	0.386	5.466
+		(3.511)	(21.494)
+3.F_est_state	F_est_state = 3, 3	1.233	15.527
+		(3.706)	(22.689)
+2.g_est_state	g_est_state = 2, 1	10.298**	72.369**
+		(4.785)	(29.291)
+3.g_est_state	g_est_state = 3, 3	1.454	-3.482
+		(1.780)	(10.899)
+1b.F_est_state#1b.g_est_state		0.000	0.000
+		(0.000)	(0.000)
+1b.F_est_state#2o.g_est_state		0.000	0.000
+		(0.000)	(0.000)
+1b.F_est_state#3o.g_est_state		0.000	0.000
+		(0.000)	(0.000)
+2o.F_est_state#1b.g_est_state		0.000	0.000
+		(0.000)	(0.000)
+2.F_est_state#2.g_est_state		-8.769*	-66.572**
+		(4.923)	(30.135)
+2.F_est_state#3.g_est_state		1.287	19.463
+		(2.279)	(13.953)
+3o.F_est_state#1b.g_est_state		0.000	0.000
+		(0.000)	(0.000)
+3.F_est_state#2.g_est_state		-10.595**	-77.698**
+		(5.075)	(31.068)
+3o.F_est_state#3o.g_est_state		0.000	0.000
+		(0.000)	(0.000)
+			
+Observations		88	88
+R-squared		0.137	0.135
+Pseudo R2		88	88
