@@ -948,3 +948,4 @@ predicted_mnl_gg <- ggplot(data = mod1_long, aes(y = predicted_Pr, x = as.Date(d
   ggtitle("Probability of Each State Over Time") +
   theme_bw()
 
+save.image()
