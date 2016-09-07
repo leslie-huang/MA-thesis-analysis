@@ -706,9 +706,9 @@ key "kydd_walter"
 \end_inset
 
  The government cannot discern whether the rebels are sincere, bluffing
- (potentially intererested in an agreement but overstating their demands
- to get a better deal), or uninterested in peace and stalling (to allow
- their forces to regroup), based on their words alone.
+ (potentially interested in an agreement but overstating their demands to
+ get a better deal), or uninterested in peace and stalling (to allow their
+ forces to regroup), based on their words alone.
  Similar reasoning underlies one rationalist explanation for war, which
  is based on on the incentives of both parties to misrepresent their resolve
  to go to war and their military power.
@@ -806,7 +806,7 @@ This paper cannot answer all of the questions posed in the section above,
 
 \begin_layout Standard
 In the second part of the paper, I model the responsiveness of sentiment
- to sentiment using another Markov process.
+ using another Markov process.
  I hypothesize that an actor is more likely to respond with the same level
  of sentiment used by the other actor in the most recent statement.
  In other words, if FARC issues a statement with high (positive) sentiment,
@@ -819,8 +819,8 @@ Data
 \end_layout
 
 \begin_layout Standard
-This paper uses an original dataset of (1) communiques issued by FARC, (2)
- statements of the Colombian government, and (3) joint communiques issued
+This paper uses an original dataset of (1) communiqués issued by FARC, (2)
+ statements of the Colombian government, and (3) joint communiqués issued
  by the peace negotiators.
  The statements were scraped and parsed in Python in the original Spanish,
  thus avoiding the pitfalls of inter-translator variance, loss of nuance
@@ -845,14 +845,14 @@ Comunicados
 \begin_inset Quotes erd
 \end_inset
 
- (Communiques) section of the official FARC website.
+ (Communiqués) section of the official FARC website.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "farc_comunicados"
 
 \end_inset
 
- Some communiques were authored by specific FARC generals or Secretariat
+ Some communiqués were authored by specific FARC generals or Secretariat
  members; however, this paper's analysis does not examine individual-level
  authorship.
  
@@ -997,7 +997,7 @@ Quotes from Joe Biden
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -1209,14 +1209,14 @@ end{table}
 The graphs below show the overall shape of the data, using loessed LIWC
  sentiment measures.
  The optimal structural breaks for each sentiment/actor were identified
- using Zeileis et al.'s strucchange R package.
+ using Zeileis et al.'s strucchange R package (graphs in the Appendix).
 \begin_inset CommandInset citation
 LatexCommand cite
 key "strucchange"
 
 \end_inset
 
- (Additional graphs in Appendix.)
+
 \end_layout
 
 \begin_layout Paragraph*
@@ -1266,15 +1266,15 @@ key "PARES_2013"
 
 \end_inset
 
- For 2015-2016, data from PARES was not available and was collected instead
- from the Centro de Recursos para el Análisis de Conflictos (CERAC).
+ Data from PARES was not available for 2015-2016, and was collected from
+ the Centro de Recursos para el Análisis de Conflictos (CERAC).
 \begin_inset CommandInset citation
 LatexCommand cite
 key "cerac,cerac_assessing_ceasefire"
 
 \end_inset
 
- PARES and CERAC define the attacks as 
+ PARES and CERAC define attacks as 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1291,8 +1291,8 @@ offensive actions,
 \end_inset
 
  respectively.
- The number of service personnel killed per month was collected from reports
- by PARES
+ Statistics for the number of service personnel killed and the number of
+ demobilized militants per month were collected from reports by PARES
 \begin_inset Foot
 status open
 
@@ -1309,20 +1309,30 @@ key "PARES_2015,ministerio_defensa"
 
 \end_inset
 
- It should be noted that these numbers may include casualties from the smaller
+ It should be noted that the casualty figures include deaths from the smaller
  ongoing conflict with the ELN as well as bacrim (criminal gangs); however,
- in other Defense Ministry statistics that are disaggregated by rebel group
- (e.g.
+ in Defense Ministry statistics that are disaggregated by rebel group (e.g.
  number of demobilized militants), FARC's share is overwhelming.
- In the estimation, I use the number of FARC actions because it is the most
- specific statistic.
- 
+ In the estimation, I use the log number of FARC actions because it is the
+ most specific statistic.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The loessed graph rather than the log transformation is shown to give an
+ idea of the general shape of the data, but obviously negative values are
+ not possible.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph*
 \begin_inset Graphics
 	filename melt_viol.eps
-	width 105text%
+	width 110text%
 
 \end_inset
 
@@ -1334,8 +1344,8 @@ Public opinion
 \end_layout
 
 \begin_layout Standard
-Monthly public opinion data was collected from reports by the Centro Nacional
- De Consultoría, a Colombian consultancy.
+Monthly public opinion data was collected from the Centro Nacional De Consultorí
+a, a Colombian consultancy.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "centro_imagen01-2013,centro_imagen09-2012,centro_imagen_12-2013,centro_zoom"
@@ -1371,9 +1381,9 @@ Author's translation.
 
  were recorded as approval ratings for the president and for the peace process,
  respectively.
- I used the peace process approval rating as the public opinion measure
- in the estimation because other domestic events, e.g.
- farmers' protests, influence Santos's overall approval rating.
+ I chose to use the log transformed peace process approval rating as the
+ public opinion measure in the estimation because other domestic events
+ influence the president's rating.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1403,8 +1413,8 @@ key "pennebaker_liwc01,pennebaker_liwc07"
 
 \end_inset
 
- The LIWC methodology reflects Pennebaker et al.'s approach to text analysis,
- which centers around 
+ The LIWC methodology reflects Pennebaker et al.'s approach to text analysis:
+ 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1529,7 +1539,8 @@ These statistics are admittedly crude word counts; the categories of words
  interest; and the dictionaries are intended for the analysis of personality
  traits of individual authors, not organizations.
  Nevertheless, the LIWC sentiment measures can reveal insights into the
- nature of the documents under analysis.
+ nature of the documents, and testing LIWC's applicability to these kinds
+ of texts is also valuable.
  Methods such as Principal Component Analysis (PCA) and traditional time-series
  analysis proved to be unsuitable, owing to the high variance in the length
  of documents and the highly irregular issuance of statements, respectively.
@@ -1541,9 +1552,9 @@ Modelling hidden states
 
 \begin_layout Standard
 The first estimation task is to use the shares of positive and negative
- sentiment in texts to model a Markov regime-switching model in which the
- latent regimes are discrete states that represent the government or FARC's
- willingness to negotiate--that is, whether they are in a 
+ sentiment in a sequence of texts to model a Markov regime-switching model,
+ in which the hidden regimes are discrete states that represent the government
+ or FARC's willingness to negotiate--that is, whether they are in a 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1562,20 +1573,20 @@ conciliatory
  state.
  In other words, we are interested in the random variable that represents
  FARC's (or the government's) willingness to negotiate, which is directly
- unobservable, i.e.
- hidden.
- However, we observe a stream of FARC documents and their associated measures
- of positive and negative sentiment, which emanate from the latent state
- that FARC is in at the time.
+ unobservable.
+ Instead, we observe the stream of positive and negative sentiment of the
+ FARC documents, which emanate from the latent state that FARC is in at
+ the time.
  (For the purposes of simplifying this discussion, I assume a state space
- with two possible, discrete states, but the model can theoretically be
- generalized to any number of states.) 
+ with two possible states, but the model can theoretically be generalized
+ to any number of states.) 
 \end_layout
 
 \begin_layout Standard
-This hidden Markov model (HMM) is a special case of a Markov process.
- The sequence of hidden states is a Markov chain: the probabilities of being
- in a hardline or conciliatory state, 
+This hidden Markov model (HMM) is a special case of a first-order Markov
+ process.
+ The sequence of states is a Markov chain: the probabilities of being in
+ a hardline or conciliatory state, 
 \begin_inset Formula $S_{H}$
 \end_inset
 
@@ -1640,8 +1651,8 @@ At each time
 \begin_inset Formula $t$
 \end_inset
 
- the process is at a state that is hidden or unobservable; however, from
- each state we observe the emissions, or symbols, 
+ the process is in a hidden state and we observe the emissions, or symbols,
+ 
 \begin_inset Formula $O_{t}$
 \end_inset
 
@@ -1673,7 +1684,7 @@ key "jurafsky"
 
 \end_inset
 
- Tus, we can compute the probability of a stream of observations 
+ Thus, we can compute the probability of a stream of observations 
 \begin_inset Formula $O_{1},...O_{T}$
 \end_inset
 
@@ -1686,11 +1697,7 @@ key "rabiner1989tutorial"
 
 \end_inset
 
- 
-\end_layout
-
-\begin_layout Standard
-In this case, the observed sequence of emissions is a stream of loessed
+ In this case, the observed sequence of emissions is a stream of loessed
  sentiment measures: the percent of negative emotion words in FARC statements
  might look like 
 \begin_inset Formula $(0.01,0.12,0.04,0.01)$
@@ -1702,8 +1709,8 @@ In this case, the observed sequence of emissions is a stream of loessed
 \begin_inset Formula $(S_{H},S_{H},S_{C},S_{H}).$
 \end_inset
 
- We are also interested in the transition probabilities, the probability
- of moving from 
+ We are also interested in the transition probabilities, which represent
+ probability of moving from 
 \begin_inset Formula $S_{t}=S_{i}$
 \end_inset
 
@@ -1919,9 +1926,8 @@ Labelling the states
 Because HMM estimation does not attach substantive labels to the states,
  such labelling must be done post-estimation.
  I explore two possible methods.
- First, I use the distributions of the negative and positive sentiment measures
- to construct a ranking of the unlabelled states in order of relative willingnes
-s to negotiate.
+ First, I construct a ranking of the unlabelled states in order of relative
+ willingness to negotiate using measures of central tendency.
  For example, the state with the highest mean positive emotion and lowest
  mean negative emotion would correspond to 
 \begin_inset Quotes eld
@@ -1976,24 +1982,22 @@ The second part of this paper uses a Markov process to model the response
 \begin_inset Formula $F,F,F,G,G,G,G,F$
 \end_inset
 
-.) This is partly owing to the fact that the dataset includes roughly twice
- as many statements from the government as from FARC and that both actors
- sometimes release multiple statements on the same day.
+.) This is partly owing to the fact that the dataset includes roughly three
+ times as many statements from the government as from FARC and that both
+ actors sometimes release multiple statements on the same day.
  I assume that the sequence of time-ordered statements represents a single
  Markov process, like a back-and-forth debate in which each text responds
  to the document that immediately preceded it.
- This means that a FARC document could respond to a previous FARC document,
- or a government document could respond to a government document.
- Repetitive issuances, e.g.
- a series of low-sentiment documents, might indicate a strategy where actors
- make public denunciations to get better terms at the negotiating table,
- or a strategy directed at another audience.
+ This means that a FARC document could respond to a previous FARC document.
+ Repetitive issuances, such as a series of low-sentiment documents, might
+ indicate a strategy where actors make public denunciations to get better
+ terms at the negotiating table, or they might be directed at another audience.
  For example, the government might issue several low-sentiment statements
  to show the political opposition or the public that it is being tough on
  FARC.
- Our main interest, however, is whether an actor's response mirrors the
- other actor's sentiment: for instance, if, following a FARC statement with
- 
+ Our main interest, however, is whether an actor's sentiment can predict
+ the sentiment of other actor's next statement: for instance, if, following
+ a FARC statement with 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2229,13 +2233,13 @@ Like before,
 \begin_inset Formula $P_{i,j}=Pr(S_{t+1}=state_{j}|S_{t}=state_{i}).$
 \end_inset
 
- The diagonal reflects the probability of that each state is persistent.
- The entries 
+ We are most interested the diagonal, which reflects the probability of
+ that each state is persistent, and the entries 
 \begin_inset Formula $P_{F_{H},G_{H}},P_{F_{L},G_{L}},P_{G_{H},F_{H}},P_{G_{L},F_{L}}$
 \end_inset
 
- represent the probabilities that an actor will respond with the same level
- of sentiment that the other actor used in the previous statement.
+, which represent the probabilities that an actor will respond with the
+ same level of sentiment that the other actor used in the previous statement.
 \end_layout
 
 \begin_layout Section
@@ -2269,7 +2273,8 @@ n algorithm with randomly generated start values affected the results, see
  latent states.
  I tested additional models that include covariates for the level of violence
  (log number of FARC actions recorded for the month) and public opinion
- (log approval rating for Santos's decision to hold peace talks with guerrillas).
+ (log monthly approval rating for Santos's decision to hold peace talks
+ with guerrillas).
 \end_layout
 
 \begin_layout Standard
@@ -2547,13 +2552,20 @@ end{table}
 
 \begin_layout Standard
 Comparing Model (1) vs.
- (2) and model (3) vs.
+ (2) and Model (3) vs.
  (4) shows that the inclusion of violence and public opinion covariates
  does little to improve fit.
- The improvement in BIC and AIC values in the two-state model over the one-state
- model demonstrates that a mixture is a better fit for the data than a single
- state.
- Focusing on the two FARC models, with and without covariates, the BIC values
+ Going from 
+\begin_inset Formula $n=1$
+\end_inset
+
+ to 
+\begin_inset Formula $n=2,$
+\end_inset
+
+ the improvement in BIC and AIC values demonstrates that a mixture is a
+ better fit for the data than a single state.
+ However, for the FARC models with and without covariates, the BIC values
  suggest that 
 \begin_inset Formula $n=3$
 \end_inset
@@ -2683,7 +2695,7 @@ high
 
  willingness to negotiate, i.e.
  the conciliatory regime, while the state with the highest negative and
- lowest positive sentiment would be the 
+ lowest positive sentiment would be hardline/
 \begin_inset Quotes eld
 \end_inset
 
@@ -2691,7 +2703,7 @@ low
 \begin_inset Quotes erd
 \end_inset
 
- willingness, or hardline, state.
+ willingness.
  
 \end_layout
 
@@ -3029,9 +3041,7 @@ end{table}
 
 \begin_layout Standard
 Across the board, the standard deviations relative to the means are high,
- due to the spread of the data and the fact that some states rarely occur,
- i.e.
- have few data points.
+ due to the spread of the data and the fact that some states rarely occur.
  The mean and median agree on their predictions, and positive sentiment
  for FARC and negative sentiment for the government do produce the same
  rankings, but the rankings based on negative sentiment contradict each
@@ -3040,19 +3050,20 @@ Across the board, the standard deviations relative to the means are high,
 \end_layout
 
 \begin_layout Standard
-Because of these contraditions, I use the MCDM R package to identify the
- optimal ranking based on different methods for computing multi-criteria
- decisions.
+Because of these contradictions, I use a multi-choice decision matrix, implement
+ed in the MCDM R package, to identify the optimal ranking based on different
+ methods for computing multi-criteria decisions.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "martin_mcdm"
 
 \end_inset
 
- The ranking maximizes negative sentiment and minimizes positive sentiment
- so that the state in first place is low willingness and the state in third
- place is high willingness.
- The overall decision matrix ranking maps states 
+ The ranking maximizes negative sentiment and minimizes positive sentiment:
+ the state ranked first is low willingness and the state ranked third is
+ high willingness.
+ When using either the mean or median sentiment, the overall decision matrix
+ maps states 
 \begin_inset Formula $1,2,3$
 \end_inset
 
@@ -3081,8 +3092,6 @@ high
 \end_inset
 
  (conciliatory).
- This result is robust to changing the measure of central tendency (i.e.
- median or mean) used.
 \end_layout
 
 \begin_layout Subsubsection
@@ -3094,8 +3103,7 @@ The Markov transition matrices shown below represent the probabilities of
  regime switching for FARC and the government, estimated using the loessed
  negative and positive emotion measures and labeled according to the results
  of the decision matrix.
- The values in the diagonals reflect the persistence of states.
- For instance, when FARC is hardline (
+ First, looking at the diagonals, we find that when FARC is hardline (
 \begin_inset Quotes eld
 \end_inset
 
@@ -3105,29 +3113,20 @@ low
 
  willingness) or moderate, there is a high probability that it will continue
  to be hardline or moderate.
- When FARC is in a state of 
-\begin_inset Quotes eld
-\end_inset
-
-high
-\begin_inset Quotes erd
-\end_inset
-
- willingness to negotiate, it is unlikely to transition directly to a 
-\begin_inset Quotes eld
-\end_inset
-
-low
-\begin_inset Quotes erd
-\end_inset
-
- state.
  For the government, on the other hand, the transition probabilities in
  each row are more evenly dispersed.
  These probabilities may shed light on the lasting impact of shocks such
  as violent attacks during negotiations; it appears that if a shock should
  put FARC in a hardline state, it may be hard to transition out of that
  state again, but the same is not true of the government.
+\end_layout
+
+\begin_layout Standard
+Other interesting results are that FARC is predicted to never transition
+ directly from low to high and vice versa, and to never transition from
+ moderate to low: yet all of these transitions do occur, perhaps because
+ of rounding, in the graphs below, which show the estimated states of FARC
+ and the government over the time period of the negotiations.
 \end_layout
 
 \begin_layout Standard
@@ -3144,7 +3143,6 @@ The government is most likely to transition to a state of moderate willingness
 \end_inset
 
 ).
- 
 \end_layout
 
 \begin_layout Standard
@@ -3438,12 +3436,6 @@ end{table}
 
 \end_layout
 
-\begin_layout Standard
-To better understand these results, we can examine the graphs, which show
- the estimated states of FARC and the government over the time period of
- the negotiations.
-\end_layout
-
 \begin_layout Paragraph*
 \begin_inset Graphics
 	filename hmm_farc.eps
@@ -3465,37 +3457,36 @@ To better understand these results, we can examine the graphs, which show
 \end_layout
 
 \begin_layout Standard
-Surprisingly, both FARC and the government spend little time in the moderate
- state, a result that suggests that a model with two latent states might
- actually have been preferable for ease of interpretation.
+Both FARC and the government spend little time in the moderate state, which
+ suggests that a model with two latent states might actually have been preferabl
+e for ease of interpretation.
  Overall, the government's willingness to negotiate is more volatile, with
  frequent regime switching from low to high throughout the time interval.
- The irregularity and frequency of data (statements may be issued days,
- weeks, or months apart) explains some of this volatility: there are three
- times as many government documents than FARC documents.
+ The irregularity and frequency of data explains some of this volatility:
+ statements may be issued days or months apart, and there are three times
+ as many government documents.
  But although the higher frequency of government statements affects the
- appearance of the regime switching graph, the government does have lower
+ appearance of the regime-switching graph, the government does have lower
  probabilities of state persistence, as seen in the diagonal of the transition
  matrix.
- The higher probabilities in FARC's transition matrix diagonal is consistent
+ The higher probabilities in FARC's transition matrix diagonal are consistent
  with the group's less volatile regime-switching.
 \end_layout
 
 \begin_layout Standard
-One likely substantive cause of the government's volatile transitions is
- that its statements must address many different audiences and groups: toward
+A potential explanation of the government's volatile transitions is that
+ its statements must address many different audiences and groups: toward
  FARC, the government must be a tough negotiator; for domestic critics,
- the government must appease hawks' concerns about specific provisions such
- as seats in the legislature for ex-guerrillas or amnesty from prosecution;
- for the military, the government must reassure them of their place in the
- conflict and about concerns regarding potential prosecution of military
- personnel for acts committed during the war; for the international community,
- the government must pledge its commitment to peace as it possibly seeks
- regional or United Nations assistance with the implementation of any deal;
- and for the public, the government must convince them that an agreement
- will actually bring about peace, that the voices of victims of the conflict
- have been heard, and that they should vote in favor of the agreement if
- it is on a referendum.
+ the government must appease hawks' objections about specific provisions
+ such as seats in the legislature for ex-guerrillas or amnesty from prosecution;
+ for the military, the government must reassure them about concerns regarding
+ potential prosecution of military personnel for acts committed during the
+ war; for the international community, the government pledges its commitment
+ to peace as it possibly seeks regional or United Nations assistance with
+ the implementation of any deal; and for the public, the government must
+ work against their skepticism, assure survivors that the voices of victims
+ of the conflict have been heard, and convince people to vote yes in a referendu
+m.
  FARC, on the other hand, addresses its 
 \begin_inset Quotes eld
 \end_inset
@@ -3504,16 +3495,16 @@ constituency,
 \begin_inset Quotes erd
 \end_inset
 
- rank and file fighters who will may need to be persuaded to demobilize;
- the government and occasionally the right wing (e.g.
- accusing Uribe of being a paramilitary); and sometimes the nation; but
- there is less at stake for FARC should it fail to appease one of these
+ rank and file fighters who need to be persuaded to demobilize; the government
+ and occasionally the right wing (e.g.
+ accusing Uribe of being a paramilitary); and sometimes the nation.
+ There is less at stake for FARC should it fail to appease one of these
  audiences.
 \end_layout
 
 \begin_layout Standard
-Anecdotally we may consider some events that are objectively likely to be
- associated with the government's willingness to negotiate.
+Anecdotally, we may consider some events that are objectively likely to
+ be associated with the government's willingness to negotiate.
  In June 2015, FARC launched a series of attacks, bombing infrastructure
  such as oil pipelines in Norte de Santander, Putumayo, and Nariño, resulting
  in an oil spill that caused severe environmental damage and contaminated
@@ -3559,6 +3550,15 @@ walking away from the table
 ) may seem like a common bluffing maneuver, the government carried out this
  threat very rarely during these negotiations: in fact, only on these two
  occasions.
+ FARC suspended talks on one occasion in 2013, over objections about the
+ government's plan to hold a referendum.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "colombiapeace_timelines"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -3580,7 +3580,7 @@ high
 
  willingness to negotiate, and again, the conciliatory sentiment of FARC
  (combined with the safe return of the general) may help explain why the
- peace talks were able to recover.
+ peace talks recovered from this crisis.
  
 \end_layout
 
@@ -3589,44 +3589,16 @@ Validation
 \end_layout
 
 \begin_layout Standard
-Clearly, with noisy and irregular data, matching events to states is imperfect.
- To evaluate the validity of the hidden Markov model, I use a simple regression
+With noisy and irregular data, matching events to states is imperfect.
+ To evaluate the validity of the hidden Markov model, I use a regression
  of joint statement sentiment on the predicted states of willingness on
  the day that the statement was issued, with linear interaction terms, to
  test the first hypothesis that willingness to negotiate is positively associate
-d with positive sentiment of joint statements.
+d with positive sentiment of joint statements and negatively associated
+ with negative sentiment.
  I also use a logistic regression to test the second hypothesis that there
  is a positive association between conciliatory states and the issuance
  of joint statements.
-\end_layout
-
-\begin_layout Standard
-Regarding hypothesis (1), the interaction terms show that when both FARC
- and the government are in the low willingness (hardline) state, this is
- associated with much lower levels of positive sentiment and slightly lower
- levels of negative sentiment, relative to the moderate willingness state.
- An even more pronounced effect is observed when FARC is in a conciliatory
- state but the government is in a hardline state, relative to the moderate
- willingness state.
- These results provide some support for the HMM estimation of willingness
- to negotiate, although their statistical power is hampered by the small
- number of joint sentiment observations in the dataset.
-\end_layout
-
-\begin_layout Standard
-We are also interested in whether levels of willingness to negotiate are
- correlated with whether a joint statement is issued at all.
- Since joint statements can announce agreements on policy, progress reports,
- or the next steps in the negotiating schedule, their occurrence may be
- a metric for how much is being accomplished in the negotiations.
- To test whether the states estimated by the HMM can predict joint statement
- issuance, I created date/state indicator variables for FARC and the government
- for each day in the negotiations period, and a dummy variable for whether
- a joint statement was issued.
- I use a logistic regression with linear interaction terms.
- However, none of the results are are statistically significant, and the
- hypothesis does not find support.
- (Table in Appendix.)
 \end_layout
 
 \begin_layout Standard
@@ -3978,13 +3950,42 @@ end{table}
 
 \end_layout
 
+\begin_layout Standard
+Regarding hypothesis (1), the interaction terms show that when both FARC
+ and the government are in the low willingness (hardline) state, this is
+ associated with much lower levels of positive sentiment and slightly lower
+ levels of negative sentiment, relative to the moderate willingness state.
+ An even more pronounced effect is observed when FARC is in a conciliatory
+ state but the government is in a hardline state, relative to the moderate
+ willingness state.
+ These results provide some support for the HMM estimations, although their
+ statistical power is hampered by the small number of joint sentiment observatio
+ns.
+\end_layout
+
+\begin_layout Standard
+We are also interested in whether willingness to negotiate is correlated
+ with whether a joint statement is issued at all.
+ Since joint statements can announce agreements on policy, progress reports,
+ or the next steps in the negotiating schedule, their occurrence may be
+ a metric for how much is being accomplished in the negotiations.
+ To test whether the states estimated by the HMM can predict joint statement
+ issuance, I created date/state indicator variables for FARC and the government
+ for each day in the negotiations period, and a dummy variable for joint
+ statement issuance.
+ I use a logistic regression with linear interaction terms.
+ However, none of the results are statistically significant, and the hypothesis
+ does not find support.
+ (Table in Appendix.)
+\end_layout
+
 \begin_layout Subsection
 Sentiment response results
 \end_layout
 
 \begin_layout Standard
-For the second part of this paper, I estimate the responsiveness of sentiment
- to sentiment, in the form of a Markov transition matrix.
+I estimate the responsiveness of sentiment to sentiment, in the form of
+ a Markov transition matrix.
  The probabilities in this matrix are calculated using a multinomial logit
  with maximum likelihood estimation.
  I test four models: The first is a simple MNL of 
@@ -3998,8 +3999,8 @@ For the second part of this paper, I estimate the responsiveness of sentiment
 .
  Model (2) adds year indicators to control for year effects, because of
  potential associations between sentiment and time (e.g.
- one might argue that sentiment in later years should be higher than sentiment
- in earlier years because of the survival of the peace negotiations).
+ one might argue that sentiment in later years should be higher because
+ of the survival of the peace negotiations).
  Model (3) adds covariates for violence and public opinion to the base model,
  in the form of log transformed number of FARC actions recorded in that
  month and log transformed presidential approval ratings for that month.
@@ -4247,22 +4248,222 @@ end{table}
 \end_layout
 
 \begin_layout Standard
-I use pairwise likelihood ratio tests, shown in the table below, to compare
- each nested model with the full model.
+I use pairwise likelihood ratio tests to compare each nested model with
+ the full model.
  Those results suggest that Model (4), with year effects and the log violence
  and log public opinion coefficients, is the best fit, so the rest of the
  results proceed using that model.
- Model (4) is also the best according to the AIC value; however, the BIC
+ Model (4) is also the best according to its AIC value; however, the BIC
  and the log likelihood values identify models (2) and (1), respectively.
- Per the likelihood ratio tests, I proceed with the full model, (4).
- (A full table of all four models' results is included for comparison; however,
+ Per the likelihood ratio test results, I proceed with the full model, (4).
+ (A full table of all four models' results is included for reference; however,
  we are interested in the transition probabilities rather than the coefficients
- displayed in the table.)
+ in the table.)
 \end_layout
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{table}[!htbp] 
+\backslash
+centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+caption{Transition Matrix of Sentiment Response} 
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+label{} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{@{
+\backslash
+extracolsep{5pt}} rcccc} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex]
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+ & 
+\backslash
+multicolumn{4}{c}{$State_{t+1}$} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+multicolumn{1}{l}{$State_{t}$} & FARC-low & FARC-high & Govt-low & Govt-high
+ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cmidrule(l){1-1} 
+\backslash
+cmidrule(l){2-5}
+\end_layout
+
+\begin_layout Plain Layout
+
+FARC-low & $0.10$ & $0.51^{**}$ & $0.13$ & $0.26$  
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FARC-high & $0.03$ & $0.33^{***}$ & $0.40^{***}$ & $0.24^{***}$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Govt-low & $0.01$ & $0.17^{***}$ & $0.62^{***}$ & $0.20^{***}$ 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Govt-high & $0.02$ & $0.16^{***}$ & $0.52^{***}$ & $0.30^{***}$ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+&&&& 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[-1.8ex]
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\backslash
+
+\backslash
+[-1.8ex] 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+textit{Note:}  & 
+\backslash
+multicolumn{4}{c}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{table} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -4926,277 +5127,16 @@ end{table}
 
 \end_layout
 
-\begin_layout Paragraph*
-\begin_inset Graphics
-	filename mnl_pr_mod4.eps
-	width 110text%
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Standard
-Does sentiment respond to sentiment? There is a 
-\begin_inset Formula $0.01$
-\end_inset
-
- probability that the response to a low-sentiment government statement will
- be a low-sentiment statement from FARC, versus a 
-\begin_inset Formula $0.17$
-\end_inset
-
- probability that the response will be a high-sentiment FARC statement.
- On the other hand, there is a 
-\begin_inset Formula $0.16$
-\end_inset
-
- probability that the response to a high-sentiment government statement
- is a high-sentiment FARC statement, compared with a 
-\begin_inset Formula $0.02$
-\end_inset
-
- probability that it will be a low-sentiment FARC statement.
- (The statement most likely to follow a government statement of any kind
- is another government statement.) 
-\end_layout
-
-\begin_layout Standard
-These results seem promising: FARC seems more likely to respond to government
- statements with high positive sentiment.
- The government, on the other hand, is twice as likely 
-\begin_inset Formula $(0.26$
-\end_inset
-
- versus 
-\begin_inset Formula $0.13)$
-\end_inset
-
- to respond with high positive sentiment following a low-sentiment FARC
- statement, and more likely (
-\begin_inset Formula $0.40$
-\end_inset
-
- versus 
-\begin_inset Formula $0.24)$
-\end_inset
-
- to respond to a high positive FARC statement with a low sentiment statement
- of its own rather than a high sentiment statement.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{table}[!htbp] 
-\backslash
-centering 
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\backslash
-caption{Transition Matrix of Sentiment Response} 
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\backslash
-label{} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-centering
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{tabular}{@{
-\backslash
-extracolsep{5pt}} rcccc} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-
-\backslash
-[-1.8ex]
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
- & 
-\backslash
-multicolumn{4}{c}{$State_{t+1}$} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-multicolumn{1}{l}{$State_{t}$} & FARC-low & FARC-high & Govt-low & Govt-high
- 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-cmidrule(l){1-1} 
-\backslash
-cmidrule(l){2-5}
-\end_layout
-
-\begin_layout Plain Layout
-
-FARC-low & $0.10$ & $0.51^{**}$ & $0.13$ & $0.26$  
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-FARC-high & $0.03$ & $0.33^{***}$ & $0.40^{***}$ & $0.24^{***}$ 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-Govt-low & $0.01$ & $0.17^{***}$ & $0.62^{***}$ & $0.20^{***}$ 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-Govt-high & $0.02$ & $0.16^{***}$ & $0.52^{***}$ & $0.30^{***}$ 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-&&&& 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-
-\backslash
-[-1.8ex]
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\backslash
-
-\backslash
-[-1.8ex] 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-textit{Note:}  & 
-\backslash
-multicolumn{4}{c}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} 
-\backslash
-
-\backslash
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{tabular}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{table} 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The transition matrix provides a new method to answering some other questions
- about negotiations.
- We might ask whether sentiment is persistent or 
+Is sentiment is 
 \begin_inset Quotes eld
 \end_inset
 
-sticky.
+sticky
 \begin_inset Quotes erd
 \end_inset
 
- Low government sentiment has a high probability 
+? Low government sentiment has a high probability 
 \begin_inset Formula $(0.62)$
 \end_inset
 
@@ -5220,15 +5160,86 @@ sticky.
 \end_inset
 
  for low and high sentiment.
+ Overall, these results suggest that dire pronouncements from either negotiant
+ do not necessarily spell doom for a peace process.
+ These results put us on our way to answering questions such as whether
+ a shock such as a terrorist attack permanently derail sentiment, which
+ may help us make inferences about the effect of attacks on the peace process.
+ 
 \end_layout
 
 \begin_layout Standard
-Overall, these results suggest that dire pronouncements from either negotiant
- do not necessarily spell doom for a peace process.
- These results put us on our way to answering questions such as whether
- a shock such as a terrorist attack permanently derail sentiment (and the
- peace process).
+Do actors respond to sentiment with the same level of sentiment? Both FARC
+ and the government are more likely to respond to high sentiment with high,
+ and low sentiment with low, although consecutive statements are often from
+ the same actor.
+ There is a 
+\begin_inset Formula $0.01$
+\end_inset
+
+ probability that the response to a low-sentiment government statement will
+ be a low-sentiment statement from FARC, versus a 
+\begin_inset Formula $0.17$
+\end_inset
+
+ probability that the response will be a high-sentiment FARC statement.
+ There is a 
+\begin_inset Formula $0.16$
+\end_inset
+
+ probability that the response to a high-sentiment government statement
+ is a high-sentiment FARC statement, compared with a 
+\begin_inset Formula $0.02$
+\end_inset
+
+ probability that it will be a low-sentiment FARC statement.
+ The government, on the other hand, is twice as likely 
+\begin_inset Formula $(0.26$
+\end_inset
+
+ versus 
+\begin_inset Formula $0.13)$
+\end_inset
+
+ to respond with high positive sentiment following a low-sentiment FARC
+ statement, and more likely (
+\begin_inset Formula $0.40$
+\end_inset
+
+ versus 
+\begin_inset Formula $0.24)$
+\end_inset
+
+ to respond to a high positive FARC statement with a low sentiment statement
+ of its own rather than a high sentiment statement.(The statement most likely
+ to follow a government statement of any kind is another government statement.)
  
+\end_layout
+
+\begin_layout Standard
+The graph below shows the predicted probability of each state.
+ Relative to the beginning of the peace process, high government sentiment
+ is much more likely and low FARC sentiment much less likely, although high
+ FARC sentiment remains fairly flat throughout.
+ This may reflect 
+\begin_inset Quotes eld
+\end_inset
+
+trust
+\begin_inset Quotes erd
+\end_inset
+
+ built over the course of the negotiations.
+\end_layout
+
+\begin_layout Paragraph*
+\begin_inset Graphics
+	filename mnl_pr.eps
+	width 110text%
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -5239,13 +5250,12 @@ Conclusion
 This paper is a first attempt at applying text and sentiment analysis methods
  to the study of conflict negotiation.
  So far research on negotiations processes has often focused on the effect
- of violence, while the study of texts related to peace tends to focus on
- the agreements themselves.
- This paper studies the process that produced the agreement.
- Measuring the ongoing state of a negotiation process has obvious value
- to research on the peace process spoilers; on the relationships negotiations,
- agreement provisions, and peace survival; and other areas of postconflict
- research.
+ of violence, while research that does look at texts tends to focus on peace
+ agreements.
+ This paper models the process that produces those agreements.
+ Measuring the ongoing state of a negotiation process can contribute to
+ research on the peace process spoilers and on the relationships between
+ negotiations, agreement provisions, and peace survival.
 \end_layout
 
 \begin_layout Standard
@@ -5257,12 +5267,10 @@ As the results in this paper suggest, using sentiment analysis to measure
  Surprising, too, were the findings that a sentiment-only model was as good
  of a fit as a model that included covariates for levels of public opinion
  and violence.
- Future HMM estimation could thus be considerably easier than it was in
- this paper; substantive labelling of states, for instance, is considerably
- easier with only two states.
- However, with any number of states (and a larger dataset), labelling is
- essentially a classification problem that could be resolved using machine
- learning techniques.
+ Future HMM estimation could thus be considerably simpler than it was in
+ this paper.
+ With that said, substantive labelling of latent states is essentially a
+ classification problem that could be resolved using machine learning techniques.
 \end_layout
 
 \begin_layout Standard
@@ -5271,10 +5279,10 @@ The transition probabilities of the HMMs indicate a high level of state
  the government.
  Although this may at first seem counterintuitive, I suggest some theoretical
  reasons that the government's regime-switching is more frequent and volatile
- than FARC's, namely that the government's statements address numerous political
- and public audiences.
+ than FARC's, namely that the government's statements must address numerous
+ political and public audiences.
  Although it does not offer a causal explanation, the regime-switching model
- suggests a potential theory for how the peace process may have survived
+ also suggests a potential theory for how the peace process may have survived
  two crises--FARC's kidnapping of a general and FARC's bombing campaign
  of infrastructure--because of positive sentiment in FARC's statements during
  these periods.
@@ -5282,19 +5290,30 @@ The transition probabilities of the HMMs indicate a high level of state
 
 \begin_layout Standard
 In validating the HMM results, I found that higher FARC/government willingness
- to negotiate was not necessarily correlated with more positive sentiment
- in joint statement.
+ to negotiate is not necessarily correlated with more positive sentiment
+ in joint statements, and that the two actors appear to have differential
+ effects on joint sentiment.
  I was unable to find support for the hypothesis that joint statement sentiment
  is correlated with FARC and government willingness to negotiate.
- A game theoretical model of the negotiation process, where actors have
- preferences over numerous policies, may be able to update the assumption
- that high willingness should necessarily be associated with joint statement
- issuance.
+ The relationship between individual negotiants' output and documents from
+ negotiations, final or otherwise, deserves further scrutiny.
 \end_layout
 
 \begin_layout Standard
-Indeed, further research building on this paper might consider measuring
- sentiment in ways other than LIWC.
+The sentiment response model supports the hypothesis that one actor's sentiment
+ can predict the other actor's sentiment in a subsequent statement and that
+ actors mirror each other's sentiment.
+ Surprisingly, FARC was generally more likely to respond positively and
+ the government was generally more likely to respond negatively, and government
+ negativity was more likely to persist.
+ These trends of persistence and volatility, as well as the reasoning behind
+ repetitive issuances of statements, might be illuminated by a game theoretical
+ model of bargaining that incorporates these statements as signals.
+\end_layout
+
+\begin_layout Standard
+Other research building on this paper might consider measuring sentiment
+ in ways other than LIWC.
  Using a general dictionary, and using very general categories such as 
 \begin_inset Quotes eld
 \end_inset
@@ -5315,36 +5334,34 @@ negative
  applications.
  However, a dictionary with political science-specific terms, or even conflict-s
 pecific terms (e.g.
- terms that might refer to a specific war, such as leaders, locations, etc.)
- may be the way forward for more refined analysis and more specific results.
+ terms that might refer to a specific leaders, locations, events, etc.) may
+ be the way forward for more refined analysis and more specific results.
  Building custom dictionaries requires extensive background knowledge and
  time; however, as dictionaries such as LIWC are not available in all languages,
  custom dictionaries may be necessary for comparative research.
 \end_layout
 
 \begin_layout Standard
-Particular to this case study, the data can be updated to include statements
- leading up to the August 2016 peace agreement announcement (and up to the
- future referendum on the agreement).
- Additional analysis could look at the relationship between the sentiment
- of texts from the peace process and the final document itself--not only
- in this case but also in other cases where documents issued during the
- negotiations are available.
- Given that provisions of a peace agreement can predict whether peace will
- survive, much can be learned from studying the process that produces these
- agreements.
- Another interesting area of future inquiry is comparing the FARC negotiations
- with the Colombian government's imminent negotiations with the ELN, a smaller
- but similar narcoterrorist organization.
+The relationship between sentiment and the level of violence is of obvious
+ importance.
+ With disaggregated violence statistics, further research may be able to
+ unearth the relationships between specific kinds of violence (e.g.
+ bombings, murders, etc.) and trends in sentiment, and reveal insights about
+ peace process spoilers.
 \end_layout
 
 \begin_layout Standard
-Finally, the relationship between sentiment and the level of violence is
- of obvious importance.
- With disaggregated data on the types of violence (e.g.
- bombings, murders, etc.), further research may be able to unearth the relationsh
-ips between specific kinds of attacks and sentiment, and reveal insights
- about peace process spoilers.
+Particular to this case study, the data can be updated to include statements
+ leading up to the August 2016 peace agreement announcement or the referendum.
+ Given that provisions of a peace agreement can predict whether peace will
+ survive, much can be learned from studying the process that produces these
+ agreements.
+ Examining the relationship between the sentiment of texts from the peace
+ process and the final agreement may enable us to predict peace survival
+ from negotiations sentiment.
+ Another interesting area of future inquiry is the Colombian government's
+ imminent negotiations with the ELN, which could be a step toward extending
+ these results to other conflicts and contexts.
 \end_layout
 
 \begin_layout Standard
@@ -5359,14 +5376,13 @@ Appendix
 \end_layout
 
 \begin_layout Subsubsection
-Expectation-maximization algorithm in fitting hidden Markov models using
- depmixS4
+A note on fitting hidden Markov models using depmixS4
 \end_layout
 
 \begin_layout Standard
 The expectation-maximization algorithm used in fitting hidden Markov models
- to data using the depmixS4 R package randomly generates start values by
- generating random uniform values for the parameter 
+ to data, implemented in the depmixS4 R package, randomly generates start
+ values by generating random uniform values for the parameter 
 \begin_inset Formula $\gamma_{t}(j)=P(S_{t}=j|O_{1:T},z_{1:T},\theta')$
 \end_inset
 
@@ -5389,14 +5405,28 @@ key "depmixs4"
 
 \end_inset
 
- Even when the seed is set to a fixed integer in R, the EM algorithm does
- not always produce the same results, meaning that it does not reliably
- generate the same transition matrix.
+ Even when the seed is set to a fixed value, the EM algorithm does not always
+ produce the same results because it randomly assigns the initial state,
+ meaning that it does not generate the same transition matrix every single
+ time.
  It does, however, reliably generate a limited number of transition matrices:
  three different matrices for FARC, and four for the government.
- I fitted the model 1,000 times for each of FARC and the government and
- used the most frequently occurring model (596/1000 for FARC, 916/1000 for
- government).
+ (The rows of these matrices may be arranged in different orders, but they
+ are equivalent because substantive labelling of the states i.e.
+ rows occurs subsequently.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+same
+\begin_inset Quotes erd
+\end_inset
+
+ matrices usually had identical values, but in a few cases differed by 0.001,
+ or rarely by 0.01, because of rounding during fitting.) I fitted the model
+ 1,000 times for FARC and the government separately, and used the most frequentl
+y occurring models (the selected FARC model occurred 596/1000 times, while
+ the government model occurred 916/1000).
 \end_layout
 
 \begin_layout Subsubsection

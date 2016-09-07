@@ -746,7 +746,7 @@ validate_hmm_df$emotion_ratio <- log((validate_hmm_df$EmoPos+0.001)/(validate_hm
 write.dta(validate_hmm_df, "validate_data.dta")
 
 # logit of Joint_dummy ~ categorical vars for state
-logit_joint <- glm(joint_dummy ~ F_est_state + g_est_state, data = validate_hmm_df, family = binomial(link = "logit"))
+logit_joint <- glm(joint_dummy ~ F_est_state + g_est_state + F_est_state*g_est_state, data = validate_hmm_df, family = binomial(link = "logit"))
 summary(logit_joint)
 exp_logit_results <- exp(coef(logit_joint))
 
@@ -914,25 +914,30 @@ stargazer(ml_mod1, ml_mod2, ml_mod3, ml_mod4, digits = 2, digit.separator = "", 
 
 #################################################################################
 #################################################################################
-# Proceed w/ Model #1 for estimation
+# Proceed w/ Model #4 for estimation
 
 # relative risk ratio
-mod1_rrr <- exp(coef(ml_mod1))
+mod4_rrr <- exp(coef(ml_mod4))
 
 # goodness of fit tests
-# hmftest(ml_mod1, ml_mod2)
+# hmftest(ml_mod4, ml_mod1)
 
 # predicted vals
-mod1_fit <- fitted(ml_mod1, outcome = FALSE)
-mod1_fit <- data.frame(cbind(mod1_fit, mnl_df$date[1:418]))
-colnames(mod1_fit) <- c("Pr_1", "Pr_2", "Pr_3", "Pr_4", "date")
-mod1_fit$date <- as.Date(mod1_fit$date, origin = "1970-01-01")
+mod4_fit <- fitted(ml_mod4, outcome = FALSE)
+
+# need to get the dates with NAs dropped
+mnl_df_dates <- filter(mnl_df, !is.na(FARC_actions), !is.na(peace_approve))$date
+
+# cbind it back together
+mod4_fit <- data.frame(cbind(mod4_fit, mnl_df_dates))
+colnames(mod4_fit) <- c("Pr_1", "Pr_2", "Pr_3", "Pr_4", "date")
+mod4_fit$date <- as.Date(mod4_fit$date, origin = "1970-01-01")
 
 # melt data for graphing
-mod1_fit$id <- rep(1:length(mod1_fit[,1]))
-mod1_long <- melt(mod1_fit, id = c("date", "id"), variable.name = "state", value.name = "predicted_Pr")
+mod4_fit$id <- rep(1:length(mod4_fit[,1]))
+mod4_long <- melt(mod4_fit, id = c("date", "id"), variable.name = "state", value.name = "predicted_Pr")
 
-predicted_mnl_gg <- ggplot(data = mod1_long, aes(y = predicted_Pr, x = as.Date(date, origin = "1970-01-01"), group = state)) +
+predicted_mnl_gg <- ggplot(data = mod4_long, aes(y = predicted_Pr, x = as.Date(date, origin = "1970-01-01"), group = state)) +
   geom_smooth(method = "loess", se = FALSE, aes(linetype = state, color = state)) +
   labs(
     x = "Date",
