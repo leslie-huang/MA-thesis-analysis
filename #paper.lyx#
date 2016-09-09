@@ -89,45 +89,56 @@
 \begin_body
 
 \begin_layout Title
-Using textual sentiment from the FARC-Colombia peace talks to model responsivene
-ss and willingness to negotiate
+Modelling responsiveness and willingness to negotiate using sentiment: textual
+ analysis of the FARC-Colombia peace talks
 \end_layout
 
 \begin_layout Author
 Leslie Huang
 \end_layout
 
-\begin_layout Address
+\begin_layout Standard
 New York University Department of Politics
 \end_layout
 
-\begin_layout Address
+\begin_layout Standard
 M.A.
  paper
 \end_layout
 
-\begin_layout Address
+\begin_layout Standard
 Adviser: Arthur Spirling
 \end_layout
 
 \begin_layout Abstract
-The lengthy life cycle of peace negotiations is often marred by continued
- fighting, obfuscated by public bluffing, and complicated by internal factionali
-zation.
- How can we assess whether progress is being made, measure actors' willingness
- to negotiate, or measure the impact of violent attacks on the peace process?
- This paper uses sentiment analysis as a new method to provide answers to
- these questions.
- With a new dataset of texts from the 2012-2016 peace talks between the
- Colombian government and the Fuerzas Armadas Revolucionarias de Colombia
- (FARC), I develop a model of each actor's willingness to negotiate as a
- function of their textual sentiment.
- I also model the likelihood that an actor will respond to another actor
+This paper considers factors during the peace process that may explain the
+ success or failure of peace negotiations and ultimately peace agreements.
+ The FARC-Colombia peace talks from 2012-2016, although marred by continued
+ fighting, sought to end an intractable half-century-long conflict with
+ a negotiated settlement.
+ Using a new dataset of statements from the Colombian government, FARC (Fuerzas
+ Armadas Revolucionarias de Colombia), and the joint peace negotiators,
+ I employ sentiment analysis and hidden Markov models to estimate each actor's
+ willingness to negotiate as a function of their textual sentiment.
+ I find that estimates of FARC and government willingness to negotiate can
+ predict the sentiment of jointly released statements.
+ I also use a Markov process to estimate sentiment responsiveness.
+ I show that actors are more likely to respond to each other's statements
  with the same level of sentiment.
+ These results suggest that this method of measuring the progress of peace
+ talks is a promising new tool for research on why talks are successful
+ or derailed by violence and, ultimately, why peace is durable after certain
+ conflicts but not others.
 \end_layout
 
 \begin_layout Section
 Introduction
+\end_layout
+
+\begin_layout Standard
+Why do some peace negotiations succeed while others fall apart, and what
+ accounts for the durability of peace after some conflicts but not others?
+ The study of successful conflict termination has
 \end_layout
 
 \begin_layout Standard
@@ -1015,6 +1026,17 @@ Quotes from Joe Biden
  FARC, or if the statement simply noted support for the peace process from
  international organizations or third-party countries), reducing the number
  of government texts to 318.
+ (Figures showing sentiment measures over time for each actor are in the
+ Appendix, as are graphs showing the optimal structural breaks for each
+ sentiment/actor, which were identified using the strucchange R package
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "strucchange"
+
+\end_inset
+
+.)
 \end_layout
 
 \begin_layout Standard
@@ -1227,50 +1249,6 @@ end{table}
 
 \end_layout
 
-\begin_layout Standard
-The graphs below show the overall shape of the data, using loessed LIWC
- sentiment measures.
- The optimal structural breaks for each sentiment/actor were identified
- using the strucchange R package (graphs in the Appendix) 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "strucchange"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Paragraph*
-\begin_inset Graphics
-	filename melted_gov.eps
-	width 105text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename melted_FARC.eps
-	width 105text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph*
-\begin_inset Graphics
-	filename melted_joint.eps
-	width 105text%
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 Violence
 \end_layout
@@ -1432,13 +1410,14 @@ Sentiment measures
 
 \begin_layout Standard
 This paper uses the Spanish version of the Linguistic Inquiry and Word Count
- (LIWC), which was first developed in English by Pennebaker.
+ (LIWC), which was first developed in English by Pennebaker 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_liwc01,pennebaker_liwc07"
+LatexCommand citep
+key "pennebaker-liwc01,pennebaker-liwc07"
 
 \end_inset
 
+.
  The LIWC methodology reflects Pennebaker et al.'s approach to text analysis:
  
 \begin_inset Quotes eld
@@ -1449,21 +1428,15 @@ examin[ing] people's social and psychological states by analyzing their
 \begin_inset Quotes erd
 \end_inset
 
-
+the former being words such articles or pronouns that are relatively devoid
+ of content 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
- the former being words such articles or pronouns that are relatively devoid
- of content.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
-
-\end_inset
-
+.
  Consequently, the LIWC measures are very simple: words belonging to specific
  categories--parts of speech (e.g.
  
@@ -1519,22 +1492,24 @@ anxiety or fear
  as a percentage.
  The Spanish LIWC was translated and augmented (e.g.
  additional Spanish synonyms for words translated from the English) by Ramírez-E
-sparza, Pennebaker, García, and Suriá Martínez.
+sparza, Pennebaker, García, and Suriá Martínez 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "ramirez_esparza_liwc"
+LatexCommand citep
+key "ramirez-esparza-liwc"
 
 \end_inset
 
+.
  LIWC has been used to analyze texts written by individuals from terrorist
  organizations (and translated into English), e.g.
- transcripts of statements by Osama bin Laden and Ayman al-Zawahiri.
+ transcripts of statements by Osama bin Laden and Ayman al-Zawahiri 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
+.
  
 \end_layout
 
@@ -1546,15 +1521,16 @@ status open
 
 \begin_layout Plain Layout
 Although I initially planned to also use third-person plural pronouns, which
- have been found to be used at higher rates by extremist groups,
+ have been found to be used at higher rates by extremist groups 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
- as it turns out the government uses them more frequently than FARC on average,
- and they are highly correlated with both positive and negative emotion.
+, as it turns out the government uses them more frequently than FARC on
+ average, and they are highly correlated with both positive and negative
+ emotion.
  
 \end_layout
 
@@ -2070,13 +2046,14 @@ low,
 
  I created a new measure defined by LIWC-based research that found that
  in normal usage, positive emotion words occur twice as frequently as negative
- emotion words.
+ emotion words 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
+.
  I constructed an indicator for 
 \begin_inset Quotes eld
 \end_inset
@@ -2144,14 +2121,14 @@ government/high.
 As before, the probabilities of transitioning from state to state are represente
 d in a Markov transition matrix.
  I estimate the probabilities using a multinomial logit with maximum likelihood
- estimation.
+ estimation 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "croissant_mlogit"
+LatexCommand citep
+key "croissant-mlogit"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Standard
@@ -2281,13 +2258,15 @@ Optimal number of latent states
 \end_layout
 
 \begin_layout Standard
-A hidden Markov model was fitted for each actor using the depmixS4 R package.
+A hidden Markov model was fitted for each actor using the depmixS4 R package
+ 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "depmixs4"
 
 \end_inset
 
+.
  (For a note on how this package's implementation of the expectation-maximizatio
 n algorithm with randomly generated start values affected the results, see
  the Appendix.) First, however, I optimized the number of latent states.
@@ -3078,13 +3057,14 @@ Across the board, the standard deviations relative to the means are high,
 \begin_layout Standard
 Because of these contradictions, I use a multi-choice decision matrix, implement
 ed in the MCDM R package, to identify the optimal ranking based on different
- methods for computing multi-criteria decisions.
+ methods for computing multi-criteria decisions 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "martin_mcdm"
+LatexCommand citep
+key "martin-mcdm"
 
 \end_inset
 
+.
  The ranking maximizes negative sentiment and minimizes positive sentiment:
  the state ranked first is low willingness and the state ranked third is
  high willingness.
@@ -3535,13 +3515,14 @@ Anecdotally, we may consider some events that are objectively likely to
  such as oil pipelines in Norte de Santander, Putumayo, and Nariño, resulting
  in an oil spill that caused severe environmental damage and contaminated
  the water supply of thousands; and bombing power stations that supplied
- electricity to the cities of Buenaventura and Tumaco.
+ electricity to the cities of Buenaventura and Tumaco 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "guardian_pipeline,colombiareports_attacks,colombiapeace_timelines,telesur_timeline"
+LatexCommand citep
+key "guardian-pipeline,colombiareports-attacks,colombiapeace-timelines,telesur-timeline"
 
 \end_inset
 
+.
  This time period coincides with an episode of frequent regime-switching
  observed in the government graph, but it coincides with a period of 
 \begin_inset Quotes eld
@@ -3577,25 +3558,26 @@ walking away from the table
  threat very rarely during these negotiations: in fact, only on these two
  occasions.
  FARC suspended talks on one occasion in 2013, over objections about the
- government's plan to hold a referendum.
+ government's plan to hold a referendum 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "colombiapeace_timelines"
+LatexCommand citep
+key "colombiapeace-timelines"
 
 \end_inset
 
-
+.
 \end_layout
 
 \end_inset
 
- after the general was returned.
+ after the general was returned 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "colombiapeace_timelines,telesur_timeline"
+LatexCommand citep
+key "colombiapeace-timelines,telesur-timeline"
 
 \end_inset
 
+.
  This episode, too, falls within FARC's long spell of 
 \begin_inset Quotes eld
 \end_inset
@@ -5268,6 +5250,10 @@ trust
 
 \end_layout
 
+\begin_layout Subsubsection
+Summary of findings
+\end_layout
+
 \begin_layout Section
 Conclusion
 \end_layout
@@ -5402,61 +5388,41 @@ Appendix
 \end_layout
 
 \begin_layout Subsubsection
-A note on fitting hidden Markov models using depmixS4
+Data: Graphs of loessed sentiment measures
+\end_layout
+
+\begin_layout Paragraph*
+\begin_inset Graphics
+	filename melted_gov.eps
+	width 105text%
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The expectation-maximization algorithm used in fitting hidden Markov models
- to data, implemented in the depmixS4 R package, randomly generates start
- values by generating random uniform values for the parameter 
-\begin_inset Formula $\gamma_{t}(j)=P(S_{t}=j|O_{1:T},z_{1:T},\theta')$
-\end_inset
-
-, where 
-\begin_inset Formula $O_{1:T}$
-\end_inset
-
- are the observations, 
-\begin_inset Formula $z_{1:T}$
-\end_inset
-
- are covariates, and 
-\begin_inset Formula $\theta'$
-\end_inset
-
- is the set of initial model parameters.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "depmixs4"
+\begin_inset Graphics
+	filename melted_FARC.eps
+	width 105text%
 
 \end_inset
 
- Even when the seed is set to a fixed value, the EM algorithm does not always
- produce the same results because it randomly assigns the initial state,
- meaning that it does not generate the same transition matrix every single
- time.
- It does, however, reliably generate a limited number of transition matrices:
- three different matrices for FARC, and four for the government.
- (The rows of these matrices may be arranged in different orders, but they
- are equivalent because substantive labelling of the states i.e.
- rows occurs subsequently.
- The 
-\begin_inset Quotes eld
+
+\end_layout
+
+\begin_layout Paragraph*
+\begin_inset Graphics
+	filename melted_joint.eps
+	width 105text%
+
 \end_inset
 
-same
-\begin_inset Quotes erd
-\end_inset
 
- matrices usually had identical values, but in a few cases differed by 0.001,
- or rarely by 0.01, because of rounding during fitting.) I fitted the model
- 1,000 times for FARC and the government separately, and used the most frequentl
-y occurring models (the selected FARC model occurred 596/1000 times, while
- the government model occurred 916/1000).
 \end_layout
 
 \begin_layout Subsubsection
-Structural breaks
+Data: Structural breaks in sentiment
 \end_layout
 
 \begin_layout Paragraph*
@@ -5517,6 +5483,60 @@ Structural breaks
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Estimation: A note on fitting hidden Markov models using depmixS4
+\end_layout
+
+\begin_layout Standard
+The expectation-maximization algorithm used in fitting hidden Markov models
+ to data, implemented in the depmixS4 R package, randomly generates start
+ values by generating random uniform values for the parameter 
+\begin_inset Formula $\gamma_{t}(j)=P(S_{t}=j|O_{1:T},z_{1:T},\theta')$
+\end_inset
+
+, where 
+\begin_inset Formula $O_{1:T}$
+\end_inset
+
+ are the observations, 
+\begin_inset Formula $z_{1:T}$
+\end_inset
+
+ are covariates, and 
+\begin_inset Formula $\theta'$
+\end_inset
+
+ is the set of initial model parameters.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "depmixs4"
+
+\end_inset
+
+ Even when the seed is set to a fixed value, the EM algorithm does not always
+ produce the same results because it randomly assigns the initial state,
+ meaning that it does not generate the same transition matrix every single
+ time.
+ It does, however, reliably generate a limited number of transition matrices:
+ three different matrices for FARC, and four for the government.
+ (The rows of these matrices may be arranged in different orders, but they
+ are equivalent because substantive labelling of the states i.e.
+ rows occurs subsequently.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+same
+\begin_inset Quotes erd
+\end_inset
+
+ matrices usually had identical values, but in a few cases differed by 0.001,
+ or rarely by 0.01, because of rounding during fitting.) I fitted the model
+ 1,000 times for FARC and the government separately, and used the most frequentl
+y occurring models (the selected FARC model occurred 596/1000 times, while
+ the government model occurred 916/1000).
 \end_layout
 
 \begin_layout Subsubsection
