@@ -209,8 +209,9 @@ key "fortna2004does,fortna2008does"
 
 .
  Other research on postconflict transitions has examined the texts of peace
- agreements to better understand whether provisions such as political representa
-tion for rebels in postconflict governments predict peace survival 
+ agreements to better understand whether various provisions, such as political
+ representation for rebels in postconflict governments or territorial autonomy,
+ predict peace survival 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "hartzell2001stabilizing"
@@ -261,7 +262,7 @@ Although it is difficult to draw causal conclusions from observational data,
 \end_layout
 
 \begin_layout Section
-Background and literature
+Background
 \end_layout
 
 \begin_layout Standard
@@ -278,7 +279,7 @@ The group's rarely used, official name is Fuerzas Armadas Revolucionarias
 \end_inset
 
  Originally a Marxist insurgency seeking to overthrow the government, FARC's
- supporters were mainly communists and rural peasants
+ supporters were mainly communists and rural peasants 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "CFR"
@@ -288,7 +289,7 @@ key "CFR"
 .
  FARC's current circumstances can be traced to the 1980s and 1990s, when
  it began to tax cocaine producers, soon becoming involved in cocaine production
- itself
+ itself 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "wilson-center"
@@ -298,7 +299,7 @@ key "wilson-center"
 .
  This sparked the formation of right-wing paramilitary groups, such as the
  Autodefensas Unidas de Colombia (AUC; United Self-Defense Forces of Colombia),
- who battled FARC about, inter alia, control over drug trafficking
+ who battled FARC about, inter alia, control over drug trafficking 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "wilson-center"
@@ -312,7 +313,7 @@ key "wilson-center"
  kidnapping and forced conscription of child soldiers.
  The right-wing paramilitaries used many of the same tactics as well; AUC
  was also labelled a terrorist organization and was also involved in drug
- trafficking prior to being disbanded in the mid-2000s
+ trafficking prior to being disbanded in the mid-2000s 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "colombiareports-auc"
@@ -353,7 +354,7 @@ key "CFR"
 
  During the '80s, FARC also co-founded a political party, the Patriotic
  Union, which had declined into nonexistence by the '90s after thousands
- of its members, politicians, and candidates were murdered
+ of its members, politicians, and candidates were murdered 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "nyt-UP"
@@ -366,13 +367,14 @@ key "nyt-UP"
 \begin_layout Standard
 During the tenure of president (now senator) Álvaro Uribe from 2002-2010,
  the government cracked down on Marxist groups and drug traffickers, significant
-ly reducing the strength of FARC.
+ly reducing the strength of FARC 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CFR"
 
 \end_inset
 
+.
  FARC's willingness to negotiate, after more than fifty years of the longest-run
 ning insurgency in the Western Hemisphere, is generally attributed in part
  to this crackdown.
@@ -389,7 +391,7 @@ s for these topics, which will be included in the final peace deal.
  opposition of right-wing politicians such as Uribe, as well as some members
  of the military, that oppose agreement provisions which, in their view,
  give the former rebels political representation and amnesty instead of
- prosecution for crimes committed
+ prosecution for crimes committed 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "nyt,isaacson"
@@ -429,7 +431,7 @@ This project examines texts from the peace process up until May 31, 2016;
  however, it should be noted that president Santos and Timochenko signed
  a bilateral ceasefire agreement on June 22, 2016, and announced that they
  had reached a final deal on August 24, 2016, which will subsequently face
- a popular referendum
+ a popular referendum 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "guardian-agreement"
@@ -454,7 +456,7 @@ text
 \end_inset
 
  being any form of written or transcribed statement) originated with Pennebaker
- and coauthors in the field of psychology
+ and coauthors in the field of psychology 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "tausczik-pennebaker"
@@ -479,21 +481,13 @@ key "pennebaker-chung"
 
 third-person plural pronouns are the single best predictor of extremism...
  suggest[ing] that the group is defining itself to a large degree by the
- existence of an oppositional group
+ existence of an oppositional group, 
 \begin_inset Quotes erd
 \end_inset
 
- 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "pennebaker-chung"
-
-\end_inset
-
-.
- Consistent with that result, their study of texts issued by Osama bin Laden
- and Ayman al-Zawahiri of al Qaeda found greater frequency of third-person
- plural pronouns, as well as emotional words and first-person pronouns 
+ and their study of texts issued by al-Qaeda leaders Osama bin Laden and
+ Ayman al-Zawahiri found greater frequency of third-person plural pronouns,
+ as well as emotional words and first-person pronouns 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "pennebaker-chung"
@@ -550,7 +544,7 @@ Other analyses of extremist texts have tended to utilize large corpora of
  online postings, with a focus on the emotional affect of posts on extremist
  Internet forums 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "abbasichen"
 
 \end_inset
@@ -588,21 +582,62 @@ Theory and hypotheses
 \end_layout
 
 \begin_layout Standard
-Why does it matter how peace talks are going? First, I will discuss the
- answer to this question from a behavioral and bargaining point of view.
-\end_layout
-
-\begin_layout Standard
-Impressions or assessments of 
+Previous research on conditions conducive to successful peace negotiations
+ has not utilized sentiment analysis.
+ Instead, perhaps because 
 \begin_inset Quotes eld
 \end_inset
 
-how the talks are going
+actions speak louder than words,
 \begin_inset Quotes erd
 \end_inset
 
- affect the views of the public, and decisions made by negotiants may be
- colored by answers to or beliefs about questions such as 
+ the focus of much empirical research is on violence.
+ For instance, Kydd and Walter offer a game theoretical explanation for
+ why extremist violence during peace negotiations can sometimes derail talks
+ when it reveals information about the rebel group's inability or unwillingness
+ to control extremist factions 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "kydd-walter"
+
+\end_inset
+
+.
+ A basic premise underlying this theory is that the government cannot discern
+ whether the rebels are sincere based on their words alone.
+ Similar reasoning underlies one rationalist explanation for war, which
+ is based on on the incentives of both parties to misrepresent their resolve
+ to go to war and their military power 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "fearon"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+But the fact is that many negotiations take place without a bilateral ceasefire,
+ as the FARC negotiations did.
+ Although neither regular low-intensity violence nor shocks permanently
+ derailed the peace process, it was temporarily suspended on certain occasions.
+ Thus, if we can measure the state of the negotiations, we will be better
+ able to understand the effects of violence on that process as well as the
+ factors that are associated with successful bargaining.
+ Accordingly, this paper uses the statements issued from negotiations can
+ be used to model the state of the negotiations in terms of actors' willingness
+ to negotiate.
+ With better measurement and better understanding of the dynamics of how
+ agreements are reached, we can learn not only about how violence affects
+ talks but also how talks affect violence.
+\end_layout
+
+\begin_layout Standard
+There are many other ways in which the state of the negotiations affect
+ the outcome.
+ For instance, the answers to or beliefs about questions such as 
 \begin_inset Quotes eld
 \end_inset
 
@@ -618,10 +653,7 @@ how hard are they pushing for their demands?
 \begin_inset Quotes erd
 \end_inset
 
- This paper offers new methods of measurement that get past the vagueness
- or relativism in the way these questions are stated.
- The answer to the first question, whether the other party is serious about
- negotiations, is significant for two reasons.
+ affect the behavior of negotiants.
  To use FARC-Colombia as our example: The government wants to know, given
  the political cost of continuing to negotiate and the still heavier cost
  of a failure (during the long slog of peace talks a common observation
@@ -633,7 +665,7 @@ has staked his legacy on the deal
 \begin_inset Quotes erd
 \end_inset
 
-
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "washpost-santos"
@@ -642,9 +674,9 @@ key "washpost-santos"
 
 ), whether an avowedly Marxist-Leninist group that has continued to launch
  attacks will actually follow through on a peace deal that will require
- disarmament/demobilization but almost certainly will not the implement
- of a Marxist economic-political system.
- Second, regardless of the 
+ them to disarm but almost certainly will not the implement of a Marxist
+ economic-political system.
+ Regardless of the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -677,19 +709,10 @@ the government isn't driving a hard enough bargain
 \end_layout
 
 \begin_layout Standard
-More generally, peace talks are often characterized by mistrust and an inability
- to know whether the other party's statements are sincere.
- For instance, Santos's government long refused to stop military operations
- against FARC, although FARC frequently used its unilateral ceasefires to
- call for a bilateral ceasefire.
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-Interestingly, research by Bueno de Mesquita theorizes that violence increases
+Other research, by Bueno de Mesquita, theorizes that violence increases
  after government concessions because more extreme members are left in control
- of their organization after moderate members accept the concessions in
- exchange for counterterrorism assistance 
+ of the organization after moderate members accept the concessions in exchange
+ for counterterrorism assistance 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "demesquita-conciliation"
@@ -697,15 +720,16 @@ key "demesquita-conciliation"
 \end_inset
 
 .
- The government held out on the bilateral ceasefire, arguably FARC's most
- coveted concession, until just weeks before the final deal was reached,
- but in any event FARC has displayed a unified central command rather than
- one vulnerable to fragmentation.
-\end_layout
+ Interestingly, the Santos government held out on the bilateral ceasefire,
+ arguably FARC's most coveted concession, until just weeks before the final
+ deal was reached, but in any event FARC has a unified command structure
+ rather than one vulnerable to fragmentation.
+\begin_inset Foot
+status open
 
-\end_inset
-
- The government's decision is seen as a safeguard thwarting a 
+\begin_layout Plain Layout
+Security analysts interpreted the government's decision as a safeguard thwarting
+ a 
 \begin_inset Quotes eld
 \end_inset
 
@@ -723,109 +747,26 @@ key "battaglino-lodola"
 \end_inset
 
 .
- A variety of concerns likely contributed to the government's suspicions:
- first, the criticism of politicians such as Uribe; second, continuing FARC
- attacks; and third, the fact that negotiations could very well fall apart
- without producing an agreement for other reasons.
- Although this paper focuses only on the negotiation process leading up
- to a peace agreement, mistrust can extend to the implementation of a deal
- (e.g.
- FARC would be wary of disarming or giving up secret information such as
- its members' locations if it thought the government would renege).
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-E.g.
- changes in relative military strength may cause either side to change its
- mind about deciding the outcome of the conflict at the negotiating table
- rather than on the battlefield.
 \end_layout
 
 \end_inset
 
-
+ The contrast between the theoretical prediction and reality in the FARC
+ case underscores the need for measurement of the status of peace negotiations.
 \end_layout
 
 \begin_layout Subsubsection
-Negotiations and violence
+Peace survival
 \end_layout
 
 \begin_layout Standard
-As the above discussion suggests, current assessments of an actor's 
-\begin_inset Quotes eld
-\end_inset
-
-seriousness about peace
-\begin_inset Quotes erd
-\end_inset
-
- factor in the level and nature of ongoing violence.
- However, to date the analysis of peace negotiations has not utilized sentiment
- analysis.
- Instead, perhaps because 
-\begin_inset Quotes eld
-\end_inset
-
-actions speak louder than words,
-\begin_inset Quotes erd
-\end_inset
-
- the focus of much empirical research is on violence.
- 
-\end_layout
-
-\begin_layout Standard
-For instance, Kydd and Walter offer a game theoretical explanation for why
- extremist violence during peace negotiations can sometimes derail talks
- by revealing information about the rebel group's capacity or willingness
- to control extremist factions 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "kydd-walter"
-
-\end_inset
-
-.
- The government cannot discern whether the rebels are sincere, bluffing
- (potentially interested in an agreement but overstating their demands to
- get a better deal), or uninterested in peace and stalling (to allow their
- forces to regroup), based on their words alone.
- Similar reasoning underlies one rationalist explanation for war, which
- is based on on the incentives of both parties to misrepresent their resolve
- to go to war and their military power 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "fearon"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-But the fact is that many negotiations take place without a bilateral ceasefire,
- as the FARC negotiations did.
- Although the talks were not derailed by either regular low-intensity violence
- or shocks, they were temporarily suspended on certain occasions.
- This suggests that we may want to examine the state of the negotiations
- over than time to understand how the effects of violence unfolded differently.
- I argue that the texts issued from negotiations can be used to model the
- state of the negotiations in terms of actors' willingness to negotiate.
- With better measurement and better understanding of the dynamics of how
- agreements are reached, we may be able to learn not only about how violence
- affects talks but also how talks affect violence.
-\end_layout
-
-\begin_layout Standard
-Another body of post-conflict research attempts to explain why war recurs
- or peace survives in different situations.
+Post-conflict research has attempted to explain why war recurs or peace
+ survives in different situations.
  One theoretical explanation is that most civil wars do not end with negotiated
- settlements because of bargaining failures and commitment problems: it's
- hard for people who have been killing each other to agree to stop 
+ settlements because of bargaining failures and commitment problems 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "walter1997critical"
+key "walter2002committing"
 
 \end_inset
 
@@ -838,7 +779,8 @@ credible guarantees
 \begin_inset Quotes erd
 \end_inset
 
- to convince combatants to commit to treaties 
+ to convince combatants to commit to treaties by convincing them that their
+ adversaries will also be committed 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "walter2002committing"
@@ -863,7 +805,7 @@ key "hartzell2001stabilizing"
 
 \begin_layout Standard
 However, such research analyzes peace agreements while overlooking the dynamic
- nature of negotiations and the other texts produced in the process.
+ nature of negotiations.
  Much as we might look at the draft bills and amendments that precede a
  piece of final legislation, if we want to understand what contributes to
  durable peace, or why bargaining falls apart, we should be interested not
@@ -877,10 +819,9 @@ Hypotheses
 
 \begin_layout Standard
 This paper cannot answer all of the questions posed in the section above,
- but it does introduce new measurement techniques that can aid in those
- answers.
- I present a regime-switching Markov model that estimates an actor's willingness
- to negotiate using measures of negative and positive emotion.
+ but it introduces new measurement techniques that can aid in those answers.
+ I present a regime-switching hidden Markov model that estimates an actor's
+ willingness to negotiate using measures of negative and positive emotion.
  To validate the states that the model predicts, I predict there is a positive
  relationship between a predicted state of high willingness to negotiate
  and the sentiment and incidence of joint statements.
@@ -914,7 +855,7 @@ This paper uses an original dataset of (1) communiqués issued by FARC, (2)
  peace talks were announced, through May 31, 2016, the beginning of this
  project.
  Unfortunately, this excludes the weeks leading up to the announcement of
- a final peace agreement in August 2016.
+ a final agreement in August 2016.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1048,7 +989,7 @@ paz
  published between September 1, 2012, and May 31, 2016.
  Additional human screening of the statements was necessary to remove statements
  that contained the keywords but were (a) not relevant to the peace talks
- or (b) not reasonably attributable to the Colombian government.
+ or (b) not reasonably attributable to the government.
 \begin_inset Foot
 status open
 
@@ -1311,19 +1252,18 @@ Violence
 \begin_layout Standard
 Monthly statistics on levels of ongoing violence were gathered from several
  sources.
- The number of FARC attacks per month were collected from data available
- from two Colombian conflict analysis groups.
- For 2012-2014, the source of the data was the Fundación Paz y Reconciliación
- (PARES) 
+ The number of FARC attacks per month were collected from two Colombian
+ conflict analysis groups, the Fundación Paz y Reconciliación (PARES) and
+ the Centro de Recursos para el Análisis de Conflictos (CERAC) .
+ Data for 2012-2014 was from PARES 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "PARES-2013"
 
 \end_inset
 
-.
- Data from PARES was not available for 2015-2016, and was collected from
- the Centro de Recursos para el Análisis de Conflictos (CERAC) 
+ while data for 2015-2016 was CERAC because PARES data was not available
+ for those years 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "cerac,cerac-assessing-ceasefire"
@@ -1367,9 +1307,9 @@ key "PARES-2015,ministerio-defensa"
 \end_inset
 
 .
- It should be noted that the casualty figures include deaths from the smaller
- ongoing conflict with the ELN as well as bacrim (criminal gangs); however,
- in Defense Ministry statistics that are disaggregated by rebel group (e.g.
+ The casualty figures include deaths from the smaller ongoing conflict with
+ the ELN as well as bacrim (criminal gangs)although in Defense Ministry
+ statistics that are disaggregated by rebel group (e.g.
  number of demobilized militants), FARC's share is overwhelming.
  In the estimation, I use the log number of FARC actions because it is the
  most specific statistic.
@@ -1440,9 +1380,9 @@ Author's translation.
 
  were recorded as approval ratings for the president and for the peace process,
  respectively.
- I chose to use the log transformed peace process approval rating as the
- public opinion measure in the estimation because other domestic events
- influence the president's rating.
+ I use the log transformed peace process approval rating as the public opinion
+ measure in the estimation because other domestic events influence the president
+'s rating.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1599,7 +1539,7 @@ These statistics are admittedly crude word counts; the categories of words
  nature of the documents, and testing LIWC's applicability to these kinds
  of texts is also valuable.
  Methods such as Principal Component Analysis (PCA) and traditional time-series
- analysis proved to be unsuitable, owing to the high variance in the length
+ analysis proved to be unsuitable owing to the high variance in the length
  of documents and the highly irregular issuance of statements, respectively.
 \end_layout
 
@@ -1734,26 +1674,28 @@ At each time
 \begin_inset Formula $t$
 \end_inset
 
-.
+ 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "jurafsky"
 
 \end_inset
 
+.
  Thus, we can compute the probability of a stream of observations 
 \begin_inset Formula $O_{1},...O_{T}$
 \end_inset
 
  by using a shortcut called the forward-backward algorithmn to sum over
  all of the hidden state sequences that could have generated that the stream
- of observations.
+ of observations 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "rabiner1989tutorial"
 
 \end_inset
 
+.
  In this case, the observed sequence of emissions is a stream of loessed
  sentiment measures: the percent of negative emotion words in FARC statements
  might look like 
@@ -2293,11 +2235,15 @@ Like before,
 
  We are most interested the diagonal, which reflects the probability of
  that each state is persistent, and the entries 
-\begin_inset Formula $P_{F_{H},G_{H}},P_{F_{L},G_{L}},P_{G_{H},F_{H}},P_{G_{L},F_{L}}$
+\begin_inset Formula $P_{F_{H},G_{H}},P_{F_{L},G_{L}},P_{G_{H},F_{H}}$
 \end_inset
 
-, which represent the probabilities that an actor will respond with the
- same level of sentiment that the other actor used in the previous statement.
+, and 
+\begin_inset Formula $P_{G_{L},F_{L}},$
+\end_inset
+
+ which represent the probabilities that an actor will respond with the same
+ level of sentiment that the other actor used in the previous statement.
 \end_layout
 
 \begin_layout Section
@@ -2331,10 +2277,9 @@ n algorithm with randomly generated start values affected the results, see
 \end_inset
 
  latent states.
- I tested additional models that include covariates for the level of violence
- (log number of FARC actions recorded for the month) and public opinion
- (log monthly approval rating for Santos's decision to hold peace talks
- with guerrillas).
+ I tested additional models that include covariates for violence (log number
+ of FARC actions that month) and public opinion (log monthly approval rating
+ for peace talks).
 \end_layout
 
 \begin_layout Standard
@@ -3665,8 +3610,21 @@ d with positive sentiment of joint statements and negatively associated
 \end_layout
 
 \begin_layout Standard
+Regarding hypothesis (1), the interaction terms show that when both FARC
+ and the government are in the low willingness (hardline) state, this is
+ associated with much lower levels of positive sentiment and slightly lower
+ levels of negative sentiment, relative to the moderate willingness state.
+ An even more pronounced effect is observed when FARC is in a conciliatory
+ state but the government is in a hardline state, relative to the moderate
+ willingness state.
+ These results provide some support for the HMM estimations, although their
+ statistical power is hampered by the small number of joint sentiment observatio
+ns.
+\end_layout
+
+\begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -4011,19 +3969,6 @@ end{table}
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Regarding hypothesis (1), the interaction terms show that when both FARC
- and the government are in the low willingness (hardline) state, this is
- associated with much lower levels of positive sentiment and slightly lower
- levels of negative sentiment, relative to the moderate willingness state.
- An even more pronounced effect is observed when FARC is in a conciliatory
- state but the government is in a hardline state, relative to the moderate
- willingness state.
- These results provide some support for the HMM estimations, although their
- statistical power is hampered by the small number of joint sentiment observatio
-ns.
 \end_layout
 
 \begin_layout Standard
