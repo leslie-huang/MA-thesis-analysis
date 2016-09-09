@@ -1432,14 +1432,13 @@ Sentiment measures
 
 \begin_layout Standard
 This paper uses the Spanish version of the Linguistic Inquiry and Word Count
- (LIWC), which was first developed in English by Pennebaker 
+ (LIWC), which was first developed in English by Pennebaker.
 \begin_inset CommandInset citation
-LatexCommand citep
-key "pennebaker-liwc01,pennebaker-liwc07"
+LatexCommand cite
+key "pennebaker_liwc01,pennebaker_liwc07"
 
 \end_inset
 
-.
  The LIWC methodology reflects Pennebaker et al.'s approach to text analysis:
  
 \begin_inset Quotes eld
@@ -1450,15 +1449,21 @@ examin[ing] people's social and psychological states by analyzing their
 \begin_inset Quotes erd
 \end_inset
 
-the former being words such articles or pronouns that are relatively devoid
- of content 
+
 \begin_inset CommandInset citation
-LatexCommand citep
-key "pennebaker-chung"
+LatexCommand cite
+key "pennebaker_chung"
 
 \end_inset
 
-.
+ the former being words such articles or pronouns that are relatively devoid
+ of content.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pennebaker_chung"
+
+\end_inset
+
  Consequently, the LIWC measures are very simple: words belonging to specific
  categories--parts of speech (e.g.
  
@@ -1514,24 +1519,22 @@ anxiety or fear
  as a percentage.
  The Spanish LIWC was translated and augmented (e.g.
  additional Spanish synonyms for words translated from the English) by Ramírez-E
-sparza, Pennebaker, García, and Suriá Martínez 
+sparza, Pennebaker, García, and Suriá Martínez.
 \begin_inset CommandInset citation
-LatexCommand citep
-key "ramirez-esparza-liwc"
+LatexCommand cite
+key "ramirez_esparza_liwc"
 
 \end_inset
 
-.
  LIWC has been used to analyze texts written by individuals from terrorist
  organizations (and translated into English), e.g.
- transcripts of statements by Osama bin Laden and Ayman al-Zawahiri 
+ transcripts of statements by Osama bin Laden and Ayman al-Zawahiri.
 \begin_inset CommandInset citation
-LatexCommand citep
-key "pennebaker-chung"
+LatexCommand cite
+key "pennebaker_chung"
 
 \end_inset
 
-.
  
 \end_layout
 
@@ -1543,16 +1546,15 @@ status open
 
 \begin_layout Plain Layout
 Although I initially planned to also use third-person plural pronouns, which
- have been found to be used at higher rates by extremist groups 
+ have been found to be used at higher rates by extremist groups,
 \begin_inset CommandInset citation
-LatexCommand citep
-key "pennebaker-chung"
+LatexCommand cite
+key "pennebaker_chung"
 
 \end_inset
 
-, as it turns out the government uses them more frequently than FARC on
- average, and they are highly correlated with both positive and negative
- emotion.
+ as it turns out the government uses them more frequently than FARC on average,
+ and they are highly correlated with both positive and negative emotion.
  
 \end_layout
 
@@ -2068,14 +2070,13 @@ low,
 
  I created a new measure defined by LIWC-based research that found that
  in normal usage, positive emotion words occur twice as frequently as negative
- emotion words 
+ emotion words.
 \begin_inset CommandInset citation
-LatexCommand citep
-key "pennebaker-chung"
+LatexCommand cite
+key "pennebaker_chung"
 
 \end_inset
 
-.
  I constructed an indicator for 
 \begin_inset Quotes eld
 \end_inset
@@ -2143,14 +2144,14 @@ government/high.
 As before, the probabilities of transitioning from state to state are represente
 d in a Markov transition matrix.
  I estimate the probabilities using a multinomial logit with maximum likelihood
- estimation 
+ estimation.
 \begin_inset CommandInset citation
-LatexCommand citep
-key "croissant-mlogit"
+LatexCommand cite
+key "croissant_mlogit"
 
 \end_inset
 
-.
+
 \end_layout
 
 \begin_layout Standard
@@ -2280,15 +2281,13 @@ Optimal number of latent states
 \end_layout
 
 \begin_layout Standard
-A hidden Markov model was fitted for each actor using the depmixS4 R package
- 
+A hidden Markov model was fitted for each actor using the depmixS4 R package.
 \begin_inset CommandInset citation
-LatexCommand citep
+LatexCommand cite
 key "depmixs4"
 
 \end_inset
 
-.
  (For a note on how this package's implementation of the expectation-maximizatio
 n algorithm with randomly generated start values affected the results, see
  the Appendix.) First, however, I optimized the number of latent states.

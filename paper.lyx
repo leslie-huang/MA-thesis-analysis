@@ -15,6 +15,8 @@
 \usepackage{natbib}
 \usepackage{url}
 \setlength{\bibsep}{0pt plus 0.3ex}
+\bibliographystyle{plainnat}
+\setcitestyle{aysep={}}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -52,8 +54,8 @@
 \use_package stackrel 1
 \use_package stmaryrd 1
 \use_package undertilde 1
-\cite_engine basic
-\cite_engine_type default
+\cite_engine natbib
+\cite_engine_type authoryear
 \biblio_style plain
 \use_bibtopic false
 \use_indices false
@@ -210,84 +212,89 @@ The group's rarely used, official name is Fuerzas Armadas Revolucionarias
 \end_inset
 
  Originally a Marxist insurgency seeking to overthrow the government, FARC's
- supporters were mainly communists and rural peasants.
+ supporters were mainly communists and rural peasants
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "CFR"
 
 \end_inset
 
+.
  FARC's current circumstances can be traced to the 1980s and 1990s, when
  it began to tax cocaine producers, soon becoming involved in cocaine production
- itself.
+ itself
 \begin_inset CommandInset citation
-LatexCommand cite
-key "wilson_center"
+LatexCommand citep
+key "wilson-center"
 
 \end_inset
 
+.
  This sparked the formation of right-wing paramilitary groups, such as the
  Autodefensas Unidas de Colombia (AUC; United Self-Defense Forces of Colombia),
- who battled FARC about, inter alia, control over drug trafficking.
+ who battled FARC about, inter alia, control over drug trafficking
 \begin_inset CommandInset citation
-LatexCommand cite
-key "wilson_center"
+LatexCommand citep
+key "wilson-center"
 
 \end_inset
 
+.
  FARC's tactics have included murder, kidnappings for ransom, disappearances
  of civilians and security personnel, and extortion; less widely known abroad
  is their use of landmines, which killed or maimed thousands, and their
  kidnapping and forced conscription of child soldiers.
  The right-wing paramilitaries used many of the same tactics as well; AUC
  was also labelled a terrorist organization and was also involved in drug
- trafficking prior to being disbanded in the mid-2000s.
+ trafficking prior to being disbanded in the mid-2000s
 \begin_inset CommandInset citation
-LatexCommand cite
-key "colombiareports_auc"
+LatexCommand citep
+key "colombiareports-auc"
 
 \end_inset
 
+.
  FARC, the paramilitary groups, and the government have all been accused
  of human rights abuses in the violence, which has claimed the lives of
- more than 200,000 civilians and displaced millions.
+ more than 200,000 civilians and displaced millions 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "bbc-ceasefire"
+
+\end_inset
+
+.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The Ejército de Liberación Nacional (ELN; National Liberation Army), a smaller
  and also Marxist group, has much the same history as FARC: it was founded
  around the same time and has also engaged in murder, kidnappings, extortion,
- and other violence.
+ and other violence
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CFR"
 
 \end_inset
 
+.
  ELN began pursuing cooperation with FARC and peace talks with the government
  as FARC's peace process came underway over the last several years.
 \end_layout
 
 \end_inset
 
-
-\begin_inset CommandInset citation
-LatexCommand cite
-key "bbc_ceasefire"
-
-\end_inset
-
  During the '80s, FARC also co-founded a political party, the Patriotic
  Union, which had declined into nonexistence by the '90s after thousands
- of its members, politicians, and candidates were murdered.
+ of its members, politicians, and candidates were murdered
 \begin_inset CommandInset citation
-LatexCommand cite
-key "nyt_UP"
+LatexCommand citep
+key "nyt-UP"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Standard
@@ -316,14 +323,14 @@ s for these topics, which will be included in the final peace deal.
  opposition of right-wing politicians such as Uribe, as well as some members
  of the military, that oppose agreement provisions which, in their view,
  give the former rebels political representation and amnesty instead of
- prosecution for crimes committed.
+ prosecution for crimes committed
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "nyt,isaacson"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Standard
@@ -356,13 +363,14 @@ This project examines texts from the peace process up until May 31, 2016;
  however, it should be noted that president Santos and Timochenko signed
  a bilateral ceasefire agreement on June 22, 2016, and announced that they
  had reached a final deal on August 24, 2016, which will subsequently face
- a popular referendum.
+ a popular referendum
 \begin_inset CommandInset citation
-LatexCommand cite
-key "guardian_agreement"
+LatexCommand citep
+key "guardian-agreement"
 
 \end_inset
 
+.
  
 \end_layout
 
@@ -380,22 +388,24 @@ text
 \end_inset
 
  being any form of written or transcribed statement) has emanated from Pennebake
-r and coauthors in the field of psychology.
+r and coauthors in the field of psychology
 \begin_inset CommandInset citation
-LatexCommand cite
-key "tausczik_pennebaker"
+LatexCommand citep
+key "tausczik-pennebaker"
 
 \end_inset
 
+.
  Focusing on divining the emotional and psychological states of individuals,
  this research has found associations between frequency of usage of particular
- types of words and emotional, cognitive, and social attributes.
+ types of words and emotional, cognitive, and social attributes 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
+.
  In analysis of extremist texts from American Nazi and militant animal rights
  organizations, for instance, Pennebaker and Chung found that 
 \begin_inset Quotes eld
@@ -403,26 +413,28 @@ key "pennebaker_chung"
 
 third-person plural pronouns are the single best predictor of extremism...
  suggest[ing] that the group is defining itself to a large degree by the
- existence of an oppositional group.
+ existence of an oppositional group
 \begin_inset Quotes erd
 \end_inset
 
-
+ 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
+.
  Consistent with that result, their study of texts issued by Osama bin Laden
  and Ayman al-Zawahiri of al Qaeda found greater frequency of third-person
- plural pronouns, as well as emotional words and first-person pronouns.
+ plural pronouns, as well as emotional words and first-person pronouns 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
+.
  The data in that study differs in several significant ways from the data
  in this paper: those texts were translated, were authored by specific individua
 ls,
@@ -450,14 +462,14 @@ government
 \end_inset
 
 ; and indeed, the question of whether presidents themselves have actually
- authored texts has been explored in the literature.
+ authored texts has been explored in the literature 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "sigelman"
 
 \end_inset
 
-
+.
 \end_layout
 
 \end_inset
@@ -470,38 +482,39 @@ key "sigelman"
 \begin_layout Standard
 Other analyses of extremist texts have tended to utilize large corpora of
  online postings, with a focus on the emotional affect of posts on extremist
- Internet forums,
+ Internet forums 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "abbasichen"
 
 \end_inset
 
- network analysis of the authors of extremist blogs,
+, network analysis of the authors of extremist blogs 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "chau_xu"
+LatexCommand citep
+key "chau-xu"
 
 \end_inset
 
- and content analysis of extremist documents.
+, and content analysis of extremist documents 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "smith"
 
 \end_inset
 
+.
  Text analysis of heads of state, on the other hand, tends to have a different
  focus and can be either empirical or qualitative: George W.
  Bush's speeches following September 11, 2001, have been especially popular
- with researchers, as are propaganda devices and fear-mongering rhetoric.
+ with researchers, as are propaganda devices and fear-mongering rhetoric
 \begin_inset CommandInset citation
-LatexCommand cite
-key "graham2004call,schonhardt2005measuring,de_castella,bligh2004charisma"
+LatexCommand citep
+key "graham2004call,schonhardt2005measuring,bligh2004charisma,de-castella"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Section
@@ -556,8 +569,8 @@ has staked his legacy on the deal
 
 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "washpost_santos"
+LatexCommand citep
+key "washpost-santos"
 
 \end_inset
 
@@ -610,13 +623,14 @@ status open
 Interestingly, research by Bueno de Mesquita theorizes that violence increases
  after government concessions because more extreme members are left in control
  of their organization after moderate members accept the concessions in
- exchange for counterterrorism assistance.
+ exchange for counterterrorism assistance 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "demesquita_conciliation"
+LatexCommand citep
+key "demesquita-conciliation"
 
 \end_inset
 
+.
  The government held out on the bilateral ceasefire, arguably FARC's most
  coveted concession, until just weeks before the final deal was reached,
  but in any event FARC has displayed a unified central command rather than
@@ -635,13 +649,14 @@ long con
 
  being played by FARC--that is to say, continued military operations would
  prevent FARC from using the negotiations to stall as they increase their
- military strength.
+ military strength 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "battaglino_lodola"
+LatexCommand citep
+key "battaglino-lodola"
 
 \end_inset
 
+.
  A variety of concerns likely contributed to the government's suspicions:
  first, the criticism of politicians such as Uribe; second, continuing FARC
  attacks; and third, the fact that negotiations could very well fall apart
@@ -698,27 +713,28 @@ actions speak louder than words,
 For instance, Kydd and Walter offer a game theoretical explanation for why
  extremist violence during peace negotiations can sometimes derail talks
  by revealing information about the rebel group's capacity or willingness
- to control extremist factions.
+ to control extremist factions 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "kydd_walter"
+LatexCommand citep
+key "kydd-walter"
 
 \end_inset
 
+.
  The government cannot discern whether the rebels are sincere, bluffing
  (potentially interested in an agreement but overstating their demands to
  get a better deal), or uninterested in peace and stalling (to allow their
  forces to regroup), based on their words alone.
  Similar reasoning underlies one rationalist explanation for war, which
  is based on on the incentives of both parties to misrepresent their resolve
- to go to war and their military power.
+ to go to war and their military power 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "fearon"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Standard
@@ -740,13 +756,14 @@ Another body of post-conflict research attempts to explain why war recurs
  or peace survives in different situations.
  One theoretical explanation is that most civil wars do not end with negotiated
  settlements because of bargaining failures and commitment problems: it's
- hard for people who have been killing each other to agree to stop.
+ hard for people who have been killing each other to agree to stop 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "walter1997critical"
 
 \end_inset
 
+.
  Thus, such research argues, the key to peace survival is designing 
 \begin_inset Quotes eld
 \end_inset
@@ -755,24 +772,26 @@ credible guarantees
 \begin_inset Quotes erd
 \end_inset
 
- to convince combatants to commit to treaties.
+ to convince combatants to commit to treaties 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "walter2002committing"
 
 \end_inset
 
+.
  Other research on peace agreements has found that peace survival can be
  predicted by the circumstances of the just-ended conflict (e.g.
  its intensity and the nature of the previous regime), as well as provisions
  such as territorial autonomy and assurances of security made by third-party
- states or organizations.
+ states or organizations 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "hartzell2001stabilizing"
 
 \end_inset
 
+.
  
 \end_layout
 
@@ -845,13 +864,14 @@ Comunicados
 \begin_inset Quotes erd
 \end_inset
 
- (Communiqués) section of the official FARC website.
+ (Communiqués) section of the official FARC website 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "farc_comunicados"
+LatexCommand citep
+key "farc-comunicados"
 
 \end_inset
 
+.
  Some communiqués were authored by specific FARC generals or Secretariat
  members; however, this paper's analysis does not examine individual-level
  authorship.
@@ -860,13 +880,14 @@ key "farc_comunicados"
 
 \begin_layout Standard
 Joint statements were scraped from the official Mesa de Conversaciones (Table
- for Dialogue) website of the peace negotiators.
+ for Dialogue) website of the peace negotiators 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "mesadeconversaciones"
 
 \end_inset
 
+.
  I exclude reports also published during the negotiations, which have a
  different purpose, format, and audience than the statements.
 \end_layout
@@ -880,13 +901,14 @@ Sala de Prensa
 \begin_inset Quotes erd
 \end_inset
 
- (Press Room) section of the president's website.
+ (Press Room) section of the president's website 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "president_2012-2015,president_2016"
+LatexCommand citep
+key "president-2012-2015,president-2016"
 
 \end_inset
 
+.
  The same president, Santos, has been in office during the peace talks,
  conveniently obviating variance that might result from different administration
 s.
@@ -1209,14 +1231,14 @@ end{table}
 The graphs below show the overall shape of the data, using loessed LIWC
  sentiment measures.
  The optimal structural breaks for each sentiment/actor were identified
- using Zeileis et al.'s strucchange R package (graphs in the Appendix).
+ using the strucchange R package (graphs in the Appendix) 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "strucchange"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1259,21 +1281,23 @@ Monthly statistics on levels of ongoing violence were gathered from several
  The number of FARC attacks per month were collected from data available
  from two Colombian conflict analysis groups.
  For 2012-2014, the source of the data was the Fundación Paz y Reconciliación
- (PARES).
+ (PARES) 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "PARES_2013"
+LatexCommand citep
+key "PARES-2013"
 
 \end_inset
 
+.
  Data from PARES was not available for 2015-2016, and was collected from
- the Centro de Recursos para el Análisis de Conflictos (CERAC).
+ the Centro de Recursos para el Análisis de Conflictos (CERAC) 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "cerac,cerac_assessing_ceasefire"
+LatexCommand citep
+key "cerac,cerac-assessing-ceasefire"
 
 \end_inset
 
+.
  PARES and CERAC define attacks as 
 \begin_inset Quotes eld
 \end_inset
@@ -1302,13 +1326,14 @@ PARES cites the Defense Ministry as the source for its figures.
 
 \end_inset
 
- and the Defense Ministry.
+ and the Defense Ministry 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "PARES_2015,ministerio_defensa"
+LatexCommand citep
+key "PARES-2015,ministerio-defensa"
 
 \end_inset
 
+.
  It should be noted that the casualty figures include deaths from the smaller
  ongoing conflict with the ELN as well as bacrim (criminal gangs); however,
  in Defense Ministry statistics that are disaggregated by rebel group (e.g.
@@ -1345,13 +1370,14 @@ Public opinion
 
 \begin_layout Standard
 Monthly public opinion data was collected from the Centro Nacional De Consultorí
-a, a Colombian consultancy.
+a, a Colombian consultancy 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "centro_imagen01-2013,centro_imagen09-2012,centro_imagen_12-2013,centro_zoom"
+LatexCommand citep
+key "centro-zoom,centro-imagen09-2012,centro-imagen01-2013,centro-imagen-12-2013"
 
 \end_inset
 
+.
  Answers to the questions, 
 \begin_inset Quotes eld
 \end_inset
@@ -1406,13 +1432,14 @@ Sentiment measures
 
 \begin_layout Standard
 This paper uses the Spanish version of the Linguistic Inquiry and Word Count
- (LIWC), which was first developed in English by Pennebaker.
+ (LIWC), which was first developed in English by Pennebaker 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_liwc01,pennebaker_liwc07"
+LatexCommand citep
+key "pennebaker-liwc01,pennebaker-liwc07"
 
 \end_inset
 
+.
  The LIWC methodology reflects Pennebaker et al.'s approach to text analysis:
  
 \begin_inset Quotes eld
@@ -1423,21 +1450,15 @@ examin[ing] people's social and psychological states by analyzing their
 \begin_inset Quotes erd
 \end_inset
 
-
+the former being words such articles or pronouns that are relatively devoid
+ of content 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
- the former being words such articles or pronouns that are relatively devoid
- of content.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
-
-\end_inset
-
+.
  Consequently, the LIWC measures are very simple: words belonging to specific
  categories--parts of speech (e.g.
  
@@ -1493,22 +1514,24 @@ anxiety or fear
  as a percentage.
  The Spanish LIWC was translated and augmented (e.g.
  additional Spanish synonyms for words translated from the English) by Ramírez-E
-sparza, Pennebaker, García, and Suriá Martínez.
+sparza, Pennebaker, García, and Suriá Martínez 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "ramirez_esparza_liwc"
+LatexCommand citep
+key "ramirez-esparza-liwc"
 
 \end_inset
 
+.
  LIWC has been used to analyze texts written by individuals from terrorist
  organizations (and translated into English), e.g.
- transcripts of statements by Osama bin Laden and Ayman al-Zawahiri.
+ transcripts of statements by Osama bin Laden and Ayman al-Zawahiri 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
+.
  
 \end_layout
 
@@ -1520,15 +1543,16 @@ status open
 
 \begin_layout Plain Layout
 Although I initially planned to also use third-person plural pronouns, which
- have been found to be used at higher rates by extremist groups,
+ have been found to be used at higher rates by extremist groups 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
- as it turns out the government uses them more frequently than FARC on average,
- and they are highly correlated with both positive and negative emotion.
+, as it turns out the government uses them more frequently than FARC on
+ average, and they are highly correlated with both positive and negative
+ emotion.
  
 \end_layout
 
@@ -2044,13 +2068,14 @@ low,
 
  I created a new measure defined by LIWC-based research that found that
  in normal usage, positive emotion words occur twice as frequently as negative
- emotion words.
+ emotion words 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "pennebaker_chung"
+LatexCommand citep
+key "pennebaker-chung"
 
 \end_inset
 
+.
  I constructed an indicator for 
 \begin_inset Quotes eld
 \end_inset
@@ -2118,14 +2143,14 @@ government/high.
 As before, the probabilities of transitioning from state to state are represente
 d in a Markov transition matrix.
  I estimate the probabilities using a multinomial logit with maximum likelihood
- estimation.
+ estimation 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "croissant_mlogit"
+LatexCommand citep
+key "croissant-mlogit"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Standard
@@ -2255,13 +2280,15 @@ Optimal number of latent states
 \end_layout
 
 \begin_layout Standard
-A hidden Markov model was fitted for each actor using the depmixS4 R package.
+A hidden Markov model was fitted for each actor using the depmixS4 R package
+ 
 \begin_inset CommandInset citation
-LatexCommand cite
+LatexCommand citep
 key "depmixs4"
 
 \end_inset
 
+.
  (For a note on how this package's implementation of the expectation-maximizatio
 n algorithm with randomly generated start values affected the results, see
  the Appendix.) First, however, I optimized the number of latent states.
@@ -3052,13 +3079,14 @@ Across the board, the standard deviations relative to the means are high,
 \begin_layout Standard
 Because of these contradictions, I use a multi-choice decision matrix, implement
 ed in the MCDM R package, to identify the optimal ranking based on different
- methods for computing multi-criteria decisions.
+ methods for computing multi-criteria decisions 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "martin_mcdm"
+LatexCommand citep
+key "martin-mcdm"
 
 \end_inset
 
+.
  The ranking maximizes negative sentiment and minimizes positive sentiment:
  the state ranked first is low willingness and the state ranked third is
  high willingness.
@@ -3509,13 +3537,14 @@ Anecdotally, we may consider some events that are objectively likely to
  such as oil pipelines in Norte de Santander, Putumayo, and Nariño, resulting
  in an oil spill that caused severe environmental damage and contaminated
  the water supply of thousands; and bombing power stations that supplied
- electricity to the cities of Buenaventura and Tumaco.
+ electricity to the cities of Buenaventura and Tumaco 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "guardian_pipeline,colombiareports_attacks,colombiapeace_timelines,telesur_timeline"
+LatexCommand citep
+key "guardian-pipeline,colombiareports-attacks,colombiapeace-timelines,telesur-timeline"
 
 \end_inset
 
+.
  This time period coincides with an episode of frequent regime-switching
  observed in the government graph, but it coincides with a period of 
 \begin_inset Quotes eld
@@ -3551,25 +3580,26 @@ walking away from the table
  threat very rarely during these negotiations: in fact, only on these two
  occasions.
  FARC suspended talks on one occasion in 2013, over objections about the
- government's plan to hold a referendum.
+ government's plan to hold a referendum 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "colombiapeace_timelines"
+LatexCommand citep
+key "colombiapeace-timelines"
 
 \end_inset
 
-
+.
 \end_layout
 
 \end_inset
 
- after the general was returned.
+ after the general was returned 
 \begin_inset CommandInset citation
-LatexCommand cite
-key "colombiapeace_timelines,telesur_timeline"
+LatexCommand citep
+key "colombiapeace-timelines,telesur-timeline"
 
 \end_inset
 
+.
  This episode, too, falls within FARC's long spell of 
 \begin_inset Quotes eld
 \end_inset
@@ -5830,7 +5860,7 @@ end{table}
 LatexCommand bibtex
 btprint "btPrintAll"
 bibfiles "/Users/lesliehuang/Dropbox/MA library bib"
-options "plain"
+options "plainnat"
 
 \end_inset
 
