@@ -129,7 +129,6 @@ govt_results <- liwc_loess(govt_raw)
 
 # get the loess lines for plotting
 govt_lines <- loess_lines(govt_raw)
-  
 
 #################################################################################
 #################################################################################
@@ -938,10 +937,10 @@ mod4_fit$id <- rep(1:length(mod4_fit[,1]))
 mod4_long <- melt(mod4_fit, id = c("date", "id"), variable.name = "state", value.name = "predicted_Pr")
 
 predicted_mnl_gg <- ggplot(data = mod4_long, aes(y = predicted_Pr, x = as.Date(date, origin = "1970-01-01"), group = state)) +
-  geom_smooth(method = "loess", se = FALSE, aes(linetype = state, color = state)) +
+  geom_smooth(method = "loess", se = FALSE, aes(linetype = state, color = state), span = 0.12) +
   labs(
     x = "Date",
-    y = "Probability") +
+    y = "Probability (loessed)") +
   scale_x_date(date_minor_breaks = "1 month",
                limits = c(as.Date("2012-06-01", "%Y-%m-%d"), NA)) +
   scale_colour_manual(name = "State",

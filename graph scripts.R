@@ -518,3 +518,15 @@ violence_melt_gg <- ggplot(data = violence_melt, aes(y = number_incidents, x = a
                         values = c(1,2,3)) +
   ggtitle("Levels of Violence (loessed)") +
   theme_bw()
+
+###################################################
+# make a table of sample documents for the paper
+
+
+table_for_paper_F <- cbind(FARC[,-1], FARC_results)
+table_for_paper_F <- dplyr::select(table_for_paper_F, date, text, EmoNeg, EmoPos)
+colnames(table_for_paper_F) <- c("Date", "Text", "Percent neg. emotion", "Percent pos. emotion")
+
+table_for_paper_g <- cbind(govt, govt_results[,-5])
+table_for_paper_g <- dplyr::select(table_for_paper_g, date, text, EmoNeg, EmoPos)
+colnames(table_for_paper_g) <- c("Date", "Text", "Percent neg. emotion", "Percent pos. emotion")
