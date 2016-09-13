@@ -1,4 +1,4 @@
-q#################################################################################
+#################################################################################
 #################################################################################
 # Graph sentiment -- run other script first
 
@@ -525,8 +525,31 @@ violence_melt_gg <- ggplot(data = violence_melt, aes(y = number_incidents, x = a
 
 table_for_paper_F <- cbind(FARC[,-1], FARC_results)
 table_for_paper_F <- dplyr::select(table_for_paper_F, date, text, EmoNeg, EmoPos)
-colnames(table_for_paper_F) <- c("Date", "Text", "Percent neg. emotion", "Percent pos. emotion")
+table_for_paper_F$Translation <- NA
+table_for_paper_F <- table_for_paper_F[,c("date", "text", "Translation", "EmoNeg", "EmoPos")]
+colnames(table_for_paper_F) <- c("Date", "Text", "Translation", "Neg", "Pos")
 
 table_for_paper_g <- cbind(govt, govt_results[,-5])
 table_for_paper_g <- dplyr::select(table_for_paper_g, date, text, EmoNeg, EmoPos)
-colnames(table_for_paper_g) <- c("Date", "Text", "Percent neg. emotion", "Percent pos. emotion")
+table_for_paper_g$Translation <- NA
+table_for_paper_g <- table_for_paper_g[,c("date", "text", "Translation", "EmoNeg", "EmoPos")]
+colnames(table_for_paper_g) <- c("Date", "Text", "Translation", "Neg", "Pos")
+
+# pick a few that we want
+table_for_paper_g_n <- filter(table_for_paper_g, Neg > 28)
+table_for_paper_g_n <- arrange(table_for_paper_g_n, desc(Neg))
+table_for_paper_g_p <- filter(table_for_paper_g, Pos > 33)
+table_for_paper_g_p <- arrange(table_for_paper_g_p, desc(Pos))
+
+stargazer(table_for_paper_g_p, summary = FALSE, digits = 2, title = "Sample of Positive Government Statements")
+stargazer(table_for_paper_g_n, summary = FALSE, digits = 2, title = "Sample of Negative Government Statements")
+
+# now for FARC
+table_for_paper_F_n <- filter(table_for_paper_F, Neg > 7)
+table_for_paper_F_n <- arrange(table_for_paper_F_n, desc(Neg))
+table_for_paper_F_p <- filter(table_for_paper_F, Pos > 19)
+table_for_paper_F_p <- arrange(table_for_paper_F_p, desc(Pos))
+
+
+stargazer(table_for_paper_F_p, summary = FALSE, digits = 2, title = "Sample of Positive FARC Statements")
+stargazer(table_for_paper_F_n, summary = FALSE, digits = 2, title = "Sample of Negative FARC Statements")
