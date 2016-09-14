@@ -117,6 +117,18 @@ joint_results <- liwc_loess(joint_raw)
 # get the loess lines for plotting
 joint_lines <- loess_lines(joint_raw)
 
+#################################################################################
+# and the same for govt statements
+govt <- read.csv("govtstatements.csv", stringsAsFactors = FALSE)
+
+# LIWC estimates
+govt_raw <- liwc_extractor(govt)
+
+# loessed point estimates
+govt_results <- liwc_loess(govt_raw)
+
+# get the loess lines for plotting
+govt_lines <- loess_lines(govt_raw)
 
 #################################################################################
 #################################################################################
