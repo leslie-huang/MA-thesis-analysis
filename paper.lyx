@@ -1070,8 +1070,8 @@ key "druckman1990alternative"
 
 \end_inset
 
-, I hypothesize that an actor is more likely to respond with the same level
- of sentiment as the most recent statement from the other actor.
+, I hypothesize (3) that an actor is more likely to respond with the same
+ level of sentiment as the most recent statement from the other actor.
  For example, if FARC issues a statement with high (positive) sentiment,
  the following government statement is more likely to respond with high
  sentiment, and vice versa.
@@ -1086,8 +1086,8 @@ key "kydd-walter"
 
 \end_inset
 
-, (1) major episodes of violence coincide with FARC being highly willing
- to negotiate, and (2) persistence of negative sentiment is weak.
+, (a) major episodes of violence coincide with FARC being highly willing
+ to negotiate, and (b) persistence of negative sentiment is weak.
 \end_layout
 
 \begin_layout Section
@@ -1322,7 +1322,7 @@ end{table}
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -1441,7 +1441,7 @@ hline
  ...
  & ...
  The FARC has the sincere hope that the regime does not intend to repeat
- the same plot that has passed.
+ the same plot that has occurred.
  We think simply that there is evidence of enormous difficulties that will
  face this endeavour.
  ...
@@ -1535,7 +1535,7 @@ hline
  & ...
  Contrary to what President Santos publicized, they were a movement for
  peace and a guerrilla struggle that compelled the Colombian oligarghy to
- explore a new path for dialogue and to inaugurate the [Negotiating Table]
+ explore anew the path for dialogue and to inaugurate the [Negotiating Table]
  in Havana.
  ...
  & $7.89$ & $2.67$ 
@@ -1564,8 +1564,8 @@ ión popular pueda estremecer sus cimientos.
  ...
  & ...
  The antidemocratic and violent nature of the Colombian regime has impeded
- the development of political work, to the degree necessary for a popular
- movement to shake its foundations.
+ political work to develop to the degree necessary for a popular movement
+ to shake its foundations.
  This was the fundamental reason for our call to arms.
  ...
  & $7.12$ & $9.14$ 
@@ -1621,7 +1621,7 @@ key "mesadeconversaciones"
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -1787,8 +1787,8 @@ o 'Dividendos de la paz'.
  For more than a year we have been on the two most difficult points--we
  always leave the hardest for the end--that are the two points referring
  to the theme of victims and their rights--and there transitional justice
- fits in--and the point of the end of the conflict, which is called in English
- DDR: disarmament, demobilization, and reintegration into civil society.
+ fits in--and the point of the end of the conflict, which in English is
+ called DDR: disarmament, demobilization, and reintegration into civil society.
  ...
   & $16.91$ & $36.08$ 
 \backslash
@@ -4091,16 +4091,16 @@ What do the transition probabilities reveal about the persistence of willingness
 \end_layout
 
 \begin_layout Standard
-We can further examine these results in light of the line graphs above,
- which show the estimated states of FARC and the government over the time
- period of the negotiations.
+We can further discuss these results in light of the line graphs above,
+ which show the estimated states of FARC and the government over the peace
+ talks.
  Although FARC is predicted to never transition directly from low to high
- and vice versa, and to never transition from moderate to low, these transitions
- do occur, perhaps because of rounding.
+ and vice versa, and to never transition from moderate to low, perhaps because
+ of rounding, these transitions do occur.
  Interestingly, although both FARC and the government have fairly high probabili
 ties of transitioning to moderate willingness from any state, each spends
  very little time in the moderate state.
- This suggests that a model with two latent states might actually have been
+ This suggests that a simpler model with two latent states might have been
  preferable for ease of interpretation.
 \end_layout
 
@@ -4108,26 +4108,21 @@ ties of transitioning to moderate willingness from any state, each spends
 Overall, the government's willingness to negotiate is more volatile, with
  frequent regime switching from low to high throughout the time interval.
  The irregularity and frequency of data accounts for some of this volatility:
- statements may be issued days or months apart, and there are three times
- as many government documents.
- Nevertheless, the government's lower probabilities of state persistence
- are consistent with the volatility of transitions.
- A potential explanation is that the government must address many different
- audiences: toward FARC, the government must be a tough negotiator; for
- domestic critics, the government must appease hawks' objections about issues
- such as seats in the legislature for ex-guerrillas or amnesty from prosecution;
- for the military, the government must reassure them about concerns regarding
- potential prosecution of military personnel for acts committed during the
- war; for the international community, the government pledges its commitment
- to peace as it possibly seeks regional or UN assistance with implementation;
- and for the public, the government must assure survivors that the voices
- of victims of the conflict have been heard, and encourage optimism so that
- people will vote for the deal in the referendum.
- 
-\end_layout
-
-\begin_layout Standard
-Moreover, regardless of the “truth” about FARC's seriousness or willingness,
+ the government issued many more statements more frequently than FARC.
+ However, the government's lower probabilities of state persistence are
+ consistent with the volatility of transitions.
+ A potential explanation is that the government's statements address many
+ different audiences: toward FARC, the government must be a tough negotiator;
+ for domestic critics, the government must appease hawks' objections about
+ issues such as seats in the legislature for ex-guerrillas or amnesty from
+ prosecution; for the military, the government must reassure their concerns
+ regarding potential prosecution of military personnel for acts committed
+ during the war; for the international community, the government pledges
+ its commitment to peace as it possibly seeks regional or UN assistance
+ with implementation; and for the public, the government must assure survivors
+ that the voices of victims of the conflict have been heard, and encourage
+ optimism so that people will vote for the deal in the referendum.
+ Moreover, regardless of the “truth” about FARC's seriousness or willingness,
  popular impressions (e.g.
  “FARC is stalling” or “the government isn't driving a hard enough bargain”)
  affect the government's bargaining behavior and demands in public and in
@@ -4135,9 +4130,13 @@ Moreover, regardless of the “truth” about FARC's seriousness or willingness,
  The government has to answer to public opinion, political opponents and,
  eventually, the next cycle of elections; thus, the political toll of failing
  to address one of its constituencies is very high.
- FARC, on the other hand, has fewer audiences and interests to address:
- its rank and file fighters who need to be persuaded to demobilize; its
- bargaining adversary, the government; and occasionally the nation.
+ 
+\end_layout
+
+\begin_layout Standard
+FARC, on the other hand, has fewer audiences and interests to address: its
+ rank and file fighters who need to be persuaded to demobilize; its bargaining
+ adversary, the government; and occasionally the nation.
  Unlike the government, FARC's decision to negotiate is not being constantly
  and publicly questioned, and it does not face elections or serious leadership
  challenges.
@@ -4184,11 +4183,11 @@ Validation
 \begin_layout Standard
 The HMM results are most useful if they can predict the content of output
  from the joint negotiations, such as (but not in this case) the final ageement.
- To evaluate this, I regress joint statement sentiment on the estimated
- FARC/government willingness on the day that the statement was issued, with
- linear interaction terms, to test hypothesis (1) that both actors' willingness
- to negotiate is positively associated with positive sentiment of joint
- statements and negatively associated with negative sentiment.
+ To evaluate this predicted relationship, I regress joint statement sentiment
+ on the estimated FARC/government willingness on the day that the statement
+ was issued, with linear interaction terms, to test hypothesis (1) that
+ both actors' willingness to negotiate is positively associated with positive
+ sentiment of joint statements and negatively associated with negative sentiment.
  I use a logistic regression to test hypothesis (2) that high willingness
  to negotiate is positively associated with the issuance of joint statements.
 \end_layout
@@ -4458,8 +4457,8 @@ end{table}
 \end_layout
 
 \begin_layout Standard
-Regarding hypothesis (1), the interaction terms show that the effect of
- each actor's willingness on joint sentiment depends on the other actor's
+Regarding hypothesis (1), the interaction terms indicate that the effect
+ of each actor's willingness on joint sentiment depends on the other actor's
  willingness.
  When the government is hardline and FARC is either conciliatory/hardline,
  this is associated with much lower levels of positive sentiment and slightly
@@ -4468,14 +4467,17 @@ Regarding hypothesis (1), the interaction terms show that the effect of
  The statistical power of these results is hampered by the small number
  of joint statements; we are unable to draw the same conclusions about FARC.
  Thus, there is limited support for hypothesis (1), insofar as a hardline
- government is associated with less positive joint statements.
+ government is associated with less positive joint statements but we cannot
+ conclude that high levels of willingness are associated with more positive
+ sentiment.
 \end_layout
 
 \begin_layout Standard
-To test whether the states estimated by the HMM can predict joint statement
- issuance, I created date/state indicator variables for FARC and the government
- for each day in the negotiations period, and a dummy variable for joint
- statement issuance.
+To test hypothesis (2), i.e.
+ whether the states estimated by the HMM can predict joint statement issuance,
+ I created date/state indicator variables for FARC and the government for
+ each day in the negotiations period, and a dummy variable for joint statement
+ issuance.
  I use a logistic regression with linear interaction terms.
  However, none of the results are statistically significant, and hypothesis
  (2) does not find support.
@@ -4483,17 +4485,20 @@ To test whether the states estimated by the HMM can predict joint statement
 \end_layout
 
 \begin_layout Standard
-What accounts for these hypotheses not being fully supported? The relationship
- between actor willingness and joint statements may exist, but there may
- be lag between productive willingness and the resulting joint statements/action.
- Another is that sentiment of joint statements is not an ideal metric for
- progress in talks.
+What accounts for these hypotheses not being fully supported? One problem
+ is the paucity of data; joint statements are relatively rare.
+ Additionally, although a relationship between actor willingness and joint
+ statements may exist, but there may be lag between productive willingness
+ and the resulting joint statements/action.
+ Of course, it is possible that sentiment of joint statements is not the
+ ideal metric for progress in talks, and that a content-based (perhaps hand-code
+d) measure is more appropriate.
 \end_layout
 
 \begin_layout Standard
-Finally, we may also consider willingness in the context of major events,
- in order to discuss the theory that high trust prevents talks from being
- derailed 
+Finally, we may also consider FARC/government willingness in the context
+ of major events, in order to discuss the theory that high trust prevents
+ talks from being derailed 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "kydd-walter"
@@ -5272,8 +5277,8 @@ In the second part of this paper, I estimate the responsiveness of sentiment
 .
  Model (2) adds year indicators to control for year effects, because of
  potential associations between sentiment and time (e.g.
- one might argue that sentiment in later years should be higher because
- of the survival of the peace negotiations).
+ one might argue that we should expect sentiment in later years to be higher
+ simply because of the survival of the talks).
  Model (3) adds covariates for log number of FARC actions and log peace
  approval ratings for that month to the base model.
  Model (4) includes the year, violence, public opinion covariates.
@@ -5790,15 +5795,6 @@ Looking at patterns of statement issuance, another interesting result is
  
 \end_layout
 
-\begin_layout Standard
-Interestingly, we do not observe the same repetitions with FARC: although
- the statement following a low-sentiment FARC statement is most likely to
- be another FARC statement, a high-sentiment FARC statement is most likely
- to be followed by a government statement.
- This may be because FARC has relatively fewer statements so it is more
- likely that a government statement occurs in between.
-\end_layout
-
 \begin_layout Paragraph*
 \begin_inset Graphics
 	filename mnl_pr.eps
@@ -5807,6 +5803,15 @@ Interestingly, we do not observe the same repetitions with FARC: although
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Interestingly, we do not observe the same repetitions with FARC: although
+ the statement following a low-sentiment FARC statement is most likely to
+ be another FARC statement, a high-sentiment FARC statement is most likely
+ to be followed by a government statement.
+ This may be because FARC has relatively fewer statements so it is more
+ likely that a government statement occurs in between.
 \end_layout
 
 \begin_layout Standard
@@ -5821,25 +5826,34 @@ tit-for-tat
 
  strategy? Our ability to answer this question is limited by statistical
  power.
- Contrary to my hypothesis, when a high FARC statement is followed by a
+ Contrary to hypothesis (3), when a high FARC statement is followed by a
  government statement, the latter is more likely to be low rather than high.
  We cannot conclude with statistical significance that the government is
- more likely to respond to low FARC statements with high rather than low
- sentiment.
- Unfortunately, although the results show that FARC is more likely to respond
- to either kind of government statement with high (positive) sentiment,
- these findings are not statistically significant either.
- 
-\end_layout
+ more likely to respond to low FARC statements with high or low sentiment,
+ nor can we draw statistically significant conclusions about FARC's strategy.
+ Again, this is partly due to paucity of data, because there are more cases
+ where an actor 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Standard
-In general, the transition probabilities suggest that high-sentiment responses
- are more likely across the board, whether or not the other party previously
- issued a high or low statement, and that low government sentiment is common.
- However, these results should be taken with a grain of salt because actors
- rarely respond to each other's statements and each is more likely to issue
- multiple statements in bursts.
- 
+responds
+\begin_inset Quotes erd
+\end_inset
+
+ to its own previous statement rather than to a statement from the other
+ actor, owing to 
+\begin_inset Quotes eld
+\end_inset
+
+bursts
+\begin_inset Quotes erd
+\end_inset
+
+ of multiple statements from a single actor that occur in the Markov chain.
+ However, in general, the transition probabilities suggest that high-sentiment
+ responses are more likely across the board, whether or not the other party
+ previously issued a high or low statement, and that low government sentiment
+ is common.
 \end_layout
 
 \begin_layout Subsubsection
@@ -5851,6 +5865,8 @@ The levels of willingness estimated in the HMM indicate high persistence
  of sentiment for FARC and volatile regime-switching for the government,
  which may be explained by theories about audiences and divisions within
  politics/society.
+ Conciliatory statements and the resilience of sentiment potentially explain
+ why talks did not fall apart after episodes of violence.
  Although an association between 
 \begin_inset Quotes eld
 \end_inset
@@ -5867,14 +5883,13 @@ seriousness
 \begin_inset Quotes erd
 \end_inset
 
- and the volume of activity from the negotiating table was not found, actors'
+ and the volume of activity from the negotiators was not found, the actors'
  willingness is partly associated with the sentiment of joint statements.
  Although statistically significant support for tit-for-tat strategies of
- sentiment responsiveness was not found, bursts of statements from a single
- actor provide insight into the persistence of sentiment or into how these
- statements may address different constituencies.
- Conciliatory statements and the resilience of sentiment are potential explanati
-ons for why talks did not fall apart after episodes violence.
+ sentiment responsiveness was not found, bursts of statements from just
+ one actor can provide insight into the persistence of sentiment and how
+ statements may address different audiences.
+ 
 \end_layout
 
 \begin_layout Section
@@ -5896,8 +5911,8 @@ The results from the HMM model indicate different trends of persistence
  such as the public, the military, and FARC, and suggests that further research
  might focus on why the behavior of state and nonstate actors differs.
  Although it is not a causal explanation, the regime-switching model also
- suggests a potential theory for how the peace process may have survived
- crises such as FARC's kidnapping of a general and the infrastructure bombings.
+ suggests a potential theory for how the peace process survived crises such
+ as FARC's kidnapping of a general and the infrastructure bombings.
  These findings indicate that empirical research into 
 \begin_inset Quotes eld
 \end_inset
@@ -5914,7 +5929,7 @@ willingness
 \begin_inset Quotes erd
 \end_inset
 
- has potential to change our understanding of negotiations processes.
+ can potentially change our understanding of negotiations processes.
  Further investigation, however, is needed to explore the relationship between
  the actors' willingness and the output of the peace process---namely, the
  final peace accord.
@@ -5937,8 +5952,23 @@ In the sentiment responsiveness model, the only statistically significant
 \end_layout
 
 \begin_layout Standard
-On some technical notes, research building on this paper might use alternative
- measures of sentiment.
+Regarding the effect of violence on talks, this paper's results suggest
+ several interesting theories worth a more rigorous investigation.
+ The first is that a nonstate actor might pair violence with sentiment that
+ indicates high willingness to negotiate in order to gain leverage at the
+ negotiating table, and that a total collapse of peace talks is averted
+ by the conciliatory sentiment.
+ If this is the case, in other peace processes we should expect that hardline
+ sentiment coupled with violent attacks will derail the process.
+ The other is that the state actor's sentiment is both volatile and resilient:
+ though it is sensitive to events such as attacks, the high frequency of
+ regime-switching enables the peace process to recover rather than being
+ permanently derailed.
+\end_layout
+
+\begin_layout Standard
+On some technical notes, further research might test alternative measures
+ of sentiment.
  Using a general dictionary such as LIWC and using very general categories
  such as 
 \begin_inset Quotes eld
@@ -5984,7 +6014,7 @@ This case study could be extended to the outcome of the negotiations by
  from negotiations sentiment.
  Another interesting area of future inquiry is the Colombian government's
  imminent negotiations with the ELN, which could be a step toward extending
- these results to other conflicts or multidyad contexts.
+ these results to other conflicts and to multidyad contexts.
 \end_layout
 
 \begin_layout Standard
